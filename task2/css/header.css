@@ -1,0 +1,31 @@
+.header {
+    padding: 30px 0;
+    padding-right: 40px;
+}
+
+
+
+.header__title-1_second {
+    font-size: 12px;
+    text-align: left;
+    display: block;
+}
+
+.header__nav {
+    float: right;
+}
+
+.nav__item {
+    display: inline-block;
+    color: #ababab;
+    text-transform: uppercase;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 10px 20px;
+}
+
+.nav__item_active {
+    padding: 19px;
+    padding-left: 16px;
+    padding-right: 24px;
+}

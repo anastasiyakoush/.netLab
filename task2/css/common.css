@@ -1,0 +1,41 @@
+@font-face {
+    font-family: 'Fjalla One';
+    src: url(../fonts/FjallaOne/FjallaOne-Regular.ttf);
+}
+
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url(../fonts/SourceSasPro/SourceSansPro-Bold.ttf)
+    ,url(../fonts/SourceSansPro/SourceSansPro-Regular.ttf);
+}
+
+.top-line{
+    background-color: #5c5c5c;
+    height: 5px;
+    display: block;
+}
+.title_first,  .subscribe-area__title {
+    font-size: 30px;
+    margin: 0;
+    /* float: left; */
+}
+.active{
+    background-color: #e24f43;
+    color: #ffffff;
+}
+
+.button {
+    text-decoration: none;
+    color: #ffffff;
+    background-color: #e24f43;
+    display: inline-flex;
+    border-radius: 2px;
+    text-align: left;
+}
+.header__title, .photo-footer__title {
+    display: inline-block;
+}
+.breakline {
+    background-color: #dfdfdf;
+    height: 1px;
+}

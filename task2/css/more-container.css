@@ -1,0 +1,28 @@
+.more_container {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 50px;
+}
+
+.more_block {
+    width: 270px;
+    padding-bottom: 10px;
+    border: #dfdfdf solid 1px;
+    display: flex;
+    flex-direction: column;
+}
+
+.more__photo {
+    display: block;
+    width: 100%;
+}
+
+.main__more_info-container {
+    padding: 15px 32px;
+}
+
+.more__title-2 {
+    line-height: 1.7;
+    text-align: left;
+    padding: 10px 0;
+}

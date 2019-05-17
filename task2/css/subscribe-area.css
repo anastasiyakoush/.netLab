@@ -1,0 +1,25 @@
+.subscribe-area{
+    margin-top: 55px;
+    background-color: #5c5c5c;
+    padding: 30px 25px;
+    border-radius: 5px;
+    display: flex;
+    text-align: center;
+}
+
+.input-field {
+    border: none;
+    width: 320px;
+    background-color: #ffffff;
+    border-radius: 3px;
+    padding: 10px;
+    margin-right: 20px;
+}
+
+.subscribe-area__title {
+    margin-right: 75px;
+    color: #ffffff;
+}
+.subscribe-area__title{
+    padding-right: 72px;
+}
