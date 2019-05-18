@@ -1,0 +1,36 @@
+
+.footer {
+    margin: 30px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer__block {
+    width: 23%;
+}
+
+.socials {
+    display: flex;
+}
+
+.social {
+    display: inline-block;
+    margin-right: 35px;
+}
+
+.social__icon {
+    display: inline-block;
+    padding-right: 3px;
+}
+
+.social__title {
+    display: inline-block;
+}
+
+.footer__block_title-2 {
+    padding-top: 10px;
+}
+
+.footer__block_title-1 {
+    margin-block-end: 10px;
+}

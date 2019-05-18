@@ -23,3 +23,8 @@
 .subscribe-area__title{
     padding-right: 72px;
 }
+.subscribe-area__button {
+    display: inline-block;
+    font-size: 18px;
+    padding: 10px 30px;
+}

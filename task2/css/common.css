@@ -1,25 +1,24 @@
-@font-face {
-    font-family: 'Fjalla One';
-    src: url(../fonts/FjallaOne/FjallaOne-Regular.ttf);
+.page {
+    margin: auto;
+    padding: 0 375px;
+    padding-right: 360px;
+    width: 1170px;
 }
 
-@font-face {
-    font-family: 'Source Sans Pro';
-    src: url(../fonts/SourceSasPro/SourceSansPro-Bold.ttf)
-    ,url(../fonts/SourceSansPro/SourceSansPro-Regular.ttf);
-}
-
-.top-line{
+.top-line {
     background-color: #5c5c5c;
     height: 5px;
     display: block;
 }
-.title_first,  .subscribe-area__title {
+
+.title_first,
+.subscribe-area__title {
     font-size: 30px;
     margin: 0;
     /* float: left; */
 }
-.active{
+
+.active {
     background-color: #e24f43;
     color: #ffffff;
 }
@@ -32,9 +31,12 @@
     border-radius: 2px;
     text-align: left;
 }
-.header__title, .photo-footer__title {
+
+.header__title,
+.photo-footer__title {
     display: inline-block;
 }
+
 .breakline {
     background-color: #dfdfdf;
     height: 1px;
