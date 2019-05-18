@@ -1,5 +1,7 @@
 .photo-footer {
     padding: 60px 0;
+    display:flex;
+    justify-content: space-between;
 }
 .photo-footer__button  {
     width: 230px;
@@ -10,4 +12,13 @@
     justify-content: space-between;
     padding: 20px;
     box-sizing: border-box;
+}
+@media(min-width:412px) and (max-width:768px){
+    .photo-footer__button{
+        float: none;
+    }
+    .photo-footer{
+        padding: 40px 0;
+        flex-direction: column;
+    }
 }

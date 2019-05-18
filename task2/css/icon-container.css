@@ -48,3 +48,21 @@
     right: 0;
     bottom: 0;
 }
+@media(min-width:412px) and (max-width:768px){
+    .icon-container{
+        display:flex;
+        position: relative;
+        align-items: center;
+        margin-top: 40px;
+    }
+    .main-container{
+        flex-direction: column;
+        width:412px;
+        height: 25%;
+        padding-top:0;
+    }
+    .icon-container_image-border{
+        width: 40px;
+        height: 40px;
+    }
+}

@@ -1,18 +1,14 @@
 .header {
     padding: 30px 0;
     padding-right: 40px;
+    display: flex;
+    justify-content: space-between;
 }
-
-
 
 .header__title-1_second {
     font-size: 12px;
     text-align: left;
     display: block;
-}
-
-.header__nav {
-    float: right;
 }
 
 .nav__item {
@@ -28,4 +24,16 @@
     padding: 19px;
     padding-left: 16px;
     padding-right: 24px;
+    color: #ffffff;
+}
+@media (min-width:412px) and (max-width:768px){
+    .header__nav{
+        float: none;
+    }
+    .nav__item{
+        padding: 10px 12px;
+    }
+    .header{
+        flex-direction: column;
+    }
 }

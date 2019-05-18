@@ -1,4 +1,4 @@
-.subscribe-area{
+.subscribe-area {
     margin-top: 55px;
     background-color: #5c5c5c;
     padding: 30px 25px;
@@ -20,11 +20,27 @@
     margin-right: 75px;
     color: #ffffff;
 }
-.subscribe-area__title{
+
+.subscribe-area__title {
     padding-right: 72px;
 }
+
 .subscribe-area__button {
     display: inline-block;
     font-size: 18px;
     padding: 10px 30px;
+    width: 70px;
+    height: 20px;
+}
+
+@media(min-width:412px) and (max-width:768px) {
+    .subscribe-area {
+        flex-direction: column;
+        text-align: left;
+        width: 412px;
+        height: 240px;
+        box-sizing: border-box;
+        justify-content: space-between;
+    }
+    
 }
