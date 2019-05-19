@@ -4,7 +4,7 @@
     padding: 30px 25px;
     border-radius: 5px;
     display: flex;
-    text-align: center;
+    text-align: left;
 }
 
 .input-field {
@@ -19,7 +19,7 @@
 .subscribe-area__title {
     margin-right: 75px;
     color: #ffffff;
-    text-align: left;
+    
 }
 
 .subscribe-area__button {
@@ -41,7 +41,7 @@
     }
     
 }
-@media(min-width:768px){
+@media(min-width:768px) and (max-width:1023px){
     .subscribe-area{
         flex-wrap: wrap;
         justify-content: space-between;
@@ -54,5 +54,13 @@
     .input-field{
         flex-basis: 50%;
         margin: 0;
+    }
+}
+@media(min-width:1024px){
+    .subscribe-area{
+        justify-content: space-between;
+    }
+    .input-field{
+        width: 285px;
     }
 }
