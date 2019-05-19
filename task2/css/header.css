@@ -26,7 +26,7 @@
     padding-right: 24px;
     color: #ffffff;
 }
-@media (min-width:412px) and (max-width:768px){
+@media (min-width:412px) and (max-width:767px){
     .header__nav{
         float: none;
     }

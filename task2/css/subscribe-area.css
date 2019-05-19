@@ -19,10 +19,7 @@
 .subscribe-area__title {
     margin-right: 75px;
     color: #ffffff;
-}
-
-.subscribe-area__title {
-    padding-right: 72px;
+    text-align: left;
 }
 
 .subscribe-area__button {
@@ -33,7 +30,7 @@
     height: 20px;
 }
 
-@media(min-width:412px) and (max-width:768px) {
+@media(min-width:412px) and (max-width:767px) {
     .subscribe-area {
         flex-direction: column;
         text-align: left;
@@ -43,4 +40,19 @@
         justify-content: space-between;
     }
     
+}
+@media(min-width:768px){
+    .subscribe-area{
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-content: space-between;
+        height: 140px;
+    }
+    .subscribe-area__title{
+        flex-basis: 100%;
+    }
+    .input-field{
+        flex-basis: 50%;
+        margin: 0;
+    }
 }
