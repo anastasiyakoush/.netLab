@@ -1,24 +1,40 @@
 .main-container {
     display: flex;
     position: relative;
+    align-content: center;
     margin: 55px 0;
     width: 100%;
     height: 304px;
     flex-wrap: wrap;
 }
 
-.icon-container_image-border {
+.icon-container_image {
     border-radius: 100%;
     border: #dfdfdf solid 2px;
     padding: 40px;
-    width: 40px;
+    min-width: 40px;
     height: 40px;
+    background-repeat:no-repeat; 
+    background-position: center;
+}
+.icon-container_image-1{
+    background-image: url(../images/icon-1.png);
+}
+.icon-container_image-2{
+    background-image: url(../images/icon-2.png);
+}
+.icon-container_image-3{
+    background-image: url(../images/icon-3.png);
+}
+.icon-container_image-4{
+    background-image: url(../images/icon-4.png);
 }
 
 .icon-container {
-    display: flex;
+    display: inline-flex;
     width: 50%;
     height: 50%;
+    max-width: 600px;
 }
 
 .icon-container_title {

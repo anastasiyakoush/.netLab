@@ -5,12 +5,11 @@
 
 .top-line {
     background-color: #5c5c5c;
-    height: 5px;
-    display: block;
+    height: 5px;/* 
+    display: block; */
 }
 
-.title_first,
-.subscribe-area__title {
+.title_first, .subscribe-area__title {
     font-size: 30px;
     margin: 0;
     /* float: left; */
@@ -30,8 +29,12 @@
     text-align: left;
 }
 
-.header__title,
-.photo-footer__title {
+.button:hover {
+    cursor: pointer;
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.header__title, .photo-footer__title {
     display: inline-block;
 }
 
@@ -40,24 +43,22 @@
     height: 1px;
 }
 
-@media(min-width:412px) and (max-width:768px) {
+@media(min-width:412px){
     .page {
-        width: 412px;
-        margin: 0;
+        width: 100%;
     }
-
-    .title-2 {
+   /*  .title-2 {
         padding-bottom: 10px;
+    } */
+}
+@media(max-width:1024px) {
+    .page {
+        padding: 0 10px;
     }
 }
 
-@media (min-width:768px) and (max-width:1023px) {
+@media(min-width:1024px) {
     .page {
-        width: 768px;
-    }
-}
-@media(min-width:1024px){
-    .page{
         width: 1024px;
     }
 }

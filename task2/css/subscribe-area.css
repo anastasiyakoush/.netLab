@@ -1,10 +1,12 @@
 .subscribe-area {
-    margin-top: 55px;
+    /* margin-top: 55px; */
     background-color: #5c5c5c;
     padding: 30px 25px;
     border-radius: 5px;
     display: flex;
     text-align: left;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .input-field {
@@ -13,54 +15,73 @@
     background-color: #ffffff;
     border-radius: 3px;
     padding: 10px;
-    margin-right: 20px;
+    /*  margin-right: 20px; */
+    color: #000000;
 }
 
 .subscribe-area__title {
     margin-right: 75px;
     color: #ffffff;
-    
 }
 
 .subscribe-area__button {
     display: inline-block;
     font-size: 18px;
     padding: 10px 30px;
-    width: 70px;
-    height: 20px;
+    border: none;
+    text-decoration: none;
+    max-width: 130px;
 }
 
-@media(min-width:412px) and (max-width:767px) {
+@media(min-width:412px)/*  and(max-width:720px) */ {
     .subscribe-area {
         flex-direction: column;
         text-align: left;
-        width: 412px;
-        height: 240px;
         box-sizing: border-box;
         justify-content: space-between;
+        align-content: center;
     }
-    
+    .subscribe-area__button {
+        margin-left: auto;
+        flex-basis: 100%;
+    }
+
 }
-@media(min-width:768px) and (max-width:1023px){
-    .subscribe-area{
+
+@media(min-width:720px) /* and (max-width:1023px) */ {
+    .subscribe-area {
+        flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-between;
         align-content: space-between;
-        height: 140px;
+        align-items: center;
     }
-    .subscribe-area__title{
+    .subscribe-area__title {
         flex-basis: 100%;
     }
-    .input-field{
+    .input-field {
         flex-basis: 50%;
         margin: 0;
     }
 }
-@media(min-width:1024px){
+/* align-content: center; */
+@media (min-width:800px) and (max-width:900px) {
+   
+    .subscribe-area__input-field{
+        padding: 20px 0;
+       /*  padding-right: 30px; */
+    }
     .subscribe-area{
         justify-content: space-between;
+        padding: 30px 50px;
     }
-    .input-field{
+}
+
+@media(min-width:1024px) {
+    .subscribe-area {
+        justify-content: space-between;
+    }
+    .input-field {
         width: 285px;
     }
 }
