@@ -1,10 +1,10 @@
-.more_container {
+.testimonials {
     display: flex;
     justify-content: space-between;
     align-content: space-between;
     margin: 60px auto;
 }
-.more_block {
+.testimonial-container {
     min-width: 270px;
     width: 24%;
     padding-bottom: 10px;
@@ -13,46 +13,46 @@
     flex-direction: column;
     margin-bottom: 10px;
 }
-.main__more_info-container {
+.testimonial-container__titles {
     padding: 15px 32px;
 }
-.more__title-2 {
+.testimonial-container__titles p {
     line-height: 1.7;
     text-align: left;
     padding: 10px 0;
 }
-.more__button {
+.testimonial-container__button {
     padding: 9px 10px 6px;
     font-size: 14px;
     display: inline-block;
     text-align: center;
     border: none;
 }
-.more_block__photo-container {
+.testimonial-container__photo-container {
     display: block;
     max-width: 270px;
     height: 190px;
 }
-.more_block__photo-container_1 {
+.testimonials .testimonial-container:nth-child(1) .testimonial-container__photo-container {
     background-image: url(../images/photo-1.png);
 }
-.more_block__photo-container_2 {
+.testimonials .testimonial-container:nth-child(2) .testimonial-container__photo-container {
     background-image: url(../images/photo-2.png);
 }
-.more_block__photo-container_3 {
+.testimonials .testimonial-container:nth-child(3) .testimonial-container__photo-container {
     background-image: url(../images/photo-3.png);
 }
-.more_block__photo-container_4 {
+.testimonials .testimonial-container:nth-child(4) .testimonial-container__photo-container {
     background-image: url(../images/photo-4.png);
 }
 @media (min-width:412px) {
-    .more_container {
+    .testimonials {
         flex-direction: column;
         align-items: center;
     }
 }
 @media (min-width:600px) {
-    .more_container {
+    .testimonials {
         flex-direction: row;
         width: 600px;
         flex-wrap: wrap;
@@ -60,10 +60,10 @@
     }
 }
 @media (min-width:1024px) {
-    .more_container {
+    .testimonials {
         width: 1024px;
     }
-    .more_block {
+    .testimonial-container {
         min-width: 208px;
     }
 }

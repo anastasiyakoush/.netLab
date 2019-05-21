@@ -1,4 +1,4 @@
-.photo-area {
+.posts {
     background-image: url(../images/main-pic.png);
     background-size: cover;
     background-position: center center;
@@ -8,7 +8,7 @@
     min-width: 412px;
     min-height: 220px;
 }
-.opacity-block {
+.overlay-container {
     width: 100%;
     height: 100%;
     z-index: 1;
@@ -17,8 +17,7 @@
     left: 0;
     top: 0;
 }
-.opacity-block__title {
-    font-size: 18px;
+.overlay-container__title {
     color: #ffffff;
     background-color: #000000;
     padding: 10px;
@@ -27,7 +26,7 @@
     left: 0;
     bottom: 0;
 }
-.opacity-block__item_1 {
+.overlay-container__item:nth-child(1) {
     background-color: hsla(17, 50%, -35%, 0.3);
     background-size: 100%;
     z-index: 2;
@@ -35,7 +34,7 @@
     left: 0;
     top: 0;
 }
-.opacity-block__item_2 {
+.overlay-container__item:nth-child(2) {
     background-color: hsla(20, 50%, 15%, 0.4);
     background-size: 100%;
     z-index: 2;
@@ -43,7 +42,7 @@
     right: 0;
     top: 0;
 }
-.opacity-block__item_3 {
+.overlay-container__item:nth-child(3) {
     background-color: hsla(20, 50%, -50%, 0.4);
     background-size: 100%;
     z-index: 2;
@@ -51,7 +50,7 @@
     left: 0;
     bottom: 0;
 }
-.opacity-block__item_4 {
+.overlay-container__item:nth-child(4) {
     background-color: hsla(0, 50%, 23%, 0.1);
     background-size: 100%;
     z-index: 2;
@@ -59,39 +58,40 @@
     right: 0;
     bottom: 0;
 }
-.opacity-block__item {
+.overlay-container__item {
     margin: 0;
     width: 50%;
     height: 50%;
 }
-.opacity-block__item:hover {
+.overlay-container__item:hover {
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
     cursor: pointer;
+    background-color: hsla(0, 50%, 23%, 0.1);
 }
-.opacity-block__item:hover .opacity-block__title {
+.overlay-container__item:hover .overlay-container__title {
     background-color: #e24f43;
 }
-@media(min-width:412px) and (max-width:1024px) {
-    .photo-area {
+@media(min-width:412px) and (max-width:1023px) {
+    .posts {
         width: 100%;
         height: 100%;
     }
-    .opacity-block__title {
+    .overlay-container__title {
         font-size: 14px;
     }
 }
 @media(min-width:600px) {
-    .photo-area {
+    .posts {
         height: 300px;
     }
 }
 @media(min-width:800px) {
-    .photo-area {
+    .posts {
         height: 400px;
     }
 }
 @media(min-width:1024px) {
-    .photo-area {
+    .posts {
         height: 440px;
     }
 }

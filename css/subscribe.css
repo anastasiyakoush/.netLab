@@ -1,4 +1,8 @@
-.subscribe-area__wrapper {
+.subscribe {
+    width: 100%;
+    box-sizing: border-box;
+    background-color: #5c5c5c;
+}.subscribe-container {
     background-color: #5c5c5c;
     padding: 30px 25px;
     border-radius: 5px;
@@ -9,10 +13,17 @@
     align-items: center;
     margin: 30px auto;
 }
-.subscribe-area {
-    width: 100%;
-    box-sizing: border-box;
-    background-color: #5c5c5c;
+.subscribe-container__button {
+    display: inline-block;
+    font-size: 18px;
+    padding: 10px 30px;
+    border: none;
+    text-decoration: none;
+    max-width: 130px;
+}
+.subscribe-container h1 {
+    margin-right: 75px;
+    color: #ffffff;
 }
 .input-field {
     border: none;
@@ -22,41 +33,28 @@
     padding: 10px;
     color: #000000;
 }
-.subscribe-area__title {
-    margin-right: 75px;
-    color: #ffffff;
-}
-.subscribe-area__button {
-    display: inline-block;
-    font-size: 18px;
-    padding: 10px 30px;
-    border: none;
-    text-decoration: none;
-    max-width: 130px;
-}
 @media(min-width:412px) {
-    .subscribe-area__wrapper {
+    .subscribe-container {
         flex-direction: column;
         max-width: 340px;
     }
-    .subscribe-area__button {
+    .subscribe-container__button {
         margin-left: auto;
     }
-    .subscribe-area__title {
+    .subscribe-container h1 {
         margin-right: auto;
     }
-    .subscribe-area__input-field {
+    .subscribe-container__input-field {
         margin: 10px auto 10px 0;
     }
 }
 @media (min-width: 750px) and (max-width:1023px) {
-    .subscribe-area__wrapper {
+    .subscribe-container {
         flex-direction: row;
         flex-wrap: wrap;
         max-width: 700px;
     }
-    .subscribe-area__title,
-    .subscribe-area__button {
+    .subscribe-container h1, .subscribe-container__button {
         flex-basis: 100%;
     }
     .input-field {
@@ -68,19 +66,18 @@
     }
 }
 @media(min-width:1024px) {
-    .subscribe-area__wrapper {
+    .subscribe-container {
         justify-content: space-between;
         max-width: 1024px;
         flex-direction: row;
     }
-    .subscribe-area__input-field {
+    .subscribe-container__input-field {
         margin: 0;
     }
     .input-field {
         width: 285px;
     }
-    .subscribe-area__button,
-    .subscribe-area__title {
+    .subscribe-container__button, .subscribe-container h1 {
         margin: 0;
     }
 }

@@ -1,4 +1,4 @@
-.icons-container {
+.benefits {
     display: flex;
     position: relative;
     align-content: center;
@@ -7,7 +7,7 @@
     height: 304px;
     flex-wrap: wrap;
 }
-.icon-container_image {
+.benefit-container__image {
     border-radius: 100%;
     border: #dfdfdf solid 2px;
     padding: 40px;
@@ -16,40 +16,40 @@
     background-repeat: no-repeat;
     background-position: center;
 }
-.icon-container_image-1 {
+.benefits .benefit-container:nth-child(1) .benefit-container__image {
     background-image: url(../images/icon-1.png);
 }
-.icon-container_image-2 {
+.benefits .benefit-container:nth-child(2) .benefit-container__image {
     background-image: url(../images/icon-2.png);
 }
-.icon-container_image-3 {
+.benefits .benefit-container:nth-child(3) .benefit-container__image {
     background-image: url(../images/icon-3.png);
 }
-.icon-container_image-4 {
+.benefits .benefit-container:nth-child(4) .benefit-container__image {
     background-image: url(../images/icon-4.png);
 }
-.icon-container {
+.benefit-container {
     display: inline-flex;
     width: 50%;
-    height: 50%;
+    height: 50%;    
+    align-items: center;
     max-width: 600px;
 }
-.icon-container__title {
+.benefit-container__title-block {
     padding: 10px 30px;
 }
-.icon-container_title-2 {
+.benefit-container__title-block p {
     padding-top: 10px;
 }
 @media(min-width:412px) and (max-width:767px) {
-    .icon-container {
+    .benefit-container {
         display: flex;
         position: relative;
-        align-items: center;
-        margin-top: 40px;
+        margin-top: 30px;
         width: 100%;
         height: 25%;
     }
-    .icons-container {
+    .benefits {
         flex-direction: column;
         width: 100%;
         height: 25%;
