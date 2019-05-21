@@ -32,16 +32,16 @@
     max-width: 270px;
     height: 190px;
 }
-.more_block__photo-container-1 {
+.more_block__photo-container_1 {
     background-image: url(../images/photo-1.png);
 }
-.more_block__photo-container-2 {
+.more_block__photo-container_2 {
     background-image: url(../images/photo-2.png);
 }
-.more_block__photo-container-3 {
+.more_block__photo-container_3 {
     background-image: url(../images/photo-3.png);
 }
-.more_block__photo-container-4 {
+.more_block__photo-container_4 {
     background-image: url(../images/photo-4.png);
 }
 @media (min-width:412px) {

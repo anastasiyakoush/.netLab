@@ -1,9 +1,9 @@
-.photo-footer {
+.link-area {
     padding: 60px 0;
     display: flex;
     justify-content: space-between;
 }
-.photo-footer__button {
+.link-area__button {
     width: 230px;
     height: 54px;
     display: flex;
@@ -13,24 +13,24 @@
     box-sizing: border-box;
     margin-left: auto;
 }
-.photo-footer__button_image {
+.link-area__button_image {
     background-image: url(../images/arrow.png);
     background-repeat: no-repeat;
     width: 20px;
     height: 10px;
 }
 @media(min-width:412px) and (max-width:768px) {
-    .photo-footer {
+    .link-area {
         padding: 40px 0;
         flex-direction: column;
     }
-    .photo-footer .title-2 {
+    .link-area .title-2 {
         margin: 10px 0;
     }
-    .photo-footer__button_text {
+    .link-area__button_text {
         font-size: 16px;
     }
-    .photo-footer__button {
+    .link-area__button {
         width: 175px;
         height: 40px;
         padding: 10px;
