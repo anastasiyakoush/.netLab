@@ -15,6 +15,7 @@
     font-weight: 100;
     display: inline-block;
     margin: 0;
+    text-decoration: none;
 }
 .title-2 {
     font-family: 'Source Sans Pro', sans-serif;
@@ -24,4 +25,5 @@
     text-transform: none;
     display: block;
     margin: 0;
+    text-decoration: none;
 }

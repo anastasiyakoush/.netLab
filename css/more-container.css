@@ -26,6 +26,7 @@
     font-size: 14px;
     display: inline-block;
     text-align: center;
+    border: none;
 }
 .more_block__photo-container {
     display: block;
