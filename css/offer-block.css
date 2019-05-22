@@ -1,0 +1,43 @@
+.offer-block {
+    padding: 60px 0;
+    display: flex;
+    justify-content: space-between;    
+    border-bottom: #dfdfdf solid 1px;
+}
+.offer-block__button {
+    width: 230px;
+    height: 54px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+    box-sizing: border-box;
+    margin-left: auto;
+    border: none;
+}
+.offer-block__button h2 {
+    color: #ffffff;
+}
+.offer-button__image {
+    background-image: url(../images/arrow.png);
+    background-repeat: no-repeat;
+    width: 20px;
+    height: 10px;
+}
+@media(min-width:412px) and (max-width:768px) {
+    .offer-block {
+        padding: 40px 0;
+        flex-direction: column;
+    }
+    .offer-block__title-container p {
+        margin: 10px 0;
+    }
+    .offer-block__button h2 {
+        font-size: 16px;
+    }
+    .offer-block__button {
+        width: 175px;
+        height: 40px;
+        padding: 10px;
+    }
+}

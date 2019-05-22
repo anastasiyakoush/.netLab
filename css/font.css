@@ -1,0 +1,29 @@
+@font-face {
+    font-family: 'Fjalla One';
+    src: url(../fonts/FjallaOne/FjallaOne-Regular.ttf);
+}
+@font-face {
+    font-family: 'Source Sans Pro';
+    src: url(../fonts/SourceSasPro/SourceSansPro-Bold.ttf), url(../fonts/SourceSansPro/SourceSansPro-Regular.ttf);
+}
+h1, h2, button {
+    font-family: 'Fjalla One', sans-serif;
+    color: #5c5c5c;
+    text-transform: uppercase;
+    font-weight: 100;
+    margin: 0;
+    text-decoration: none;
+}
+h1 {
+    font-size: 30px;
+    display: inline-block;
+}
+h2, button {
+    font-size: 20px;
+}
+p, span {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-size: 14px;
+    color: #dbdbdb;
+    margin: 0;
+}
