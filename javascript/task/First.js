@@ -1,9 +1,3 @@
-/*
-https://repl.it/repls/WhimsicalMediocrePerimeter
-https://repl.it/repls/WhimsicalMediocrePerimeter
-
-*/
-
 //a
 (function сustomMapMethod() {
   "use strict";
@@ -18,12 +12,7 @@ https://repl.it/repls/WhimsicalMediocrePerimeter
     return newArray;
   };
 
-  let isWork =
-    JSON.stringify(
-      [1, 2, 3].map(function(x) {
-        return x + 1;
-      })
-    ) === "[2,3,4]";
+  let isWork =JSON.stringify([1, 2, 3].map(function(x) {return x + 1;})) === "[2,3,4]";
 
   console.log(isWork);
 })();
@@ -75,7 +64,7 @@ let newReleases = [
 ];
 
 (function rebuildArray() {
-  let result = newReleases.map(obj => ({ id: obj.id, title: obj.title }));
+  let result = newReleases.map(({id,title}) =>({id,title}));
   console.log(result);
 })();
 //в
@@ -94,12 +83,7 @@ let newReleases = [
     return newArray;
   };
 
-  let isWork =
-    JSON.stringify(
-      [1, 2, 3].filter(function(x) {
-        return x > 2;
-      })
-    ) === "[3]";
+  let isWork =JSON.stringify([1, 2, 3].filter(function(x) {return x > 2;})) === "[3]";
 
   console.log(isWork);
 })();
@@ -107,6 +91,7 @@ let newReleases = [
 //г
 (function displayRatingMoreThan5() {
   let result = newReleases.filter(x => x.rating == [5.0]).map(x => x.id);
+
   console.log(result);
 })();
 
@@ -114,7 +99,7 @@ let newReleases = [
 (function customReduceMethod() {
   "use strict";
 
-  Array.prototype.myReduce = function(combiner, initialValue) {
+  Array.prototype.reduce = function(combiner, initialValue) {
     let accumulator = initialValue || this[0];
     let index = initialValue ? 0 : 1;
 
@@ -125,17 +110,11 @@ let newReleases = [
     return accumulator;
   };
 
-  let isWork =
-    [1, 2, 3].myReduce(function(memo, item) {
-      return memo + item;
-    }) === 6;
+  let isWork =[1, 2, 3].reduce(function(memo, item) {return memo + item;}) === 6;
 
   console.log(isWork);
 
-  isWork =
-    [1, 2, 3].myReduce(function(memo, item) {
-      return memo + item;
-    }, 10) === 16;
+  isWork =[1, 2, 3].myReduce(function(memo, item) {return memo + item;}, 10) === 16;
 
   console.log(isWork);
 })();
@@ -247,6 +226,7 @@ let movieLists = [
       result.push({ id, title, boxart: url });
     })
   );
+
   console.log(result);
 })();
 
@@ -290,8 +270,7 @@ let boxarts = [
 
   let maxObject = boxarts
     .map((x, index) => ({ index: index, square: square(x.width, x.height) }))
-    .reduce(
-      (max, current, index) =>
+    .reduce((max, current, index) =>
         (max = current.square > max.square ? current : max)
     );
 
@@ -320,8 +299,8 @@ let videos = [
 ];
 
 (function convertArrayToObject() {
-  let result = videos.reduce((obj, current) => {
-    obj[`"${current.id}"`] = current.title;
+  let result = videos.reduce((obj, {id,title}) => {
+    obj[`"${id}"`] = title;
 
     return obj;
   }, {});

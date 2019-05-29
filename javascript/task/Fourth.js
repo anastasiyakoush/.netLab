@@ -20,12 +20,10 @@
   })
     .then(result => {
       console.log(result);
-
       return +result + 2;
     })
     .then(result => {
       console.log(result);
-
       return new Promise(resolve => {
         setTimeout(resolve, 2000, +result + 2);
       });
