@@ -90,7 +90,7 @@ let newReleases = [
 
 //г
 (function displayRatingMoreThan5() {
-  let result = newReleases.filter(x => x.rating == [5.0]).map(x => x.id);
+  let result = newReleases.filter(x => x.rating.includes(5.0)).map(x => x.id);
 
   console.log(result);
 })();
@@ -300,10 +300,10 @@ let videos = [
 
 (function convertArrayToObject() {
   let result = videos.reduce((obj, {id,title}) => {
-    obj[`"${id}"`] = title;
+    obj[id] = title;
 
     return obj;
   }, {});
 
-  console.log(result);
+  console.log(json.stringresult);
 })();

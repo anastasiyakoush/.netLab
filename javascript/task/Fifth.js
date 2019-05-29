@@ -12,12 +12,23 @@ function doSomethingComplicated(promise) {
   promise.then(() => somethingComplicated());
 }
 
-db.getAllDocsAsync().then(result => {
-  result.rows.forEach(row => db.remove(row));
-});
+db.getAllDocsAsync()
+  .then(result =>
+    Promise.all(
+      result.rows.forEach(row => {
+        return new Promise(resolve => {
+          db.remove(row.doc);
+          resolve();
+        });
+      })
+    )
+  )
+  .then(function() {
+    // All docs must be removed!
+  });
 
 doAsync()
   .then(function() {
-    throw new Error("nope");
+    return new Promise.reject(new Error("nope"));
   })
   .catch(error => handleError(error));
