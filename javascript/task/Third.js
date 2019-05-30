@@ -1,104 +1,82 @@
 //a
-(function displayToConsoleWithDelay5000() {
+(function displayWithDelay() {
   "use strict";
 
-  let btn = document.querySelector("button");
   let timerId;
-  let done = true;
 
   function print() {
     console.log("Hello world");
-    done = true;
   }
-  function waiter() {
-    done = false;
+  function waiter() {    
+    clearTimeout(timerId);
     timerId = setTimeout(print, 5000);
   }
   function onClick() {
-    if (done) {
-      waiter();
-    } 
-    else {
-      clearTimeout(timerId);
-      waiter();
-    }
+    waiter();
   }
-
-  btn.addEventListener("click", onClick);
+  document.getElementById("button").addEventListener("click", onClick);
 })();
-
 //б
-(function displayToConsoleEvery3Seconds() {
+(function displayWithInterval() {
   "use strict";
 
-  let button = document.querySelector("button");
-  let firstClick = true;
+  let isInitial = true;
   let intervalId;
 
   function printToConsole() {
     console.log("You are welcome!");
   }
-
-  function Onclick() {
-    if (firstClick) {
+  function onClick() {
+    if (isInitial) {
       intervalId = setInterval(printToConsole, 3000);
-      firstClick = false;
-    } 
-    else {
+      isInitial = false;
+    } else {
       clearInterval(intervalId);
-      firstClick = true;
+      isInitial = true;
     }
   }
-
-  button.addEventListener("click", Onclick);
+  document.getElementById("button").addEventListener("click", onClick);
 })();
 
 //в
-(function displaySecondsBeforeStart() {
+(function displayBefore() {
   "use strict";
 
-  let button = document.querySelector("button");
-  let firstClick = true;
+  let isInitial = true;
   let timerId;
   let min = 1;
   let max = 4;
 
-  function printSecondBeforeStart() {
+  function print() {
     let seconds = Math.round(Math.random() * (max - min) + min);
     let ms = seconds * 1000;
     console.log(`Seconds - ${seconds}`);
-    timerId = setTimeout(printSecondBeforeStart, ms);
+    timerId = setTimeout(print, ms);
   }
-
   function onClick() {
-    if (firstClick) {
-      firstClick = false;
-      printSecondBeforeStart();
-    } 
-    else {
+    if (isInitial) {
+      isInitial = false;
+      print();
+    } else {
       clearTimeout(timerId);
-      firstClick = true;
+      isInitial = true;
     }
   }
-
-  button.addEventListener("click", onClick);
+  document.getElementById("button").addEventListener("click", onClick);
 })();
 
 //г
-(function displayToConsoleAfterUserFinishInput() {
+(function displayAfter() {
   "use strict";
   
-  let input = document.querySelector("input");
   let timerId;
 
   function onStopTyping() {
     clearTimeout(timerId);
-    timerId = setTimeout(printInputValue, 1000);
+    timerId = setTimeout(printInputValue, 1000);s
   }
-
   function printInputValue() {
     console.log(input.value);
   }
-
-  input.addEventListener("keydown", onStopTyping);
+  document.getElementById("input").addEventListener("keydown", onStopTyping);
 })();

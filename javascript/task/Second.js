@@ -1,4 +1,4 @@
-(function displaySumOfZeroAndOne() {
+(function display() {
   "use strict";
 
   let Robot = function(name) {
@@ -10,29 +10,36 @@
   }
   let voltron = new Robot("Voltron");
 
-  (function displaySumOfZeroAndOne() {
+  (function displaySum() {
+    "use strict";
+
     let result = add(0, 1);
     console.log("1 : " + result);
   })();
 
-  (function displaySumOfTwoAndOneUsingCall() {
-    result = add.call(voltron, 1, 2);
+  (function displaySumUsingCall() {
+    "use strict";
+
+    let result = add.call(voltron, 1, 2);
     console.log("2 : " + result);
   })();
 
-  (function displaySumOf20And30UsingApply() {
-    result = add.apply(voltron, [20, 30]);
+  (function displaySumUsingApply() {
+    "use strict";
+
+    let result = add.apply(voltron, [20, 30]);
     console.log("3 : " + result);
   })();
 
-  (function displaySumOfStringsUsingBind() {
-    result = add.bind(voltron, "drinking", "beer");
+  (function displayConcatenationUsingBind() {
+    "use strict";
+    
+    let result = add.bind(voltron, "drinking", "beer");
     console.log("4 : " + result);
   })();
 
   let showName = function() {
     let self = this;
-
     //1
     setTimeout(() => console.log(self.name), 1000);
     //2
@@ -41,7 +48,6 @@
     function display() {
       console.log(this.name);
     }
-
     setTimeout(() => display.call(this), 1000);
     //4
     setTimeout(() => display.apply(this), 1000);
