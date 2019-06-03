@@ -1,1 +1,0 @@
-{"version":3,"sources":["Counter.css"],"names":[],"mappings":"AAAA,WACE,YAAa,CACb,sBAAuB,CACvB,eACF","file":"main.af9ca496.chunk.css","sourcesContent":[".container {\r\n  display: flex;\r\n  justify-content: center;\r\n  margin-top: 20px;\r\n}\r\n"]}
