@@ -13,13 +13,13 @@ const Counter = props => {
     <ThemeProvider theme={theme}>
       <Typography>{props.count}</Typography>
       <Container>
-        <IconButton onClick={props.updateCount.decrementCount}>
+        <IconButton onClick={props.updateCount.decrement}>
           <RemoveIcon />
         </IconButton>
         <IconButton onClick={props.updateCount.reset}>
           <ReplayIcon />
         </IconButton>
-        <IconButton onClick={props.updateCount.incrementCount}>
+        <IconButton onClick={props.updateCount.increment}>
           <AddIcon />
         </IconButton>
       </Container>

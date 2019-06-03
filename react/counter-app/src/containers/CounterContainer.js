@@ -9,20 +9,28 @@ class CounterContainer extends Component {
     };
   }
 
-  updateCount = {
-    incrementCount: () => {
-      this.setState({ count: this.state.count + 1 });
-    },
-    reset: () => {
-      this.setState({ count: 0 });
-    },
-    decrementCount: () => {
-      this.setState({ count: this.state.count - 1 });
-    }
+  updateCounter = {
+    increment: () => this.incrementCount(),
+    reset: () => this.reset(),
+    decrement: () => this.decrementCount()
+  };
+
+  incrementCount = () => {
+    this.setState({ count: this.state.count + 1 });
+  };
+
+  reset = () => {
+    this.setState({ count: 0 });
+  };
+
+  decrementCount = () => {
+    this.setState({ count: this.state.count - 1 });
   };
 
   render() {
-    return <Counter count={this.state.count} updateCount={this.updateCount} />;
+    return (
+      <Counter count={this.state.count} updateCount={this.updateCounter} />
+    );
   }
 }
 
