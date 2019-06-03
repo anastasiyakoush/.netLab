@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import Counter from "../views/Counter/Counter";
+import Counter from "../components/Counter/index";
 
 class CounterContainer extends Component {
   constructor(props) {
@@ -9,25 +9,20 @@ class CounterContainer extends Component {
     };
   }
 
-  increaseCount = () => {
-    this.setState({ count: this.state.count + 1 });
-  };
-  resetCount = () => {
-    this.setState({ count: 0 });
-  };
-  decreaseCount = () => {
-    this.setState({ count: this.state.count - 1 });
+  updateCount = {
+    incrementCount: () => {
+      this.setState({ count: this.state.count + 1 });
+    },
+    reset: () => {
+      this.setState({ count: 0 });
+    },
+    decrementCount: () => {
+      this.setState({ count: this.state.count - 1 });
+    }
   };
 
   render() {
-    return (
-      <Counter
-        count={this.state.count}
-        increaseCount={this.increaseCount}
-        resetCount={this.resetCount}
-        decreaseCount={this.decreaseCount}
-      />
-    );
+    return <Counter count={this.state.count} updateCount={this.updateCount} />;
   }
 }
 
