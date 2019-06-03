@@ -9,12 +9,6 @@ class CounterContainer extends Component {
     };
   }
 
-  updateCounter = {
-    increment: () => this.incrementCount(),
-    reset: () => this.reset(),
-    decrement: () => this.decrementCount()
-  };
-
   incrementCount = () => {
     this.setState({ count: this.state.count + 1 });
   };
@@ -27,6 +21,12 @@ class CounterContainer extends Component {
     this.setState({ count: this.state.count - 1 });
   };
 
+  updateCounter = {
+    increment: this.incrementCount,
+    reset: this.reset,
+    decrement:this.decrementCount
+  };
+  
   render() {
     return (
       <Counter count={this.state.count} updateCount={this.updateCounter} />
