@@ -1,8 +1,8 @@
 import React from "react";
-import CounterContainer from "./containers/CounterContainer";
+import ParentContainer from "./containers/ParentContainer";
 
 function App() {
-  return <CounterContainer />;
+  return <ParentContainer />;
 }
 
 export default App;
