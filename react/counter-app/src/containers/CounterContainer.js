@@ -12,25 +12,25 @@ class CounterContainer extends Component {
 
   incrementCount = () => {
     this.setState(state => {
-      state = { ...state, count: state.count + 1 };
-      this.props.updateParent(state.id, state.count);
-      return state;
+      let newState = { ...state, count: state.count + 1 };
+      this.props.updateParent(newState.id, newState.count);
+      return newState;
     });
   };
 
   reset = () => {
     this.setState(state => {
-      state = { ...state, count: 0 };
-      this.props.updateParent(state.id, state.count);
-      return state;
+      let newState = { ...state, count: 0 };
+      this.props.updateParent(newState.id, newState.count);
+      return newState;
     });
   };
 
   decrementCount = () => {
     this.setState(state => {
-      state = { ...state, count: state.count - 1 };
-      this.props.updateParent(state.id, state.count);
-      return state;
+      let newState = { ...state, count: state.count - 1 };
+      this.props.updateParent(newState.id, newState.count);
+      return newState;
     });
   };
 
