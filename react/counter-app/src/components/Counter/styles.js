@@ -1,18 +1,15 @@
 import { createMuiTheme } from "@material-ui/core/styles";
-import blue from "@material-ui/core/colors/blue";
-import { FormHelperText } from "@material-ui/core";
 
 const theme = createMuiTheme({
-  pallete: {
-    primary: blue[700],
-    secondary: blue[400]
-  },
   overrides: {
     MuiIconButton: {
       root: {
-        background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
-        padding: "25px",
-        margin: "0 10px"
+        background: "#00BFA5",
+        padding: "20px",
+        margin: "0 10px",
+        "&:hover": {
+          backgroundColor: "#1DE9B6"
+        }
       }
     },
     MuiTypography: {
@@ -26,29 +23,32 @@ const theme = createMuiTheme({
     },
     MuiBox: {
       root: {
-        width:'290px',
-        margin:'auto'
+        width: "270px"
+      },
+      parent: {
+        margin: "auto",
+        border: "none"
+      },
+      wrapper: {
+        border: "2px solid #00BFA5",
+        padding: "8px",
+        boxSizing: "border-box",
+        margin: "17px"
+      }
+    },
+    MuiDivider: {
+      root: {
+        height: "5px",
+        backgroundColor: "#00BFA5"
       }
     },
     MuiGrid: {
       root: {
         display: "flex",
-        justifyContent: "center",
-        flexWrap:'wrap'
-
+        flexWrap: "wrap"
       }
-    },
-  /*   MuiContainer:{
-        root:{
-            display: "flex",
-            padding:'0'
-        }
-    } */
+    }
   }
 });
-const parentStyles = {
-  root: {
-    backgroundColor: "#000"
-  }
-};
-export  { theme, parentStyles };
+
+export default theme;

@@ -1,14 +1,13 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
+import { Container, Box } from "@material-ui/core";
+import { ThemeProvider } from "@material-ui/styles";
+import Grid from "@material-ui/core/Grid";
+import Divider from "@material-ui/core/Divider";
 import CounterContainer from "./CounterContainer";
 import Counter from "../components/Counter/index";
-import Grid from "@material-ui/core/Grid";
-import { Container } from "@material-ui/core";
-import { ThemeProvider } from "@material-ui/styles";
-import { theme, parentStyles } from "../components/Counter/styles";
-import { withStyles } from "@material-ui/styles";
+import theme from "../components/Counter/styles";
 
 const MIN_COUNT = 1;
-const classes=parentStyles;
 
 class ParentContainer extends Component {
   constructor(props) {
@@ -45,7 +44,7 @@ class ParentContainer extends Component {
   };
 
   reset = () => {
-    const childrenCounters = [...this.state.childrenCounters];
+    let childrenCounters = [...this.state.childrenCounters];
     childrenCounters.splice(1);
     this.setState({
       count: MIN_COUNT,
@@ -98,11 +97,14 @@ class ParentContainer extends Component {
     return (
       <ThemeProvider theme={theme}>
         <Container>
-          <Counter className={classes.root} count={this.state.count} updateCount={this.updateCount} />
-          <hr />
-          <Grid /* direction={"row"} */>
+          <Box className={"MuiBox-parent"}>
+            <Counter count={this.state.count} updateCount={this.updateCount} />
+          </Box>
+          <Divider />
+          <Grid>
             {this.state.childrenCounters.map((child, index) => (
               <CounterContainer
+                border
                 key={index}
                 id={index}
                 count={child.count}
