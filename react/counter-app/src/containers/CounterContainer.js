@@ -1,37 +1,31 @@
 import React, { Component } from "react";
 import Counter from "../components/Counter/index";
 
-class CounterContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      count: props.count,
-      id: props.id
-    };
-  }
+let isStateChanged = false;
+const computeNextState = (state, props) => {
+  return isStateChanged ? state : { count: props.count, id: props.id };
+};
 
-  incrementCount = () => {
-    this.setState(state => {
-      let newState = { ...state, count: state.count + 1 };
-      this.props.updateParent(newState.id, newState.count);
-      return newState;
-    });
+class CounterContainer extends Component {
+  state = {
+    count: this.props.count,
+    id: this.props.id
   };
 
+  updateParent = this.props.updateParent;
+
+  incrementCount = () => {
+    this.setState({ count: this.state.count + 1 });
+    isStateChanged = true;
+  };
   reset = () => {
-    this.setState(state => {
-      let newState = { ...state, count: 0 };
-      this.props.updateParent(newState.id, newState.count);
-      return newState;
-    });
+    this.setState({ count: 0 });
+    isStateChanged = true;
   };
 
   decrementCount = () => {
-    this.setState(state => {
-      let newState = { ...state, count: state.count - 1 };
-      this.props.updateParent(newState.id, newState.count);
-      return newState;
-    });
+    this.setState({ count: this.state.count - 1 });
+    isStateChanged = true;
   };
 
   updateCounter = this.props.updateCount || {
@@ -40,15 +34,21 @@ class CounterContainer extends Component {
     decrement: this.decrementCount
   };
 
-  shouldComponentUpdate(nextProps, nextState) {
-    console.log(`ChildContainer ${this.state.id} -- shouldComponentUpdate`);
-    return nextState.count !== this.state.count;
+  static getDerivedStateFromProps(props, state) {
+    console.log(`----------`);
+    console.log(`ChildContainer ${state.id} -- getDerivedStateFromProps`);
+    if (props.count !== state.count) {
+      return computeNextState(state, props);
+    }
+    return null;
   }
 
-  static getDerivedStateFromProps(nextProps) {
-    console.log(`----------`);
-    console.log(`ChildContainer ${nextProps.id} -- getDerivedStateFromProps`);
-    return { ...nextProps };
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log(`ChildContainer ${this.state.id} -- shouldComponentUpdate`);
+    if (nextState.count === this.state.count) {
+      return false;
+    }
+    return true;
   }
 
   getSnapshotBeforeUpdate(props, state) {
@@ -56,8 +56,12 @@ class CounterContainer extends Component {
     return null;
   }
 
-  componentDidUpdate() {
+  componentDidUpdate(prevProps, prevState) {
     console.log(`ChildContainer ${this.state.id} -- componentDidUpdate`);
+    if (prevProps.count !== this.state.count) {
+      isStateChanged = false;
+      this.updateParent(this.state.id, this.state.count);
+    }
   }
 
   componentDidMount() {

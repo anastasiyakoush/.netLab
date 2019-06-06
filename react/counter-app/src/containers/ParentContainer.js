@@ -61,7 +61,7 @@ class ParentContainer extends Component {
   updateParent = (index, value) => {
     let childrenCounters = [...this.state.childrenCounters];
     childrenCounters[index].count = value;
-    this.setState(state => ({ childrenCounters }));
+    this.setState({ childrenCounters });
   };
 
   shouldComponentUpdate() {
