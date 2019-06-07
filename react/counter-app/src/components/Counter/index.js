@@ -1,18 +1,16 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { ThemeProvider } from "@material-ui/styles";
-import { Typography, Container } from "@material-ui/core";
+import { Typography, Box } from "@material-ui/core";
 import IconButton from "@material-ui/core/IconButton";
 import RemoveIcon from "@material-ui/icons/Remove";
 import ReplayIcon from "@material-ui/icons/Replay";
 import AddIcon from "@material-ui/icons/Add";
-import theme from "./styles";
 
 const Counter = props => {
   return (
-    <ThemeProvider theme={theme}>
+    <Box className={"MuiBox-wrapper"}>
       <Typography>{props.count}</Typography>
-      <Container>
+      <Box>
         <IconButton onClick={props.updateCount.decrement}>
           <RemoveIcon />
         </IconButton>
@@ -22,8 +20,8 @@ const Counter = props => {
         <IconButton onClick={props.updateCount.increment}>
           <AddIcon />
         </IconButton>
-      </Container>
-    </ThemeProvider>
+      </Box>
+    </Box>
   );
 };
 
