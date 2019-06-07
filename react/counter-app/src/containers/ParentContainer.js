@@ -64,40 +64,37 @@ class ParentContainer extends Component {
     this.setState({ childrenCounters });
   };
 
+  componentWillReceiveProps(nextProps) {
+    console.log(
+      `ParentContainer ${this.state.id} -- componentWillReceiveProps`
+    );
+    if (this.state.count !== nextProps.count) {
+      this.setState({ ...nextProps });
+    }
+  }
   shouldComponentUpdate() {
-    console.log("ParentContainer -- shouldComponentUpdate");
+    console.log(`ParentContainer -- shouldComponentUpdate`);
     return true;
   }
 
-  static getDerivedStateFromProps(nextProps, nextState) {
-    console.log(`----------`);
-    console.log("ParentContainer -- getDerivedStateFromProps");
-    return nextState;
-  }
-
-  getSnapshotBeforeUpdate() {
-    console.log("ParentContainer -- getSnapshotBeforeUpdate");
-    return null;
-  }
-
   componentDidUpdate() {
-    console.log("ParentContainer -- componentDidUpdate");
+    console.log(`ParentContainer -- componentDidUpdate`);
   }
 
   componentDidMount() {
-    console.log("ParentContainer -- componentDidMount");
+    console.log(`ParentContainer -- componentDidMount`);
   }
 
   componentWillUnmount() {
-    console.log("ParentContainer -- componentWillUnmount");
+    console.log(`ParentContainer -- componentWillUnmount`);
   }
 
   render() {
-    console.log("ParentContainer -- render");
+    console.log(`ParentContainer -- render`);
     return (
       <ThemeProvider theme={theme}>
         <Container>
-          <Box className={"MuiBox-parent"}>
+          <Box className={`MuiBox-parent`}>
             <Counter count={this.state.count} updateCount={this.updateCount} />
           </Box>
           <Divider />
