@@ -1,31 +1,35 @@
 import React, { Component } from "react";
 import Counter from "../components/Counter/index";
 
-let isStateChanged = false;
-const computeNextState = (state, props) => {
-  return isStateChanged ? state : { count: props.count, id: props.id };
-};
-
+// let isStateChanged = false;
+// const computeNextState = (state, props) => {
+//   return isStateChanged ? state : { count: props.count, id: props.id };
+// };
+/* let preState; */
 class CounterContainer extends Component {
-  state = {
-    count: this.props.count,
-    id: this.props.id
-  };
-
-  updateParent = this.props.updateParent;
+  constructor(props) {
+    super(props);
+    this.state = {
+      count: props.count,
+      id: props.id
+    };
+    this.updateParent = props.updateParent;
+    this.previosState = this.state;
+    console.log("constructor");
+  }
 
   incrementCount = () => {
     this.setState({ count: this.state.count + 1 });
-    isStateChanged = true;
+    // isStateChanged = true;
   };
   reset = () => {
     this.setState({ count: 0 });
-    isStateChanged = true;
+    // isStateChanged = true;
   };
 
   decrementCount = () => {
     this.setState({ count: this.state.count - 1 });
-    isStateChanged = true;
+    // isStateChanged = true;
   };
 
   updateCounter = this.props.updateCount || {
@@ -37,31 +41,55 @@ class CounterContainer extends Component {
   static getDerivedStateFromProps(props, state) {
     console.log(`----------`);
     console.log(`ChildContainer ${state.id} -- getDerivedStateFromProps`);
-    if (props.count !== state.count) {
-      return computeNextState(state, props);
-    }
-    return null;
+    console.log(props.count);
+    console.log(state.count);
+
+    // return this.previosState !== this.state ?
+    // return  { count: props.count, id: props.id }
+   /*  if (preState.count !== state.count) {
+      return state;
+    } */
+    //return { count: props.count, id: props.id };
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(props, nextState) {
     console.log(`ChildContainer ${this.state.id} -- shouldComponentUpdate`);
+    console.log(props);
+    console.log(nextState);
     if (nextState.count === this.state.count) {
       return false;
     }
     return true;
   }
 
-  getSnapshotBeforeUpdate(props, state) {
+  getSnapshotBeforeUpdate(prevProps, prevState) {
     console.log(`ChildContainer ${this.state.id} -- getSnapshotBeforeUpdate`);
-    return null;
+    console.log(prevProps.count);
+    console.log(prevState.count);
+    console.log(this.props.count !== prevProps.count);
+    // console.log(this.state.count !== prevState.count);
+    return this.state.count !== prevState.count;
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(props, prevState, snapshot) {
     console.log(`ChildContainer ${this.state.id} -- componentDidUpdate`);
-    if (prevProps.count !== this.state.count) {
-      isStateChanged = false;
-      this.updateParent(this.state.id, this.state.count);
-    }
+    console.log(props.count);
+    console.log(this.props.count);
+    console.log(prevState.count);
+    console.log(this.state.count);
+    console.log(snapshot);
+
+    /* if (snapshot) {
+      preState.count = this.state.count;
+    } */
+    // this.setState(props.count,);
+    // this.updateParent(props.count, props.count);
+    // }
+    console.log(props.count);
+    console.log(this.props.count);
+    console.log(prevState.count);
+    console.log(this.state.count);
+    this.updateParent(this.state.id, this.state.count);
   }
 
   componentDidMount() {
