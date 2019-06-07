@@ -1,13 +1,12 @@
 import React, { Component } from "react";
+import { MIN_COUNT } from "../consts";
+import CounterContainer from "./CounterContainer";
+import Counter from "../components/Counter/index";
 import { Container, Box } from "@material-ui/core";
 import { ThemeProvider } from "@material-ui/styles";
 import Grid from "@material-ui/core/Grid";
 import Divider from "@material-ui/core/Divider";
-import CounterContainer from "./CounterContainer";
-import Counter from "../components/Counter/index";
 import theme from "../components/Counter/styles";
-
-const MIN_COUNT = 1;
 
 class ParentContainer extends Component {
   constructor(props) {
@@ -72,6 +71,7 @@ class ParentContainer extends Component {
       this.setState({ ...nextProps });
     }
   }
+
   shouldComponentUpdate() {
     console.log(`ParentContainer -- shouldComponentUpdate`);
     return true;
