@@ -13,4 +13,5 @@ const styles = {
         backgroundColor: "#B2DFDB"
     }
 };
+
 export default styles;

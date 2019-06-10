@@ -28,4 +28,5 @@ const styles = {
     padding: "10px 20px"
   }
 };
+
 export default styles;

@@ -10,7 +10,7 @@ const NavBar = props => {
   const isNotFound = props.location.pathname !== "/404";
 
   return isNotFound ? (
-    <Tabs className={classes.tabs} centered="true">
+    <Tabs className={classes.tabs} centered={true}>
       <Tab className={classes.tab} label="About" component={Link} to="/about" />
       <Tab
         className={classes.tab}

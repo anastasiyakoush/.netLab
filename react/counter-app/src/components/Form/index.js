@@ -43,7 +43,7 @@ const LoginForm = props => {
         className={classes.button}
         onClick={props.submitHadler}
       >
-        Log in
+        {props.buttonText || "Log in"}
       </button>
     </div>
   );

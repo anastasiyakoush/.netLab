@@ -7,4 +7,5 @@ const styles = {
     lineHeight: "25px"
   }
 };
+
 export default styles;

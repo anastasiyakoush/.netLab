@@ -1,12 +1,10 @@
 import React, { useState } from "react";
-import LoginForm from "../../components/Form/index";
-import { PASSWORD_MIN_LENGTH, emailRegEx } from "../../consts";
-import { validateLength } from "../../validators";
-import { withStyles } from "@material-ui/styles";
-import styles from "./styles";
+import LoginForm from "../components/Form/index";
+import InputReflector from "../components/InputReflector/index";
+import { PASSWORD_MIN_LENGTH, emailRegEx } from "../consts";
+import { validateLength } from "../validators";
 
 const FormContainer = props => {
-  const { classes } = props;
   const [{ email, isEmailValid }, setEmail] = useState({
     email: "",
     isEmailValid: true
@@ -20,7 +18,7 @@ const FormContainer = props => {
   const handleEmailChange = event => {
     setEmail({
       email: event.target.value,
-      isEmailValid: email.match(emailRegEx)
+      isEmailValid: emailRegEx.test(email)
     });
   };
 
@@ -56,14 +54,9 @@ const FormContainer = props => {
         isEmailValid={isEmailValid}
         isPasswordValid={isPasswordValid}
       />
-      <div className={classes.labelWrapper}>
-        <p className={classes.label}>Email:</p>
-        <p className={classes.data}>{JSON.stringify(email)}</p>
-        <p className={classes.label}>Password:</p>
-        <p className={classes.data}>{JSON.stringify(password)}</p>
-      </div>
+      <InputReflector email={email} password={password} />
     </>
   );
 };
 
-export default withStyles(styles)(FormContainer);
+export default FormContainer;

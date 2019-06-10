@@ -5,4 +5,5 @@ const styles = {
     marginTop: "150px"
   }
 };
+
 export default styles;

@@ -8,4 +8,5 @@ const NoMatch = props => {
   
   return <Typography className={classes.root}>404 - page not found</Typography>;
 };
+
 export default withStyles(styles)(NoMatch);
