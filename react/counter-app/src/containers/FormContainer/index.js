@@ -1,9 +1,9 @@
-import React, { useState, Fragment } from "react";
+import React, { useState } from "react";
 import LoginForm from "../../components/Form/index";
-import { Box, Typography, Divider } from "@material-ui/core";
+import { PASSWORD_MIN_LENGTH, emailRegEx } from "../../consts";
+import { validateLength } from "../../validators";
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
-import { EMAIL_MIN_LENGTH, PASSWORD_MIN_LENGTH } from "../../consts";
 
 const FormContainer = props => {
   const { classes } = props;
@@ -11,64 +11,59 @@ const FormContainer = props => {
     email: "",
     isEmailValid: true
   });
+
   const [{ password, isPasswordValid }, setPassword] = useState({
     password: "",
     isPasswordValid: true
   });
-  const validate = (value, constraint) => {
-    return value.length + 1 >= constraint;
-  };
-  /*  const [isValid, setIsValid] = useState(true); */
 
   const handleEmailChange = event => {
-    const value = event.target.value;
-    /*     console.log(value); */
-    setEmail({ email: value, isEmailValid: validate(email, EMAIL_MIN_LENGTH) });
-    /*  console.log(email);
-    console.log(isEmailValid); */
-    /* setIsValid(email.length + 1 >= EMAIL_MIN_LENGTH); */
-  };
-  const handlePasswordChange = event => {
-    const value = event.target.value;
-    setPassword({
-      password: value,
-      isPasswordValid: validate(password, PASSWORD_MIN_LENGTH)
+    setEmail({
+      email: event.target.value,
+      isEmailValid: email.match(emailRegEx)
     });
-    /* setIsValid(password.length + 1 >= PASSWORD_MIN_LENGTH); */
   };
+
+  const handlePasswordChange = event => {
+    setPassword({
+      password: event.target.value,
+      isPasswordValid: validateLength(password, PASSWORD_MIN_LENGTH)
+    });
+  };
+
   const submitHadler = () => {
-    if (isEmailValid && isPasswordValid) {
+    if (email !== "" && password !== "" && isEmailValid && isPasswordValid) {
       console.log(email);
       console.log(password);
       setEmail({ email: "", isEmailValid: true });
       setPassword({ password: "", isPasswordValid: true });
     } else console.log("error");
   };
+  const onKeyPressHandler = event => {
+    event.key === "Enter" && submitHadler();
+  };
 
   return (
     <>
       <LoginForm
+        onKeyPressHandler={onKeyPressHandler}
         email={email}
         password={password}
         handleEmailChange={handleEmailChange}
         handlePasswordChange={handlePasswordChange}
         submitHadler={submitHadler}
-        emailMinLength={EMAIL_MIN_LENGTH}
         passwordMinLength={PASSWORD_MIN_LENGTH}
         isEmailValid={isEmailValid}
         isPasswordValid={isPasswordValid}
       />
-      <Box className={classes.labelWrapper}>
-        <Typography className={classes.label}>Email:</Typography>
-        <Typography className={classes.data}>
-          {JSON.stringify(email)}
-        </Typography>
-        <Typography className={classes.label}>Password:</Typography>
-        <Typography className={classes.data}>
-          {JSON.stringify(password)}
-        </Typography>
-      </Box>
+      <div className={classes.labelWrapper}>
+        <p className={classes.label}>Email:</p>
+        <p className={classes.data}>{JSON.stringify(email)}</p>
+        <p className={classes.label}>Password:</p>
+        <p className={classes.data}>{JSON.stringify(password)}</p>
+      </div>
     </>
   );
 };
+
 export default withStyles(styles)(FormContainer);

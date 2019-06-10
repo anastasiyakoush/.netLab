@@ -1,15 +1,18 @@
-import { red } from "@material-ui/core/colors";
-
 const styles = {
   container: {
     width: "400px",
     margin: "50px auto",
     border: "1px solid #B2DFDB",
-    borderRadius: "4px"
+    borderRadius: "4px",
+    padding: "20px"
   },
   input: {
     width: "100%",
-    margin: "20px 0"
+    margin: "20px 0",
+    "&:invalid": {
+      color: "#F8BBD0",
+      fontWeight: "600"
+    }
   },
   invalid: {
     backgroundColor: "#F8BBD0",

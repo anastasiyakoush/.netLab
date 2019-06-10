@@ -1,47 +1,51 @@
-import React, { useState } from "react";
-import { Container, Button, TextField, Typography } from "@material-ui/core";
+import React from "react";
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
-import { tip } from "../../consts";
 
 const LoginForm = props => {
   const { classes } = props;
-  const tipField = (field, constraint) => {
-    return (
-      <Typography className={classes.invalid}>
-        {tip(field, constraint)}
-      </Typography>
-    );
+  const tipField = text => {
+    return <p className={classes.invalid}>{text}</p>;
   };
 
   return (
-    <Container className={classes.container}>
-      <TextField
-        label="Email"
+    <div className={classes.container}>
+      <label>Email</label>
+      <input
         type="email"
         value={props.email}
         name="email"
+        autoComplete="false"
         onChange={props.handleEmailChange}
-        variant="outlined"
+        onKeyPress={props.onKeyPressHandler}
         className={classes.input}
         required
       />
-      {!props.isEmailValid && tipField("Email", props.emailMinLength)}
-      <TextField
-        label="Password"
+
+      {!props.isEmailValid && tipField(`Please use correct email`)}
+
+      <label>Password</label>
+      <input
         type="password"
         value={props.password}
         name="password"
         onChange={props.handlePasswordChange}
-        variant="outlined"
+        onKeyPress={props.onKeyPressHandler}
         className={classes.input}
         required
       />
-      {!props.isPasswordValid && tipField("Password", props.passwordMinLength)}
-      <Button className={classes.button} onClick={props.submitHadler}>
+
+      {!props.isPasswordValid &&
+        tipField(`Password must be at least ${props.passwordMinLength}`)}
+
+      <button
+        type="submit"
+        className={classes.button}
+        onClick={props.submitHadler}
+      >
         Log in
-      </Button>
-    </Container>
+      </button>
+    </div>
   );
 };
 
