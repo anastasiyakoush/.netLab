@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.js": "/netLab/static/js/main.83960621.chunk.js",
-    "main.js.map": "/netLab/static/js/main.83960621.chunk.js.map",
+    "main.js": "/netLab/static/js/main.7741870e.chunk.js",
+    "main.js.map": "/netLab/static/js/main.7741870e.chunk.js.map",
     "runtime~main.js": "/netLab/static/js/runtime~main.9d118228.js",
     "runtime~main.js.map": "/netLab/static/js/runtime~main.9d118228.js.map",
-    "static/js/2.9714fcac.chunk.js": "/netLab/static/js/2.9714fcac.chunk.js",
-    "static/js/2.9714fcac.chunk.js.map": "/netLab/static/js/2.9714fcac.chunk.js.map",
+    "static/js/2.3f767ba2.chunk.js": "/netLab/static/js/2.3f767ba2.chunk.js",
+    "static/js/2.3f767ba2.chunk.js.map": "/netLab/static/js/2.3f767ba2.chunk.js.map",
     "index.html": "/netLab/index.html",
-    "precache-manifest.d86ee797a271dea7eabddda869d37e90.js": "/netLab/precache-manifest.d86ee797a271dea7eabddda869d37e90.js",
+    "precache-manifest.04150e045b72a66aa4d27d648211d76f.js": "/netLab/precache-manifest.04150e045b72a66aa4d27d648211d76f.js",
     "service-worker.js": "/netLab/service-worker.js"
   }
 }
