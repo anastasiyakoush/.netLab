@@ -13,7 +13,7 @@ const LoginRedux = props => {
     isEmailValid,
     isPasswordValid,
     isAuthenticated
-  } = props.form;
+  } = props.loginReducer;
 
   const submitHadler = () => {
     console.log(isEmailValid);

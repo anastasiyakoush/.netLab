@@ -11,9 +11,9 @@ const LoginSuccess = props => {
       {() => console.log(props)}
       <p>Entered data:</p>
       <p>Email</p>
-      <p className={classes.text}>{props.form.email}</p>
+      <p className={classes.text}>{props.loginReducer.email}</p>
       <p>Password</p>
-      <p className={classes.text}>{props.form.password}</p>
+      <p className={classes.text}>{props.loginReducer.password}</p>
     </div>
   );
 };
