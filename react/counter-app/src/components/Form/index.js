@@ -41,7 +41,7 @@ const LoginForm = props => {
       <button
         type="submit"
         className={classes.button}
-        onClick={props.submitHadler}
+        onClick={props.Handler}
       >
         {props.buttonText || "Log in"}
       </button>
