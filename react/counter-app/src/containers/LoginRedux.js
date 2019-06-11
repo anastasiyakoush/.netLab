@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import * as actions from "../redux/actions";
 import LoginForm from "../components/Form/index";
-import InputReflector from "../components/InputReflector/index";
+import InputDisplay  from "../components/InputDisplay/index";
 import { PASSWORD_MIN_LENGTH, emailRegEx } from "../consts";
 
 const LoginRedux = props => {
@@ -15,7 +15,7 @@ const LoginRedux = props => {
     isAuthenticated
   } = props.loginReducer;
 
-  const submitHadler = () => {
+  const Handler = () => {
     console.log(isEmailValid);
     console.log(isPasswordValid);
     if (isAuthenticated) {
@@ -32,7 +32,7 @@ const LoginRedux = props => {
   };
 
   const onKeyPressHandler = event => {
-    event.key === "Enter" && submitHadler();
+    event.key === "Enter" && Handler();
   };
 
   const handleEmailChange = event => {
@@ -53,13 +53,13 @@ const LoginRedux = props => {
         password={password}
         handleEmailChange={handleEmailChange}
         handlePasswordChange={handlePasswordChange}
-        submitHadler={submitHadler}
+        Handler={Handler}
         passwordMinLength={PASSWORD_MIN_LENGTH}
         isEmailValid={isEmailValid}
         isPasswordValid={isPasswordValid}
         buttonText={isAuthenticated ? "Log out" : "Log in"}
       />
-      <InputReflector email={email} password={password} />
+      <InputDisplay  email={email} password={password} />
     </>
   );
 };

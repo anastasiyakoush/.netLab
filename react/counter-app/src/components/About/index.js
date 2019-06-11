@@ -5,13 +5,14 @@ import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
 
 const About = props => {
-  const { classes } = props;
+    const { classes: classNames } = props;
 
-  return (
-    <Container>
-      <Paper className={classes.container}>{aboutCounters}</Paper>
-    </Container>
-  );
+
+    return (
+        <Container>
+            <Paper className={classNames.container}>{aboutCounters}</Paper>
+        </Container>
+    );
 };
 
 export default withStyles(styles)(About);

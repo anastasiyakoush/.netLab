@@ -2,7 +2,7 @@ import React from "react";
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
 
-const InputReflector = props => {
+const InputDisplay  = props => {
   const { classes } = props;
   
   return (
@@ -15,4 +15,4 @@ const InputReflector = props => {
   );
 };
 
-export default withStyles(styles)(InputReflector);
+export default withStyles(styles)(InputDisplay );

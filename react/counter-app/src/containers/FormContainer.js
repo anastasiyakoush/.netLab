@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import LoginForm from "../components/Form/index";
-import InputReflector from "../components/InputReflector/index";
+import InputDisplay  from "../components/InputDisplay/index";
 import { PASSWORD_MIN_LENGTH, emailRegEx } from "../consts";
 import { validateLength } from "../validators";
 
-const FormContainer = props => {
+const FormContainer = () => {
   const [{ email, isEmailValid }, setEmail] = useState({
     email: "",
     isEmailValid: true
@@ -29,7 +29,7 @@ const FormContainer = props => {
     });
   };
 
-  const submitHadler = () => {
+  const Handler = () => {
     if (email !== "" && password !== "" && isEmailValid && isPasswordValid) {
       console.log(email);
       console.log(password);
@@ -38,7 +38,7 @@ const FormContainer = props => {
     } else console.log("error");
   };
   const onKeyPressHandler = event => {
-    event.key === "Enter" && submitHadler();
+    event.key === "Enter" && Handler();
   };
 
   return (
@@ -49,12 +49,12 @@ const FormContainer = props => {
         password={password}
         handleEmailChange={handleEmailChange}
         handlePasswordChange={handlePasswordChange}
-        submitHadler={submitHadler}
+        Handler={Handler}
         passwordMinLength={PASSWORD_MIN_LENGTH}
         isEmailValid={isEmailValid}
         isPasswordValid={isPasswordValid}
       />
-      <InputReflector email={email} password={password} />
+      <InputDisplay  email={email} password={password} />
     </>
   );
 };

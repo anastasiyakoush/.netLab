@@ -3,10 +3,10 @@ import { Typography } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
 
-const NoMatch = props => {
+const NotFound = props => {
   const { classes } = props;
   
   return <Typography className={classes.root}>404 - page not found</Typography>;
 };
 
-export default withStyles(styles)(NoMatch);
+export default withStyles(styles)(NotFound);
