@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import LoginForm from "../components/Form/index";
 import InputDisplay from "../components/InputDisplay/index";
 import { PASSWORD_MIN_LENGTH, emailRegEx } from "../consts";
-import { validatePassword, validateEmail } from "../validators/validators";
+import { validatePassword, validateEmail } from "../validation/validators";
 
 const FormContainer = () => {
     const [{ email, isEmailValid }, setEmail] = useState({

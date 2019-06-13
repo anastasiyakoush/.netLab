@@ -1,45 +1,53 @@
-import React, { Component } from 'react';
-import { Field, reduxForm } from 'redux-form';
+import React from 'react';
+import { connect } from 'react-redux';
+import { Field, reduxForm, formValueSelector } from 'redux-form';
+import { root, routes } from '../../consts';
+import validate from '../../validation/reduxFormValidator';
+import ReduxFormInput from '../../components/ReduxFormInput';
+import InputDisplay from '../../components/InputDisplay/index';
+import { withStyles } from '@material-ui/styles';
+import styles from './styles'
 
 
-const validate = values => {
-    const errors = {}
-/* const isEmailValid=()
-if(!values.email ||)
-} */}
+let LoginReduxForm = props => {
+    const { handleSubmit, submitting, email, password, classes, submitSucceeded } = props;
 
-class LoginReduxForm extends Component {
-    constructor(props) {
-        super(props);
-    }
+    const submit = (values) => {
+        submitSucceeded ? props.reset() :
+            props.history.push({
+                pathname: `${root()}${routes.loginReduxFormSuccess}`,
+                state: { from: { pathname: routes.loginReduxForm } }
+            });
+    };
 
-    render() {
-        return (
-            <form onSubmit={this.props.handleSubmit}>
-                <label>Email</label>
+    return (
+        <>
+            <form onSubmit={handleSubmit(submit)} className={classes.container}>
                 <Field
-                    component='input'
-                    type="email"
                     name="email"
-                    autoComplete="false"
-                    /*  onInput={props.handleEmailChange}
-                     onKeyDown={props.onKeyDownSubmitHandler}   */
-                    required
+                    type="email"
+                    component={ReduxFormInput}
+                    label='Email'
                 />
-                <label>Password</label>
                 <Field
-                    component='input'
                     type="password"
                     name="password"
-                    /*  onChange={props.handlePasswordChange}
-                     onKeyDown={props.onKeyDownSubmitHandler}
-                     className={classes.input} */
-                    required
+                    label='Password'
+                    component={ReduxFormInput}
                 />
-                <button type="submit" disabled={this.props.submitting}>Log in</button>
+                <button type="submit" disabled={submitting} className={classes.button}>{submitSucceeded ? 'Log out' : 'Log in'}</button>
             </form>
-        )
-    }
+            <InputDisplay email={email} password={password}></InputDisplay>
+        </>
+    )
+
 }
 
-export default reduxForm({ form: 'LoginReduxForm' })(LoginReduxForm);;
+LoginReduxForm = reduxForm({ form: 'loginRedux', validate, destroyOnUnmount: false })(withStyles(styles)(LoginReduxForm));
+
+const selector = formValueSelector("loginRedux");
+LoginReduxForm = connect(state => {
+    return { email: selector(state, 'email'), password: selector(state, 'password') }
+})(LoginReduxForm);
+
+export default LoginReduxForm;
