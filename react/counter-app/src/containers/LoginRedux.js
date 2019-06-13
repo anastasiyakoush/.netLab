@@ -5,6 +5,7 @@ import * as actions from "../redux/actions";
 import LoginForm from "../components/Form/index";
 import InputDisplay from "../components/InputDisplay/index";
 import { PASSWORD_MIN_LENGTH, emailRegEx, routes, root } from "../consts";
+import { validatePassword, validateEmail } from "../validators";
 
 class LoginRedux extends Component {
     constructor(props) {
@@ -17,23 +18,19 @@ class LoginRedux extends Component {
         return props;
     }
 
-    validateEmail = email => email !== '' && emailRegEx.test(email);
-
-    validatePassword = password => password !== '' && password.length >= PASSWORD_MIN_LENGTH;
-
     onKeyDownSubmitHandler = event => {
         event.keyCode === 13 && this.submitHandler();
     };
 
     handleEmailChange = event => {
         const email = event.target.value;
-        const isValid = this.validateEmail(email);
+        const isValid = validateEmail(email, emailRegEx);
         this.props.setEmail(email, isValid);
     };
 
     handlePasswordChange = event => {
         const password = event.target.value;
-        const isValid = this.validatePassword(password);
+        const isValid = validatePassword(password, PASSWORD_MIN_LENGTH);
         this.props.setPassword(password, isValid);
     };
 
@@ -45,8 +42,8 @@ class LoginRedux extends Component {
             return;
         }
 
-        const isEmailValid = (() => this.validateEmail(this.props.email))();
-        const isPasswordValid = (() => this.validatePassword(this.props.password))();
+        const isEmailValid = (() => validateEmail(this.props.email, emailRegEx))();
+        const isPasswordValid = (() => validatePassword(this.props.password, PASSWORD_MIN_LENGTH))();
 
         if (isEmailValid && isPasswordValid) {
             this.props.login(this.props.email, this.props.password);

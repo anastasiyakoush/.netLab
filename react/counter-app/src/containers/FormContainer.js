@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import LoginForm from "../components/Form/index";
 import InputDisplay from "../components/InputDisplay/index";
 import { PASSWORD_MIN_LENGTH, emailRegEx } from "../consts";
-import { validateLength } from "../validators";
+import { validatePassword, validateEmail } from "../validators";
 
 const FormContainer = () => {
     const [{ email, isEmailValid }, setEmail] = useState({
@@ -16,52 +16,46 @@ const FormContainer = () => {
     });
 
     const handleEmailChange = event => {
-        setEmail({
-            email: event.target.value,
-            isEmailValid: email !== "" && emailRegEx.test(email)
-        });
+        const email = event.target.value;
+        const isEmailValid = validateEmail(email, emailRegEx);
+        setEmail({ email, isEmailValid });
     };
 
     const handlePasswordChange = event => {
-        setPassword({
-            password: event.target.value,
-            isPasswordValid:
-                password !== "" && validateLength(password, PASSWORD_MIN_LENGTH)
-        });
+        const password = event.target.value;
+        const isPasswordValid = validatePassword(password, PASSWORD_MIN_LENGTH);       
+        setPassword({ password, isPasswordValid });
     };
 
-    const Handler = () => {
-        setEmail({ isEmailValid: false });
-        setPassword({ isPasswordValid: false });
-        if (
-            email !== "" &&
-            password !== "" &&
-            isEmailValid &&
-            isPasswordValid
-        ) {
+    const submitHandler = () => {
+        const isEmailValid = validateEmail(email, emailRegEx);
+        const isPasswordValid = validatePassword(password, PASSWORD_MIN_LENGTH);
+
+        setEmail({ email, isEmailValid });
+        setPassword({ password, isPasswordValid });
+
+        if (isEmailValid && isPasswordValid) {
             console.log(email);
             console.log(password);
-            setEmail({ email: "", isEmailValid: true });
-            setPassword({ password: "", isPasswordValid: true });
         } else {
             !isEmailValid && console.log("Incorrect email");
             !isPasswordValid && console.log("Incorrect password");
         }
     };
 
-    const onKeyDownHandler = event => {
-        event.keyCode === 13 && Handler();
+    const onKeyDownSubmitHandler = event => {
+        event.keyCode === 13 && submitHandler();
     };
 
     return (
         <>
             <LoginForm
-                onKeyDownHandler={onKeyDownHandler}
+                onKeyDownSubmitHandler={onKeyDownSubmitHandler}
                 email={email}
                 password={password}
                 handleEmailChange={handleEmailChange}
                 handlePasswordChange={handlePasswordChange}
-                Handler={Handler}
+                submitHandler={submitHandler}
                 passwordMinLength={PASSWORD_MIN_LENGTH}
                 isEmailValid={isEmailValid}
                 isPasswordValid={isPasswordValid}
