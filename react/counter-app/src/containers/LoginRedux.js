@@ -1,17 +1,16 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import * as actions from "../redux/actions";
+import { PASSWORD_MIN_LENGTH, emailRegEx, routes, root } from "../consts";
+import { validatePassword, validateEmail } from "../validators/validators";
+import * as actions from "../actions/actions";
 import LoginForm from "../components/Form/index";
 import InputDisplay from "../components/InputDisplay/index";
-import { PASSWORD_MIN_LENGTH, emailRegEx, routes, root } from "../consts";
-import { validatePassword, validateEmail } from "../validators";
 
 class LoginRedux extends Component {
     constructor(props) {
         super(props);
         this.state = { ...props };
-        this.state.ok = false;
     }
 
     static getDerivedStateFromProps(props, state) {
@@ -78,11 +77,11 @@ class LoginRedux extends Component {
 
 const mapStateToProps = state => {
     return {
-        email: state.loginReducer.email,
-        password: state.loginReducer.password,
-        isAuthenticated: state.loginReducer.isAuthenticated,
-        isEmailValid: state.loginReducer.isEmailValid,
-        isPasswordValid: state.loginReducer.isPasswordValid
+        email: state.login.email,
+        password: state.login.password,
+        isAuthenticated: state.login.isAuthenticated,
+        isEmailValid: state.login.isEmailValid,
+        isPasswordValid: state.login.isPasswordValid
     }
 };
 

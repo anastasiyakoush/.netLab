@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import LoginForm from "../components/Form/index";
 import InputDisplay from "../components/InputDisplay/index";
 import { PASSWORD_MIN_LENGTH, emailRegEx } from "../consts";
-import { validatePassword, validateEmail } from "../validators";
+import { validatePassword, validateEmail } from "../validators/validators";
 
 const FormContainer = () => {
     const [{ email, isEmailValid }, setEmail] = useState({
@@ -17,14 +17,14 @@ const FormContainer = () => {
 
     const handleEmailChange = event => {
         const email = event.target.value;
-        const isEmailValid = validateEmail(email, emailRegEx);
-        setEmail({ email, isEmailValid });
+        const isValid = validateEmail(email, emailRegEx);
+        setEmail({ email, isValid });
     };
 
     const handlePasswordChange = event => {
         const password = event.target.value;
-        const isPasswordValid = validatePassword(password, PASSWORD_MIN_LENGTH);       
-        setPassword({ password, isPasswordValid });
+        const isValid = validatePassword(password, PASSWORD_MIN_LENGTH);       
+        setPassword({ password, isValid });
     };
 
     const submitHandler = () => {

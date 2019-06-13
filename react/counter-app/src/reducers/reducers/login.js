@@ -3,7 +3,7 @@ import {
     SET_PASSWORD,
     LOG_IN,
     LOG_OUT
-} from "../actionTypes";
+} from "../../actions/types";
 
 const initialState = {
     email: "",
@@ -13,7 +13,7 @@ const initialState = {
     isAuthenticated: false
 };
 
-const loginReducer = (state = initialState, action) => {
+const login = (state = initialState, action) => {
     switch (action.type) {
         case SET_EMAIL: {
             const { value, isValid } = action.payload;
@@ -43,4 +43,4 @@ const loginReducer = (state = initialState, action) => {
     }
 };
 
-export default loginReducer;
+export default login;

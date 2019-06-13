@@ -3,7 +3,7 @@ import {
   SET_PASSWORD,
   LOG_IN,
   LOG_OUT
-} from "./actionTypes";
+} from "./types";
 
 export const setEmail = (value, isValid) => ({
   type: SET_EMAIL,

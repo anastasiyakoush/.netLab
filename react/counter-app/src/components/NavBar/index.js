@@ -36,6 +36,12 @@ const NavBar = props => {
                 component={Link}
                 to={`${root()}${routes.loginRedux}`}
             />
+            <Tab
+                className={classes.tab}
+                label="Login with ReduxForm"
+                component={Link}
+                to={`${root()}${routes.loginReduxForm}`}
+            />
         </Tabs>
     ) : null;
 };

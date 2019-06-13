@@ -9,6 +9,8 @@ export const routes = {
     counters: "/counters",
     loginRedux: "/login-redux",
     loginReduxSuccess: "/login-redux/success",
+    loginReduxForm: "/login-redux-form",
+    loginReduxFormSuccess: "/login-redux-form/success",
     notFound: "/404"
 };
 export const root = () => process.env.PUBLIC_URL;

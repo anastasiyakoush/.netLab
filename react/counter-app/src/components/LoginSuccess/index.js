@@ -19,8 +19,8 @@ const LoginSuccess = props => {
 };
 
 const mapStateToProps = state => ({
-    email: state.loginReducer.email,
-    password: state.loginReducer.password
+    email: state.login.email,
+    password: state.login.password
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(LoginSuccess));

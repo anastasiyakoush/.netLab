@@ -6,8 +6,6 @@ import styles from "./styles";
 
 const About = props => {
     const { classes: classNames } = props;
-
-
     return (
         <Container>
             <Paper className={classNames.container}>{aboutCounters}</Paper>
