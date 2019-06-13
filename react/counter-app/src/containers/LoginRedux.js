@@ -7,13 +7,9 @@ import InputDisplay from "../components/InputDisplay/index";
 import { PASSWORD_MIN_LENGTH, emailRegEx, routes, root } from "../consts";
 
 const LoginRedux = props => {
-    const [
-        { email, password, isEmailValid, isPasswordValid, isAuthenticated },
-        setChange
-    ] = useState(props.loginReducer);
 
     const onKeyPressHandler = event => {
-        event.key === "Enter" && Handler();
+        event.keyCode === 13 && Handler();
     };
 
     const handleEmailChange = event => {
@@ -27,48 +23,56 @@ const LoginRedux = props => {
     };
 
     const Handler = () => {
-        if (isAuthenticated) {
+        if (props.isAuthenticated) {
             props.setEmail("");
             props.setPassword("");
             props.logout();
             return;
         }
+        console.log(props.email)
+        //console.log(props.loginReducer.isEmailValid)
 
         props.validateEmail(emailRegEx);
         props.validatePassword(PASSWORD_MIN_LENGTH);
-        
-        if (isEmailValid && isPasswordValid) {
-            props.login(email, password);
-            props.history.push(`${root()}${routes.loginReduxSuccess}`);
-        }
+
+        //console.log(props.loginReducer.isEmailValid)
+        /* rops.isEmailValid = props.email === '';
+         props.isPasswordValid = props.password == ''; */
+        if (props.isEmailValid && props.isPasswordValid) {
+            props.login(props.email, props.password);
+        } props.history.push(`${root()}${routes.loginReduxSuccess}`);
+
     };
-    useEffect(() => {
-         if (!isAuthenticated) {
-            props.validateEmail(emailRegEx);
-            props.validatePassword(PASSWORD_MIN_LENGTH);
-        }
-    }, []);
 
     return (
         <>
             <LoginForm
                 onKeyPressHandler={onKeyPressHandler}
-                email={email}
-                password={password}
+                email={props.email}
+                password={props.password}
                 handleEmailChange={handleEmailChange}
                 handlePasswordChange={handlePasswordChange}
                 Handler={Handler}
                 passwordMinLength={PASSWORD_MIN_LENGTH}
-                isEmailValid={isEmailValid}
-                isPasswordValid={isPasswordValid}
-                buttonText={isAuthenticated ? "Log out" : "Log in"}
+                isEmailValid={props.isEmailValid}
+                isPasswordValid={props.isPasswordValid}
+                buttonText={props.isAuthenticated ? "Log out" : "Log in"}
             />
-            <InputDisplay email={email} password={password} />
+            <InputDisplay email={props.email} password={props.password} />
         </>
     );
 };
 
-const mapStateToProps = state => ({ ...state });
+const mapStateToProps = state => {
+    console.log(state)
+    return {
+        email: state.loginReducer.email,
+        password: state.loginReducer.password,
+        isAuthenticated: state.loginReducer.isAuthenticated,
+        isEmailValid: state.loginReducer.isEmailValid,
+        isPasswordValid: state.loginReducer.isPasswordValid
+    }
+};
 
 const mapDispatchToProps = dispatch => {
     return {
