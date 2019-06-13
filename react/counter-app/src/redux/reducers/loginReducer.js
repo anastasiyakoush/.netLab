@@ -18,37 +18,39 @@ const initialState = {
 const loginReducer = (state = initialState, action) => {
     switch (action.type) {
         case SET_EMAIL: {
-            const { value } = action.payload;
+            const { value, isValid } = action.payload;
             return {
                 ...state,
-                email: value
+                email: value,
+                isEmailValid: isValid
             };
         }
         case SET_PASSWORD: {
-            const { value } = action.payload;
+            const { value, isValid } = action.payload;
             return {
                 ...state,
-                password: value
+                password: value,
+                isPasswordValid: isValid
             };
         }
-        case VALIDATE_PASSWORD: {
-            const { constraint } = action.payload;
-            const result =
-                state.password !== "" && state.password.length >= constraint;
-            return {
-                ...state,
-                isPasswordValid: result
-            };
-        }
-        case VALIDATE_EMAIL: {
-            let { isEmailValid = false } = state;
-            const { constraint } = action.payload;
-            isEmailValid = state.email !== "" && constraint.test(state.email);
-            return {
-                ...state,
-                isEmailValid
-            };
-        }
+        /*  case VALIDATE_PASSWORD: {
+             const { constraint } = action.payload;
+             const result =
+                 state.password !== "" && state.password.length >= constraint;
+             return {
+                 ...state,
+                 isPasswordValid: result
+             };
+         }
+         case VALIDATE_EMAIL: {
+             let { isEmailValid = false } = state;
+             const { constraint } = action.payload;
+             isEmailValid = state.email !== "" && constraint.test(state.email);
+             return {
+                 ...state,
+                 isEmailValid
+             };
+         } */
         case LOG_IN: {
             const { email, password } = action.payload;
             return { ...state, email, password, isAuthenticated: true };

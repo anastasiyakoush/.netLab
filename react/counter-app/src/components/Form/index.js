@@ -9,8 +9,7 @@ const LoginForm = props => {
     };
 
     return (
-        <div className={classes.container}>
-            {props.isSubmitError && tipField(`Please!!!!`)}         
+        <div className={classes.container}>     
             {!props.isEmailValid && tipField(`Please use correct email`)}
             <label>Email</label>
             <input
@@ -19,7 +18,7 @@ const LoginForm = props => {
                 name="email"
                 autoComplete="false"
                 onInput={props.handleEmailChange}
-                onKeyDown={props.onKeyDownHandler}
+                onKeyDown={props.onKeyDownSubmitHandler}
                 className={classes.input}
                 required
             />
@@ -33,14 +32,14 @@ const LoginForm = props => {
                 value={props.password}
                 name="password"
                 onChange={props.handlePasswordChange}
-                onKeyDown={props.onKeyDownHandler}
+                onKeyDown={props.onKeyDownSubmitHandler}
                 className={classes.input}
                 required
             />
             <button
                 type="submit"
                 className={classes.button}
-                onClick={props.Handler}>
+                onClick={props.submitHandler}>
                 {props.buttonText || "Log in"}
             </button>
         </div>

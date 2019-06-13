@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import * as actions from "../redux/actions";
@@ -6,65 +6,80 @@ import LoginForm from "../components/Form/index";
 import InputDisplay from "../components/InputDisplay/index";
 import { PASSWORD_MIN_LENGTH, emailRegEx, routes, root } from "../consts";
 
-const LoginRedux = props => {
+class LoginRedux extends Component {
+    constructor(props) {
+        super(props);
+        this.state = { ...props };
+        this.state.ok = false;
+    }
 
-    const onKeyPressHandler = event => {
-        event.keyCode === 13 && Handler();
+    static getDerivedStateFromProps(props, state) {
+        return props;
+    }
+
+    validateEmail = email => email !== '' && emailRegEx.test(email);
+
+    validatePassword = password => password !== '' && password.length >= PASSWORD_MIN_LENGTH;
+
+    onKeyDownSubmitHandler = event => {
+        event.keyCode === 13 && this.submitHandler();
     };
 
-    const handleEmailChange = event => {
-        props.setEmail(event.target.value);
-        props.validateEmail(emailRegEx);
+    handleEmailChange = event => {
+        const email = event.target.value;
+        const isValid = this.validateEmail(email);
+        this.props.setEmail(email, isValid);
     };
 
-    const handlePasswordChange = event => {
-        props.setPassword(event.target.value);
-        props.validatePassword(PASSWORD_MIN_LENGTH);
+    handlePasswordChange = event => {
+        const password = event.target.value;
+        const isValid = this.validatePassword(password);
+        this.props.setPassword(password, isValid);
     };
 
-    const Handler = () => {
-        if (props.isAuthenticated) {
-            props.setEmail("");
-            props.setPassword("");
-            props.logout();
+    submitHandler = () => {
+        if (this.props.isAuthenticated) {
+            this.props.setEmail("");
+            this.props.setPassword("");
+            this.props.logout();
             return;
         }
-        console.log(props.email)
-        //console.log(props.loginReducer.isEmailValid)
 
-        props.validateEmail(emailRegEx);
-        props.validatePassword(PASSWORD_MIN_LENGTH);
+        const isEmailValid = (() => this.validateEmail(this.props.email))();
+        const isPasswordValid = (() => this.validatePassword(this.props.password))();
 
-        //console.log(props.loginReducer.isEmailValid)
-        /* rops.isEmailValid = props.email === '';
-         props.isPasswordValid = props.password == ''; */
-        if (props.isEmailValid && props.isPasswordValid) {
-            props.login(props.email, props.password);
-        } props.history.push(`${root()}${routes.loginReduxSuccess}`);
+        if (isEmailValid && isPasswordValid) {
+            this.props.login(this.props.email, this.props.password);
+            this.props.history.push(`${root()}${routes.loginReduxSuccess}`);
+        }
+
+        this.props.setEmail(this.state.email, isEmailValid);
+        this.props.setPassword(this.state.password, isPasswordValid);
 
     };
 
-    return (
-        <>
-            <LoginForm
-                onKeyPressHandler={onKeyPressHandler}
-                email={props.email}
-                password={props.password}
-                handleEmailChange={handleEmailChange}
-                handlePasswordChange={handlePasswordChange}
-                Handler={Handler}
-                passwordMinLength={PASSWORD_MIN_LENGTH}
-                isEmailValid={props.isEmailValid}
-                isPasswordValid={props.isPasswordValid}
-                buttonText={props.isAuthenticated ? "Log out" : "Log in"}
-            />
-            <InputDisplay email={props.email} password={props.password} />
-        </>
-    );
+    render() {
+        return (
+            <div>
+                <LoginForm
+                    onKeyDownSubmitHandler={this.onKeyDownSubmitHandler}
+                    email={this.props.email}
+                    password={this.props.password}
+                    handleEmailChange={this.handleEmailChange}
+                    handlePasswordChange={this.handlePasswordChange}
+                    submitHandler={this.submitHandler}
+                    passwordMinLength={PASSWORD_MIN_LENGTH}
+                    isEmailValid={this.props.isEmailValid}
+                    isPasswordValid={this.props.isPasswordValid}
+                    buttonText={this.props.isAuthenticated ? "Log out" : "Log in"}
+                />
+                <InputDisplay email={this.props.email} password={this.props.password} />
+            </div >
+        );
+    }
 };
 
 const mapStateToProps = state => {
-    console.log(state)
     return {
         email: state.loginReducer.email,
         password: state.loginReducer.password,
@@ -76,12 +91,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => {
     return {
-        setEmail: value => dispatch(actions.setEmail(value)),
-        setPassword: value => dispatch(actions.setPassword(value)),
-        validateEmail: constraint =>
-            dispatch(actions.validateEmail(constraint)),
-        validatePassword: constraint =>
-            dispatch(actions.validatePassword(constraint)),
+        setEmail: (value, isValid) => dispatch(actions.setEmail(value, isValid)),
+        setPassword: (value, isValid) => dispatch(actions.setPassword(value, isValid)),
         login: (email, password) => dispatch(actions.login(email, password)),
         logout: () => dispatch(actions.logout())
     };
