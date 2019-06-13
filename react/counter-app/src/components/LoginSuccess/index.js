@@ -4,20 +4,23 @@ import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
 
 const LoginSuccess = props => {
-  const { classes } = props;
-  
-  return (
-    <div className={classes.container}>
-      {() => console.log(props)}
-      <p>Entered data:</p>
-      <p>Email</p>
-      <p className={classes.text}>{props.loginReducer.email}</p>
-      <p>Password</p>
-      <p className={classes.text}>{props.loginReducer.password}</p>
-    </div>
-  );
+    const { classes, email, password } = props;
+
+    return (
+        <div className={classes.container}>
+            {() => console.log(props)}
+            <p>Entered data:</p>
+            <p>Email</p>
+            <p className={classes.text}>{email}</p>
+            <p>Password</p>
+            <p className={classes.text}>{password}</p>
+        </div>
+    );
 };
 
-const mapStateToProps = state => ({ ...state });
+const mapStateToProps = state => ({
+    email: state.loginReducer.email,
+    password: state.loginReducer.password
+});
 
 export default connect(mapStateToProps)(withStyles(styles)(LoginSuccess));

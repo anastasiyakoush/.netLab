@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import * as actions from "../redux/actions";
@@ -7,29 +7,10 @@ import InputDisplay from "../components/InputDisplay/index";
 import { PASSWORD_MIN_LENGTH, emailRegEx, routes, root } from "../consts";
 
 const LoginRedux = props => {
-    const {
-        email,
-        password,
-        isEmailValid,
-        isPasswordValid,
-        isAuthenticated
-    } = props.loginReducer;
-
-    const Handler = () => {
-        console.log(isEmailValid);
-        console.log(isPasswordValid);
-        if (isAuthenticated) {
-            props.setEmail("");
-            props.setPassword("");
-            props.logout();
-            return;
-        }
-
-        if (isEmailValid && isPasswordValid) {
-            props.login(email, password);
-            props.history.push(`${root()}${routes.loginReduxSuccess}`);
-        } else console.log("errrrr");
-    };
+    const [
+        { email, password, isEmailValid, isPasswordValid, isAuthenticated },
+        setChange
+    ] = useState(props.loginReducer);
 
     const onKeyPressHandler = event => {
         event.key === "Enter" && Handler();
@@ -44,6 +25,29 @@ const LoginRedux = props => {
         props.setPassword(event.target.value);
         props.validatePassword(PASSWORD_MIN_LENGTH);
     };
+
+    const Handler = () => {
+        if (isAuthenticated) {
+            props.setEmail("");
+            props.setPassword("");
+            props.logout();
+            return;
+        }
+
+        props.validateEmail(emailRegEx);
+        props.validatePassword(PASSWORD_MIN_LENGTH);
+        
+        if (isEmailValid && isPasswordValid) {
+            props.login(email, password);
+            props.history.push(`${root()}${routes.loginReduxSuccess}`);
+        }
+    };
+    useEffect(() => {
+         if (!isAuthenticated) {
+            props.validateEmail(emailRegEx);
+            props.validatePassword(PASSWORD_MIN_LENGTH);
+        }
+    }, []);
 
     return (
         <>
@@ -69,17 +73,12 @@ const mapStateToProps = state => ({ ...state });
 const mapDispatchToProps = dispatch => {
     return {
         setEmail: value => dispatch(actions.setEmail(value)),
-
         setPassword: value => dispatch(actions.setPassword(value)),
-
         validateEmail: constraint =>
             dispatch(actions.validateEmail(constraint)),
-
         validatePassword: constraint =>
             dispatch(actions.validatePassword(constraint)),
-
         login: (email, password) => dispatch(actions.login(email, password)),
-
         logout: () => dispatch(actions.logout())
     };
 };

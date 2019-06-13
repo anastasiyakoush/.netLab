@@ -33,18 +33,20 @@ const loginReducer = (state = initialState, action) => {
         }
         case VALIDATE_PASSWORD: {
             const { constraint } = action.payload;
-            const result = state.password.length >= constraint;
+            const result =
+                state.password !== "" && state.password.length >= constraint;
             return {
                 ...state,
                 isPasswordValid: result
             };
         }
         case VALIDATE_EMAIL: {
+            let { isEmailValid = false } = state;
             const { constraint } = action.payload;
-            const result = constraint.test(state.email);
+            isEmailValid = state.email !== "" && constraint.test(state.email);
             return {
                 ...state,
-                isEmailValid: result
+                isEmailValid
             };
         }
         case LOG_IN: {
@@ -57,6 +59,6 @@ const loginReducer = (state = initialState, action) => {
         default:
             return state;
     }
-}
+};
 
 export default loginReducer;

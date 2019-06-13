@@ -16,7 +16,7 @@ const styles = {
   },
   invalid: {
     backgroundColor: "#F8BBD0",
-    marginBottom: "20px",
+    margin: "0 0 10px",
     borderRadius: "3px",
     padding: "3px",
     fontWeight: "600"
