@@ -2,9 +2,7 @@ import {
     SET_EMAIL,
     SET_PASSWORD,
     LOG_IN,
-    LOG_OUT,
-    VALIDATE_EMAIL,
-    VALIDATE_PASSWORD
+    LOG_OUT
 } from "../actionTypes";
 
 const initialState = {
@@ -33,24 +31,6 @@ const loginReducer = (state = initialState, action) => {
                 isPasswordValid: isValid
             };
         }
-        /*  case VALIDATE_PASSWORD: {
-             const { constraint } = action.payload;
-             const result =
-                 state.password !== "" && state.password.length >= constraint;
-             return {
-                 ...state,
-                 isPasswordValid: result
-             };
-         }
-         case VALIDATE_EMAIL: {
-             let { isEmailValid = false } = state;
-             const { constraint } = action.payload;
-             isEmailValid = state.email !== "" && constraint.test(state.email);
-             return {
-                 ...state,
-                 isEmailValid
-             };
-         } */
         case LOG_IN: {
             const { email, password } = action.payload;
             return { ...state, email, password, isAuthenticated: true };
