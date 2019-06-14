@@ -10,23 +10,15 @@ import styles from './styles'
 
 
 let LoginReduxForm = props => {
-    const { handleSubmit, submitting, email, password, classes, submitSucceeded } = props;
-
-    const submit = () => {
-        submitSucceeded ? props.reset() :
-            props.history.push({
-                pathname: `${root()}${routes.loginReduxFormSuccess}`,
-                state: { from: { pathname: routes.loginReduxForm } }
-            });
-    };
+    const { handleSubmit, email, password, classes, submitSucceeded } = props;
 
     const onInputHandler = event => {
-        event.keyCode === 13 && validate(event.target) && submit();
+        event.keyCode === 13 && validate(event.target) && handleSubmit();
     }
 
     return (
         <>
-            <form noValidate = {true} onSubmit={handleSubmit(submit)} className={classes.container}>
+            <form noValidate={true} onSubmit={handleSubmit} className={classes.container}>
                 <Field
                     name="email"
                     type="email"
@@ -41,7 +33,7 @@ let LoginReduxForm = props => {
                     component={ReduxFormInput}
                     onInputHandler={onInputHandler}
                 />
-                <button type="submit" disabled={submitting} className={classes.button}>{submitSucceeded ? 'Log out' : 'Log in'}</button>
+                <button type="submit" className={classes.button}>{submitSucceeded ? 'Log out' : 'Log in'}</button>
             </form>
             <InputDisplay email={email} password={password}></InputDisplay>
         </>
@@ -49,7 +41,12 @@ let LoginReduxForm = props => {
 
 }
 
-LoginReduxForm = reduxForm({ form: 'loginRedux', validate, destroyOnUnmount: false })(withStyles(styles)(LoginReduxForm));
+LoginReduxForm = reduxForm({
+    form: 'loginRedux', validate, onSubmitSuccess: (result, dispatch, props) => props.history.push({
+        pathname: `${root()}${routes.loginReduxFormSuccess}`,
+        state: { from: { pathname: routes.loginReduxForm } }
+    })
+})(withStyles(styles)(LoginReduxForm));
 
 const selector = formValueSelector("loginRedux");
 LoginReduxForm = connect(state => {

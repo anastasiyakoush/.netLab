@@ -7,7 +7,6 @@ const validate = ({ email, password }) => {
         errors.email = `Incorrect format of email`;
     };
 
-
     if (!email) {
         errors.email = `Email field is required`;
     };

@@ -6,27 +6,28 @@ import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
 
 let LoginSuccess = props => {
-    const { classes, email, password } = props;
+    const { classes, email, password, emailForm, passwordForm } = props;
     const isFromForms = props.location.state.from.pathname === routes.loginReduxForm;
 
     return (
         <div className={classes.container}>
             <p>Entered data:</p>
             <p>Email</p>
-            <p className={classes.text}>{isFromForms ? email : props.login.email}</p>
+            <p className={classes.text}>{isFromForms ? emailForm : email}</p>
             <p>Password</p>
-            <p className={classes.text}>{isFromForms ? password : props.login.password}</p>
+            <p className={classes.text}>{isFromForms ? passwordForm : password}</p>
         </div>
     );
 };
 
 const selector = formValueSelector("loginRedux");
 LoginSuccess = connect(state => (
-    { email: selector(state, 'email'), password: selector(state, 'password') }
+    { emailForm: selector(state, 'email'), passwordForm: selector(state, 'password') }
 ))(LoginSuccess)
 
 const mapStateToProps = state => ({
-    ...state
+    email: state.login.email,
+    password: state.login.password
 });
 
 export default connect(mapStateToProps)(withStyles(styles)(LoginSuccess));
