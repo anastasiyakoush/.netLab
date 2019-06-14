@@ -1,68 +1,34 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import Counter from "../components/Counter/index";
 
-class CounterContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      count: props.count,
-      id: props.id
-    };
-    this.updateParent = props.updateParent;
-  }
+const CounterContainer = props => {
+  const [count, setCount] = useState(props.count);
+  const { id, updateParent } = props;
 
-  incrementCount = () => {
-    this.setState({ count: this.state.count + 1 });
-  };
-  
-  reset = () => {
-    this.setState({ count: 0 });
+  const incrementCount = () => {
+    setCount(props.count + 1);
   };
 
-  decrementCount = () => {
-    this.setState({ count: this.state.count - 1 });
+  const reset = () => {
+    setCount(0);
   };
 
-  updateCounter = this.props.updateCount || {
-    increment: this.incrementCount,
-    reset: this.reset,
-    decrement: this.decrementCount
+  const decrementCount = () => {
+    setCount(props.count - 1);
   };
 
-  componentWillReceiveProps(nextProps) {
-    console.log(`ChildContainer ${this.state.id} -- componentWillReceiveProps`);
-    if (this.state.count !== nextProps.count) {
-      this.setState({ id: nextProps.id, count: nextProps.count });
-    }
-  }
+  const updateCounter = props.updateCount || {
+    increment: incrementCount,
+    reset: reset,
+    decrement: decrementCount
+  };
 
-  shouldComponentUpdate(props, nextState) {
-    console.log(`ChildContainer ${this.state.id} -- shouldComponentUpdate`);
-    return nextState.count !== this.state.count;
-  }
+  useEffect(() => {
+    updateParent(id, count)
+  }, [count])
 
-  componentDidUpdate(props, prevState, snapshot) {
-    console.log(`ChildContainer ${this.state.id} -- componentDidUpdate`);
+  return (<Counter count={props.count} updateCount={updateCounter} />);
 
-    if (prevState.count !== this.state.count) {
-      this.updateParent(this.state.id, this.state.count);
-    }
-  }
-
-  componentDidMount() {
-    console.log(`ChildContainer ${this.state.id} -- componentDidMount`);
-  }
-
-  componentWillUnmount() {
-    console.log(`ChildContainer ${this.state.id} -- componentWillUnmount`);
-  }
-
-  render() {
-    console.log(`ChildContainer ${this.state.id} -- render`);
-    return (
-      <Counter count={this.state.count} updateCount={this.updateCounter} />
-    );
-  }
 }
 
 export default CounterContainer;
