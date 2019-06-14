@@ -12,7 +12,7 @@ import styles from './styles'
 let LoginReduxForm = props => {
     const { handleSubmit, submitting, email, password, classes, submitSucceeded } = props;
 
-    const submit = (values) => {
+    const submit = () => {
         submitSucceeded ? props.reset() :
             props.history.push({
                 pathname: `${root()}${routes.loginReduxFormSuccess}`,
@@ -20,20 +20,26 @@ let LoginReduxForm = props => {
             });
     };
 
+    const onInputHandler = event => {
+        event.keyCode === 13 && validate(event.target) && submit();
+    }
+
     return (
         <>
-            <form onSubmit={handleSubmit(submit)} className={classes.container}>
+            <form noValidate = {true} onSubmit={handleSubmit(submit)} className={classes.container}>
                 <Field
                     name="email"
                     type="email"
                     component={ReduxFormInput}
                     label='Email'
+                    onInputHandler={onInputHandler}
                 />
                 <Field
                     type="password"
                     name="password"
                     label='Password'
                     component={ReduxFormInput}
+                    onInputHandler={onInputHandler}
                 />
                 <button type="submit" disabled={submitting} className={classes.button}>{submitSucceeded ? 'Log out' : 'Log in'}</button>
             </form>
