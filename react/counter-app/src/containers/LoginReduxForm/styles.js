@@ -11,6 +11,11 @@ const styles = {
         margin: "5px auto 20px",
         backgroundColor: "#B2DFDB",
         padding: "10px 20px"
+    },
+    buttons: {
+        display: "flex",
+        flexDirection: 'row',
+        padding:'0 40px'
     }
 }
 export default styles;

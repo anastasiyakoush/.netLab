@@ -13,11 +13,10 @@ let LoginReduxForm = props => {
     const { handleSubmit, email, password, classes, submitSucceeded } = props;
 
     const submit = () => {
-        submitSucceeded ? props.reset() :
-            props.history.push({
-                pathname: `${root()}${routes.loginReduxFormSuccess}`,
-                state: { from: { pathname: routes.loginReduxForm } }
-            });
+        props.history.push({
+            pathname: `${root()}${routes.loginReduxFormSuccess}`,
+            state: { from: { pathname: routes.loginReduxForm } }
+        });
     };
 
     const onInputHandler = event => {
@@ -41,7 +40,10 @@ let LoginReduxForm = props => {
                     component={ReduxFormInput}
                     onInputHandler={onInputHandler}
                 />
-                <button type="submit" className={classes.button}>{submitSucceeded ? 'Log out' : 'Log in'}</button>
+                <div className={classes.buttons}>
+                    {submitSucceeded ? <button onClick={props.reset} className={classes.button}>Log out</button>
+                        : <button type='submit' className={classes.button}>Log in</button>}
+                </div>
             </form>
             <InputDisplay email={email} password={password}></InputDisplay>
         </>
@@ -49,9 +51,7 @@ let LoginReduxForm = props => {
 
 }
 
-LoginReduxForm = reduxForm({
-    form: 'loginRedux', validate, destroyOnUnmount: false
-})(withStyles(styles)(LoginReduxForm));
+LoginReduxForm = reduxForm({ form: 'loginRedux', validate, destroyOnUnmount: false })(withStyles(styles)(LoginReduxForm));
 
 const selector = formValueSelector("loginRedux");
 
