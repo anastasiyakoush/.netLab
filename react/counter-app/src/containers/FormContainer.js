@@ -5,34 +5,35 @@ import { PASSWORD_MIN_LENGTH, emailRegEx } from "../consts";
 import { validatePassword, validateEmail } from "../validation/validators";
 
 const FormContainer = () => {
-    const [{ email, isEmailValid }, setEmail] = useState({
-        email: "",
-        isEmailValid: true
-    });
+    const [email, setEmail] = useState("");
+    const [isEmailValid, setEmailValid] = useState(true);
 
-    const [{ password, isPasswordValid }, setPassword] = useState({
-        password: "",
-        isPasswordValid: true
-    });
+    const [password, setPassword] = useState("");
+    const [isPasswordValid, setPasswordValid] = useState(true);
 
     const handleEmailChange = event => {
         const email = event.target.value;
+
         const isValid = validateEmail(email, emailRegEx);
-        setEmail({ email, isValid });
+        setEmail(email);
+        setEmailValid(isValid);
     };
 
     const handlePasswordChange = event => {
         const password = event.target.value;
-        const isValid = validatePassword(password, PASSWORD_MIN_LENGTH);       
-        setPassword({ password, isValid });
+        const isValid = validatePassword(password, PASSWORD_MIN_LENGTH);
+        setPassword(password);
+        setPasswordValid(isValid);
     };
 
     const submitHandler = () => {
         const isEmailValid = validateEmail(email, emailRegEx);
         const isPasswordValid = validatePassword(password, PASSWORD_MIN_LENGTH);
 
-        setEmail({ email, isEmailValid });
-        setPassword({ password, isPasswordValid });
+        setEmail(email);
+        setPassword(password);
+        setEmailValid(isEmailValid);
+        setPasswordValid(isPasswordValid);
 
         if (isEmailValid && isPasswordValid) {
             console.log(email);

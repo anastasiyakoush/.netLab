@@ -12,13 +12,21 @@ import styles from './styles'
 let LoginReduxForm = props => {
     const { handleSubmit, email, password, classes, submitSucceeded } = props;
 
+    const submit = () => {
+        submitSucceeded ? props.reset() :
+            props.history.push({
+                pathname: `${root()}${routes.loginReduxFormSuccess}`,
+                state: { from: { pathname: routes.loginReduxForm } }
+            });
+    };
+
     const onInputHandler = event => {
-        event.keyCode === 13 && validate(event.target) && handleSubmit();
+        event.keyCode === 13 && validate(event.target) && submit();
     }
 
     return (
         <>
-            <form noValidate={true} onSubmit={handleSubmit} className={classes.container}>
+            <form noValidate={true} onSubmit={handleSubmit(submit)} className={classes.container}>
                 <Field
                     name="email"
                     type="email"
@@ -42,13 +50,11 @@ let LoginReduxForm = props => {
 }
 
 LoginReduxForm = reduxForm({
-    form: 'loginRedux', validate, onSubmitSuccess: (result, dispatch, props) => props.history.push({
-        pathname: `${root()}${routes.loginReduxFormSuccess}`,
-        state: { from: { pathname: routes.loginReduxForm } }
-    })
+    form: 'loginRedux', validate, destroyOnUnmount: false
 })(withStyles(styles)(LoginReduxForm));
 
 const selector = formValueSelector("loginRedux");
+
 LoginReduxForm = connect(state => {
     return { email: selector(state, 'email'), password: selector(state, 'password') }
 })(LoginReduxForm);

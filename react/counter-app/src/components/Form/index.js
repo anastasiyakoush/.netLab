@@ -31,7 +31,7 @@ const LoginForm = props => {
                 type="password"
                 value={props.password}
                 name="password"
-                onChange={props.handlePasswordChange}
+                onInput={props.handlePasswordChange}
                 onKeyDown={props.onKeyDownSubmitHandler}
                 className={classes.input}
                 required
