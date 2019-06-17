@@ -3,12 +3,10 @@ import { emailRegEx, PASSWORD_MIN_LENGTH } from '../consts'
 const validate = ({ email, password }) => {
     const errors = {};
 
-    if (!emailRegEx.test(email)) {
-        errors.email = `Incorrect format of email`;
-    };
-
     if (!email) {
         errors.email = `Email field is required`;
+    } else if (!emailRegEx.test(email)) {
+        errors.email = `Incorrect format of email`;
     };
 
     if (!password) {

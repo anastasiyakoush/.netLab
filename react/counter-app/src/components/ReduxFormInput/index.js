@@ -9,6 +9,6 @@ const ReduxFormInput = ({ input, label, type, classes, onInputHandler, meta: { t
             <input className={classes.input} {...input} type={type} onInput={(event) => onInputHandler(event)} onInvalid={event => console.log(event.target)} />
             {touched && (error && <p className={classes.invalid}>{error}</p>)}
         </div>)
-
 }
+
 export default withStyles(styles)(ReduxFormInput);

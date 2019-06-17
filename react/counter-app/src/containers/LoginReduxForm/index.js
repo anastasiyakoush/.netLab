@@ -55,8 +55,13 @@ LoginReduxForm = reduxForm({ form: 'loginRedux', validate, destroyOnUnmount: fal
 
 const selector = formValueSelector("loginRedux");
 
-LoginReduxForm = connect(state => {
-    return { email: selector(state, 'email'), password: selector(state, 'password') }
-})(LoginReduxForm);
+const mapStateToProps = (state) => {
+    return {
+        email: selector(state, 'email'),
+        password: selector(state, 'password')
+    }
+}
+
+LoginReduxForm = connect(mapStateToProps)(LoginReduxForm);
 
 export default LoginReduxForm;
