@@ -28,7 +28,6 @@ const CounterContainer = props => {
   }, [count])
 
   return (<Counter count={props.count} updateCount={updateCounter} />);
-
 }
 
 export default CounterContainer;

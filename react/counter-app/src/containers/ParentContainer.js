@@ -10,18 +10,17 @@ import theme from "../components/Counter/styles";
 
 const ParentContainer = () => {
   const [count, setCount] = useState(MIN_COUNT);
-  const [childrenCounters, setChildrenCounters] = useState([{ count: 0 }])
+  const [childrenCounters, setChildrenCounters] = useState([{ count: MIN_COUNT }])
 
   const increment = () => {
     let children = childrenCounters.map(child => child.count % 2 ? child : { count: child.count + 1 });
-    children.push({ count: 0 });
+    children.push({ count: MIN_COUNT });
     setCount(count + 1);
     setChildrenCounters(children)
   };
 
   const decrement = () => {
-    let children = [...childrenCounters];
-    children = children.map(child => child.count % 2 ? { count: child.count - 1 } : child);
+    let children = childrenCounters.map(child => child.count % 2 ? { count: child.count - 1 } : child);
     children.pop();
     if (count !== MIN_COUNT) {
       setCount(count - 1);
