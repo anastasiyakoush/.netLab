@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { PASSWORD_MIN_LENGTH, emailRegEx, routes, root } from "../consts";
-import { validatePassword, validateEmail } from "../validators/validators";
+import { validatePassword, validateEmail } from "../validation/validators";
 import * as actions from "../actions/actions";
 import LoginForm from "../components/Form/index";
 import InputDisplay from "../components/InputDisplay/index";
@@ -46,7 +46,12 @@ class LoginRedux extends Component {
 
         if (isEmailValid && isPasswordValid) {
             this.props.login(this.props.email, this.props.password);
-            this.props.history.push(`${root()}${routes.loginReduxSuccess}`);
+            this.props.history.push({
+                pathname: `${root()}${routes.loginReduxSuccess}`,
+                state: {
+                    from: { pathname: routes.loginRedux }
+                }
+            });
         }
 
         this.props.setEmail(this.state.email, isEmailValid);
