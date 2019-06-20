@@ -13,42 +13,47 @@ namespace Task2.Controllers
     [ApiController]
     public class SwapiController : ControllerBase
     {
-        private string _url = "https://swapi.co/api/starships";
-
         [HttpGet("[action]")]
         public ActionResult<Starships> Get()
         {
             using (var client = new HttpClient())
             {
-                var response = client.GetAsync(_url).Result;
-                var json = response.Content.ReadAsStringAsync().Result;
+                var response = Task.Run(() => client.GetAsync(Consts.URL)).Result;
+                var json = Task.Run(() => response.Content.ReadAsStringAsync()).Result;
                 var starships = JsonConvert.DeserializeObject<Starships>(json);
-                starships.Results = starships.Results.Take(5).Select((r, index) => { r.Index = ++index; return r; }).ToList();
+
+                starships.Results = starships.Results.Take(5)
+                    .Select((r, index) => { r.Index = ++index; return r; })
+                    .ToList();
+
                 return starships;
             }
         }
-              
+
         [HttpGet("[action]")]
         public async Task<Starships> GetAll()
         {
-            var response = GetAsync(_url).Result;
+            var starships = await GetStarshipsAsync(Consts.URL);
 
-            while (!String.IsNullOrEmpty(response.Next))
+            while (!string.IsNullOrEmpty(starships.Next))
             {
-                var result = GetAsync(response.Next).Result;
-                response.Results.AddRange(result.Results);
-                response.Next = result.Next;
+                var response = await GetStarshipsAsync(starships.Next);
+                starships.Results.AddRange(response.Results);
+                starships.Next = response.Next;
             }
-            
-            response.Results = response.Results.Select((r, i) => { r.Index = ++i; return r; }).ToList();
-            return response;
+
+            starships.Results = starships.Results
+                .Select((r, index) => { r.Index = index; return r; })
+                .ToList();
+
+            return starships;
         }
 
-        private async Task<Starships> GetAsync(string uri)
+        private async Task<Starships> GetStarshipsAsync(string url)
         {
             using (var client = new HttpClient())
             {
-                var response = await client.GetAsync(uri);
+                var response = await client.GetAsync(url);
                 var json = await response.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Starships>(json);
             }
