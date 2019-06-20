@@ -10,8 +10,7 @@ namespace Task1
     {
         public static MathModel Calculate(int valA, int valB)
         {
-            var sum = valA + valB;
-            return new MathModel() { ValueA = valA, ValueB = valB, Sum = sum };
+            return new MathModel() { ValueA = valA, ValueB = valB, Sum = valA + valB };
         }
     }
 }
