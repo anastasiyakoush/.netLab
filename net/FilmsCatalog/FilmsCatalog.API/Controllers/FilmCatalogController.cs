@@ -12,7 +12,6 @@ namespace FilmsCatalog.API.Controllers
     public class FilmCatalogController : ControllerBase
     {
         [HttpGet]
-        public
          
     }
 }

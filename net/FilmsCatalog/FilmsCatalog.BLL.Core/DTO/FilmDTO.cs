@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace FilmsCatalog.BLL.DTO
+namespace FilmsCatalog.BLL.Core.DTO
 {
     public class FilmDTO
     {
