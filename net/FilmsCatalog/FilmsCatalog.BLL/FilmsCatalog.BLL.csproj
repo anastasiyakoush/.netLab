@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\FilmsCatalog.DAL.EF\FilmsCatalog.DAL.EF.csproj" />
+    <ProjectReference Include="..\FilmsCatalog.DAL\FilmsCatalog.DAL.EF.csproj" />
   </ItemGroup>
 
 </Project>

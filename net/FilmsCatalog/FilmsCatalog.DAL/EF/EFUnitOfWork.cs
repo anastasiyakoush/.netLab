@@ -1,0 +1,66 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.Win32.SafeHandles;
+using System.Runtime.InteropServices;
+using FilmsCatalog.DAL.Core.Interfaces;
+using FilmsCatalog.DAL.Core.Models;
+using FilmsCatalog.DAL.EF.Repositories;
+using Microsoft.EntityFrameworkCore;
+
+namespace FilmsCatalog.DAL.EF.EF
+{
+    public class EFUnitOfWork : IUnitOfWork
+    {
+        private FilmsCatalogContext db;
+        private GenericRepository<Film> filmRepository;
+        private bool disposed = false;
+
+        public EFUnitOfWork(DbContextOptions<FilmsCatalogContext> options)
+        {
+            db = new FilmsCatalogContext(options);
+        }
+
+        public DbContext Context
+        {
+            get { return db; }
+        }
+
+        public IGenericRepository<Film> Films
+        {
+            get
+            {
+                if (filmRepository == null)
+                {
+                    filmRepository = new GenericRepository<Film>(this);
+                    return filmRepository;
+                }
+                return filmRepository;
+            }
+        }
+
+        public void SaveAsync()
+        {
+            db.SaveChangesAsync();
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposed)
+            {
+                if (disposing)
+                {
+                    db.Dispose();
+                }
+                disposed = true;
+            }
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+    }
+}
