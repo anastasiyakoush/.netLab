@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FilmsCatalog.DAL.Core.Interfaces
+﻿namespace FilmsCatalog.DAL.Core.Interfaces
 {
     public interface IModel
     {

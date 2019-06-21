@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Microsoft.Win32.SafeHandles;
-using System.Runtime.InteropServices;
 using FilmsCatalog.DAL.Core.Interfaces;
-using FilmsCatalog.DAL.Core.Models;
+using FilmsCatalog.DAL.Core.Entities;
 using FilmsCatalog.DAL.EF.Repositories;
 using Microsoft.EntityFrameworkCore;
 

@@ -1,9 +1,5 @@
-﻿using JetBrains.Annotations;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using FilmsCatalog.DAL.Core.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using FilmsCatalog.DAL.Core.Entities;
 
 namespace FilmsCatalog.DAL.EF.EF
 {

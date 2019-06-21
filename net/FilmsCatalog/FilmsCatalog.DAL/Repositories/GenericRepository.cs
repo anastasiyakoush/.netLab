@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading;
-using System.Collections.Generic;
-using System.Text;
-using FilmsCatalog.DAL.EF.EF;
+﻿using System.Collections.Generic;
 using FilmsCatalog.DAL.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;

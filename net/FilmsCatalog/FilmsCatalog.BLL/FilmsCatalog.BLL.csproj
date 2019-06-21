@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="8.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\FilmsCatalog.BLL.Core\FilmsCatalog.BLL.Core.csproj" />
     <ProjectReference Include="..\FilmsCatalog.DAL\FilmsCatalog.DAL.EF.csproj" />
   </ItemGroup>
 

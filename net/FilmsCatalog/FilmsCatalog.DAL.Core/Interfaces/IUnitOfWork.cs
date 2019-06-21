@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FilmsCatalog.DAL.Core.Models;
+using FilmsCatalog.DAL.Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace FilmsCatalog.DAL.Core.Interfaces
