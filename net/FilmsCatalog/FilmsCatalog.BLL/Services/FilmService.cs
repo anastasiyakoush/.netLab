@@ -1,41 +1,57 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using FilmsCatalog.DAL.EF.EF;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using FilmsCatalog.BLL.Interfaces;
-using FilmsCatalog.BLL.DTO;
+using FilmsCatalog.BLL.Core.DTO;
+using FilmsCatalog.DAL.Core.Interfaces;
+using FilmsCatalog.DAL.Core.Entities;
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using FilmsCatalog.DAL.EF.EF;
 
 namespace FilmsCatalog.BLL.Services
 {
-    public class FilmService:IFilmService
+    public class FilmService : IFilmService
     {
-        public FilmService()
+        private static IUnitOfWork db;
+
+        public FilmService(DbContextOptions<FilmsCatalogContext> options)
         {
+            db = new EFUnitOfWork(options);
         }
 
-        public void AddFilm(FilmDTO film)
+        public void AddFilm(FilmDTO filmDTO)
         {
-            throw new NotImplementedException();
+            var film = Mapper.Map<FilmDTO, Film>(filmDTO);
+            db.Films.CreateAsync(film);
+            db.SaveAsync();
         }
 
         public IEnumerable<FilmDTO> GetAllFilms()
         {
-            throw new NotImplementedException();
+            return Mapper.Map<IEnumerable<Film>, IEnumerable<FilmDTO>>(db.Films.GetAll());
         }
 
-        public FilmDTO GetFilm(int id)
+        public async Task<FilmDTO> GetFilmAsync(int id)
         {
-            throw new NotImplementedException();
+            var film = await db.Films.GetAsync(id);
+            return Mapper.Map<Film, FilmDTO>(film);
         }
 
         public void RemoveFilm(int id)
         {
-            throw new NotImplementedException();
+            var toDelete = db.Films.GetAsync(id).Result;
+            if (toDelete != null)
+            {
+                db.Films.Delete(toDelete);
+                db.SaveAsync();
+            }
         }
 
-        public void UpdateFilmInfo(int id)
+        public void UpdateFilmInfo(FilmDTO filmDTO)
         {
-            throw new NotImplementedException();
+            var film = Mapper.Map<FilmDTO, Film>(filmDTO);
+            db.Films.Update(film);
+            db.SaveAsync();
         }
     }
 }

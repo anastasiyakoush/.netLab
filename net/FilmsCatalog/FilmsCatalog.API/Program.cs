@@ -7,6 +7,7 @@ using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
+using NLog.Web;
 
 namespace FilmsCatalog.API
 {
@@ -15,10 +16,11 @@ namespace FilmsCatalog.API
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
+            //NLog.LogManager.Shutdown();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>();
+                .UseStartup<Startup>().ConfigureLogging(cfg => cfg.ClearProviders()).UseNLog();
     }
 }
