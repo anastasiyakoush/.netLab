@@ -16,11 +16,10 @@ namespace FilmsCatalog.API
         public static void Main(string[] args)
         {
             CreateWebHostBuilder(args).Build().Run();
-            //NLog.LogManager.Shutdown();
         }
 
         public static IWebHostBuilder CreateWebHostBuilder(string[] args) =>
             WebHost.CreateDefaultBuilder(args)
-                .UseStartup<Startup>().ConfigureLogging(cfg => cfg.ClearProviders()).UseNLog();
+                .UseStartup<Startup>().UseNLog();
     }
 }

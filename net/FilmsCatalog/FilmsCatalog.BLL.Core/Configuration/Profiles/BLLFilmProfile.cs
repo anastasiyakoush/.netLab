@@ -7,11 +7,11 @@ using FilmsCatalog.BLL.Core.DTO;
 
 namespace FilmsCatalog.BLL.Core.Configuration.Profiles
 {
-    class FilmProfile : Profile
+    public class BLLFilmProfile : Profile
     {
-        public FilmProfile()
+        public BLLFilmProfile()
         {
-            CreateMap<Film, FilmDTO>().ReverseMap();
+            CreateMap<FilmModel, FilmDTO>().ReverseMap();
         }
     }
 }

@@ -9,12 +9,12 @@ namespace FilmsCatalog.DAL.EF.EF
     public class EFUnitOfWork : IUnitOfWork
     {
         private FilmsCatalogContext db;
-        private GenericRepository<Film> filmRepository;
+        private GenericRepository<FilmModel> filmRepository;
         private bool disposed = false;
 
-        public EFUnitOfWork(DbContextOptions<FilmsCatalogContext> options)
+        public EFUnitOfWork(/*DbContextOptions<FilmsCatalogContext> options*/)
         {
-            db = new FilmsCatalogContext(options);
+            db = new FilmsCatalogContext();
         }
 
         public DbContext Context
@@ -22,13 +22,13 @@ namespace FilmsCatalog.DAL.EF.EF
             get { return db; }
         }
 
-        public IGenericRepository<Film> Films
+        public IGenericRepository<FilmModel> Films
         {
             get
             {
                 if (filmRepository == null)
                 {
-                    filmRepository = new GenericRepository<Film>(this);
+                    filmRepository = new GenericRepository<FilmModel>(this);
                     return filmRepository;
                 }
                 return filmRepository;

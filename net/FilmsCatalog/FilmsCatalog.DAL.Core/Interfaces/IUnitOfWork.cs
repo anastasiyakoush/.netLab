@@ -7,7 +7,7 @@ namespace FilmsCatalog.DAL.Core.Interfaces
     public interface IUnitOfWork : IDisposable
     {
         DbContext Context { get; }
-        IGenericRepository<Film> Films { get; }
+        IGenericRepository<FilmModel> Films { get; }
         void SaveAsync();
     }
 }

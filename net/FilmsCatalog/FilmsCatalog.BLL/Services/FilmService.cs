@@ -13,28 +13,30 @@ namespace FilmsCatalog.BLL.Services
     public class FilmService : IFilmService
     {
         private static IUnitOfWork db;
+        private IMapper mapper;
 
-        public FilmService(DbContextOptions<FilmsCatalogContext> options)
+        public FilmService(IMapper mapper/*DbContextOptions<FilmsCatalogContext> options*/)
         {
-            db = new EFUnitOfWork(options);
+            db = new EFUnitOfWork();
+            this.mapper = mapper;
         }
 
         public void AddFilm(FilmDTO filmDTO)
         {
-            var film = Mapper.Map<FilmDTO, Film>(filmDTO);
+            var film = mapper.Map<FilmDTO, FilmModel>(filmDTO);
             db.Films.CreateAsync(film);
             db.SaveAsync();
         }
 
         public IEnumerable<FilmDTO> GetAllFilms()
         {
-            return Mapper.Map<IEnumerable<Film>, IEnumerable<FilmDTO>>(db.Films.GetAll());
+            return mapper.Map<IEnumerable<FilmModel>, IEnumerable<FilmDTO>>(db.Films.GetAll());
         }
 
         public async Task<FilmDTO> GetFilmAsync(int id)
         {
             var film = await db.Films.GetAsync(id);
-            return Mapper.Map<Film, FilmDTO>(film);
+            return mapper.Map<FilmModel, FilmDTO>(film);
         }
 
         public void RemoveFilm(int id)
@@ -47,10 +49,10 @@ namespace FilmsCatalog.BLL.Services
             }
         }
 
-        public void UpdateFilmInfo(FilmDTO filmDTO)
+        public void UpdateFilmInfo( FilmDTO filmDTO)
         {
-            var film = Mapper.Map<FilmDTO, Film>(filmDTO);
-            db.Films.Update(film);
+            var updatedFilm = mapper.Map<FilmDTO, FilmModel>(filmDTO);          
+            db.Films.Update(updatedFilm);
             db.SaveAsync();
         }
     }

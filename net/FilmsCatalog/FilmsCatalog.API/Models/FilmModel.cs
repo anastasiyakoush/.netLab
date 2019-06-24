@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using FilmsCatalog.Core.Interfaces;
+using FluentValidation.Attributes;
 
 namespace FilmsCatalog.API.Models
 {
-    public class FilmModel
+    [Validator(typeof(FilmModel))]
+    public class FilmModel : IFilmInfo
     {
         public int Id { get; set; }
         public string Name { get; set; }

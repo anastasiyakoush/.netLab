@@ -1,63 +1,65 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using Microsoft.AspNetCore.Mvc;
+
 using AutoMapper;
-using FilmsCatalog.API.Configuration.Filters;
+
 using FilmsCatalog.API.Models;
 using FilmsCatalog.BLL.Core.DTO;
 using FilmsCatalog.BLL.Interfaces;
 using FilmsCatalog.BLL.Services;
-using FilmsCatalog.DAL.EF.EF;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using FilmsCatalog.API.Configuration.Filters;
+using FilmsCatalog.API.Logging.Filters;
 
 namespace FilmsCatalog.API.Controllers
 {
+    [ServiceFilter(typeof(ExceptionFilter))]
     [ServiceFilter(typeof(LoggingFilter))]
     [Route("api/[controller]")]
     [ApiController]
     public class FilmCatalogController : ControllerBase
     {
         private IFilmService service;
-        public FilmCatalogController(DbContextOptions<FilmsCatalogContext> options)
-        {
-            service = new FilmService(options);
-        }
+        private IMapper mapper;
 
+        public FilmCatalogController(IMapper mapper/*DbContextOptions<FilmsCatalogContext> options*/)
+        {
+            service = new FilmService(mapper);
+            this.mapper = mapper;
+        }
+        
         [HttpGet("[action]/{id:int}")]
         public FilmModel GetFilm(int id)
         {
-            return Mapper.Map<FilmDTO, FilmModel>(service.GetFilmAsync(id).Result);
+            return mapper.Map<FilmDTO, FilmModel>(service.GetFilmAsync(id).Result);
         }
 
-     
-        [HttpGet("[action]/all")]
-        public ActionResult/*IEnumerable<FilmModel>*/ GetAll()
+        [HttpGet("all")]
+        public IEnumerable<FilmModel> GetAll()
         {
-            return Content("content");
-            //return Mapper.Map<IEnumerable<FilmDTO>, IEnumerable<FilmModel>>(service.GetAllFilms());
+            return mapper.Map<IEnumerable<FilmDTO>, IEnumerable<FilmModel>>(service.GetAllFilms());
         }
 
         [HttpPost("[action]")]
-        public void Create([FromBody] FilmModel model)
+        public ActionResult Create([FromBody] FilmModel model)
         {
-            var toCreate = Mapper.Map<FilmModel, FilmDTO>(model);
+            var toCreate = mapper.Map<FilmModel, FilmDTO>(model);
             service.AddFilm(toCreate);
+            return Ok();
         }
 
         [HttpPut("[action]")]
-        public void Update([FromBody] FilmModel model)
+        public ActionResult Update([FromBody] FilmModel model)
         {
-            var toUpdate = Mapper.Map<FilmModel, FilmDTO>(model);
+            var toUpdate = mapper.Map<FilmModel, FilmDTO>(model);
             service.UpdateFilmInfo(toUpdate);
+            return Ok();
         }
 
         [HttpDelete("[action]/{id:int}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
             service.RemoveFilm(id);
+            return Ok();
         }
     }
 }

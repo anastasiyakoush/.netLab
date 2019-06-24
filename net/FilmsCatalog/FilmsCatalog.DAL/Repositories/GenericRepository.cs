@@ -38,7 +38,7 @@ namespace FilmsCatalog.DAL.EF.Repositories
 
         public void Update(TEntity entity)
         {
-            db.Entry(entity).State = EntityState.Modified;
+            db.Update(entity);
         }
     }
 }
