@@ -1,7 +1,8 @@
 ﻿using System.Collections.Generic;
-using FilmsCatalog.DAL.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
+
+using FilmsCatalog.DAL.Core.Interfaces;
 
 namespace FilmsCatalog.DAL.EF.Repositories
 {

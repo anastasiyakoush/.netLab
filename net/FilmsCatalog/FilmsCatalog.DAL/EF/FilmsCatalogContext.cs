@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
+
 using FilmsCatalog.DAL.Core.Entities;
-using FilmsCatalog.DAL.Core.Configuration;
 
 namespace FilmsCatalog.DAL.EF.EF
 {
@@ -12,6 +12,6 @@ namespace FilmsCatalog.DAL.EF.EF
             optionsBuilder.UseSqlServer("Server = (localdb)\\MSSQLLocalDB; Database = filmsCatalog; Trusted_Connection = True;");
         }
 
-        public DbSet<FilmModel> Films { get; set; }
+        public DbSet<Film> Films { get; set; }
     }
 }

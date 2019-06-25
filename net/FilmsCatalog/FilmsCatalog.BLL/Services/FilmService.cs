@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+
+using AutoMapper;
+
 using FilmsCatalog.BLL.Interfaces;
 using FilmsCatalog.BLL.Core.DTO;
 using FilmsCatalog.DAL.Core.Interfaces;
-using FilmsCatalog.DAL.Core.Entities;
-using AutoMapper;
-using Microsoft.EntityFrameworkCore;
 using FilmsCatalog.DAL.EF.EF;
+using FilmsCatalog.DAL.Core.Entities;
 
 namespace FilmsCatalog.BLL.Services
 {
@@ -23,20 +24,20 @@ namespace FilmsCatalog.BLL.Services
 
         public void AddFilm(FilmDTO filmDTO)
         {
-            var film = mapper.Map<FilmDTO, FilmModel>(filmDTO);
+            var film = mapper.Map<FilmDTO, Film>(filmDTO);
             db.Films.CreateAsync(film);
             db.SaveAsync();
         }
 
         public IEnumerable<FilmDTO> GetAllFilms()
         {
-            return mapper.Map<IEnumerable<FilmModel>, IEnumerable<FilmDTO>>(db.Films.GetAll());
+            return mapper.Map<IEnumerable<Film>, IEnumerable<FilmDTO>>(db.Films.GetAll());
         }
 
         public async Task<FilmDTO> GetFilmAsync(int id)
         {
             var film = await db.Films.GetAsync(id);
-            return mapper.Map<FilmModel, FilmDTO>(film);
+            return mapper.Map<Film, FilmDTO>(film);
         }
 
         public void RemoveFilm(int id)
@@ -49,9 +50,9 @@ namespace FilmsCatalog.BLL.Services
             }
         }
 
-        public void UpdateFilmInfo( FilmDTO filmDTO)
+        public void UpdateFilmInfo(FilmDTO filmDTO)
         {
-            var updatedFilm = mapper.Map<FilmDTO, FilmModel>(filmDTO);          
+            var updatedFilm = mapper.Map<FilmDTO, Film>(filmDTO);
             db.Films.Update(updatedFilm);
             db.SaveAsync();
         }

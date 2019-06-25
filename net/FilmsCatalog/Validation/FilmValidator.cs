@@ -1,20 +1,19 @@
-﻿using System;
+﻿using FluentValidation;
 
-using FluentValidation;
-
-//using FilmsCatalog.DAL.Core.Entities;
 using FilmsCatalog.Core.Interfaces;
+using FilmsCatalog.Core;
 
 namespace Validation
 {
-    public class FilmValidator : AbstractValidator<FilmModel>
+    public class FilmValidator<T> : AbstractValidator<T> where T : IFilmInfo
     {
         public FilmValidator()
         {
             RuleFor(x => x.Name).NotEmpty();
             RuleFor(x => x.Year)
-                .GreaterThanOrEqualTo(0).LessThanOrEqualTo(DateTime.Now.Year)
-                .WithMessage($"Unreal years, please select year between 1910 and {DateTime.Now.Year}");
+                .GreaterThanOrEqualTo(Consts.FirstFilmYear)
+                .LessThanOrEqualTo(Consts.CurrentYear)
+                .WithMessage($"Unreal years, please select year between 1910 and {Consts.CurrentYear}");
             RuleFor(x => x.Director).NotEmpty();
         }
     }

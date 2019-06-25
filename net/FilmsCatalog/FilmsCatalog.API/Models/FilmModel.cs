@@ -1,5 +1,6 @@
-﻿using FilmsCatalog.Core.Interfaces;
-using FluentValidation.Attributes;
+﻿using FluentValidation.Attributes;
+
+using FilmsCatalog.Core.Interfaces;
 
 namespace FilmsCatalog.API.Models
 {

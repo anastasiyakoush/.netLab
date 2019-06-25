@@ -1,11 +1,12 @@
-﻿using FilmsCatalog.Core.Interfaces;
+﻿using FluentValidation.Attributes;
+
+using FilmsCatalog.Core.Interfaces;
 using FilmsCatalog.DAL.Core.Interfaces;
-using FluentValidation.Attributes;
 
 namespace FilmsCatalog.DAL.Core.Entities
 {
-    [Validator(typeof(FilmModel))]
-    public class FilmModel : IModel, IFilmInfo
+    [Validator(typeof(Film))]
+    public class Film : IModel, IFilmInfo
     {
         public int Id { get; set; }
         public string Name { get; set; }

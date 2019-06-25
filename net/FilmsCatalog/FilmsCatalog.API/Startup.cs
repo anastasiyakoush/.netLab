@@ -1,16 +1,21 @@
-﻿using AutoMapper;
-using FilmsCatalog.API.Configuration.Filters;
-using FilmsCatalog.API.Configuration.Profiles;
-using FilmsCatalog.API.Logging.Filters;
-using FilmsCatalog.BLL.Core.Configuration.Profiles;
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+
+using AutoMapper;
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using NLog.Extensions.Logging;
+
+using FilmsCatalog.API.Configuration.Filters;
+using FilmsCatalog.API.Configuration.Profiles;
+using FilmsCatalog.API.Logging.Filters;
+using FilmsCatalog.API.Models;
+using FilmsCatalog.API.Validators;
+using FilmsCatalog.BLL.Core.Configuration.Profiles;
 
 namespace FilmsCatalog.API
 {
@@ -26,9 +31,9 @@ namespace FilmsCatalog.API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddFluentValidation();
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<FilmModelValidator>());
+            services.AddTransient<IValidator<FilmModel>, FilmModelValidator>();
 
-           
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<FilmProfile>();
@@ -44,7 +49,6 @@ namespace FilmsCatalog.API
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseDeveloperExceptionPage();
-
             app.UseHttpsRedirection();
             app.UseMvc();
 
