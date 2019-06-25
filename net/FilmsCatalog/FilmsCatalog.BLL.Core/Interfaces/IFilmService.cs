@@ -9,7 +9,7 @@ namespace FilmsCatalog.BLL.Interfaces
         Task AddFilmAsync(FilmDTO filmDTO);
         Task<FilmDTO> GetFilmAsync(int id);
         Task<IEnumerable<FilmDTO>> GetAllFilmsAsync();
-        Task RemoveFilmAsync(int id);
-        Task UpdateFilmAsync(FilmDTO filmDTO);
+        Task<bool> RemoveFilmAsync(int id);
+        Task<FilmDTO> UpdateFilmAsync(FilmDTO filmDTO);
     }
 }

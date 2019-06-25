@@ -38,21 +38,26 @@ namespace FilmsCatalog.BLL.Services
             return _mapper.Map<Film, FilmDTO>(film);
         }
 
-        public async Task RemoveFilmAsync(int id)
+        public async Task<bool> RemoveFilmAsync(int id)
         {
             var film = await _uow.Films.GetAsync(id);
-            if (film != null)
-            {
-                _uow.Films.Delete(film);
-                await _uow.SaveAsync();
-            }
+            _uow.Films.Delete(film);
+            await _uow.SaveAsync();
+            var isDeleted = await _uow.Films.GetAsync(id) == null;
+            return isDeleted;
         }
 
-        public async Task UpdateFilmAsync(FilmDTO filmDTO)
+        public async Task<FilmDTO> UpdateFilmAsync(FilmDTO filmDTO)
         {
-            var film = _mapper.Map<FilmDTO, Film>(filmDTO);
-            _uow.Films.Update(film);
-            await _uow.SaveAsync();
+            if (filmDTO != null)
+            {
+                var film = _mapper.Map<FilmDTO, Film>(filmDTO);
+                _uow.Films.Update(film);
+                await _uow.SaveAsync();
+            }
+            var updatedFilm = await _uow.Films.GetAsync(filmDTO.Id);
+            var updatedFilmDTO = _mapper.Map<Film, FilmDTO>(updatedFilm);
+            return updatedFilmDTO;
         }
     }
 }

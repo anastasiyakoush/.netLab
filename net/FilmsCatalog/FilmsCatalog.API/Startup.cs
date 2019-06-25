@@ -19,6 +19,7 @@ using FilmsCatalog.DAL.Core.Interfaces;
 using FilmsCatalog.API.Validators;
 using FilmsCatalog.BLL.Services;
 using FilmsCatalog.BLL.Interfaces;
+using FilmsCatalog.API.Configuration;
 
 namespace FilmsCatalog.API
 {
@@ -27,6 +28,7 @@ namespace FilmsCatalog.API
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            AppConfiguration appConfiguration = new AppConfiguration(Configuration);
         }
 
         public IConfiguration Configuration { get; }
@@ -37,9 +39,7 @@ namespace FilmsCatalog.API
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<FilmModelValidator>());
             services.AddTransient<IValidator<FilmModel>, FilmModelValidator>();
 
-            string connectionString = Configuration.GetConnectionString("FilmsCatalogConnection");
-           
-            services.AddDbContext<FilmsCatalogContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<FilmsCatalogContext>(options => options.UseSqlServer(AppConfiguration.ConnectionString));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IFilmService, FilmService>();
 
@@ -53,6 +53,7 @@ namespace FilmsCatalog.API
 
             services.AddScoped<LoggingFilter>();
             services.AddScoped<ExceptionFilter>();
+            services.AddSingleton<IConfiguration>(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)

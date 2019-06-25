@@ -8,23 +8,23 @@ namespace FilmsCatalog.DAL.EF.EF
 {
     public class UnitOfWork : IUnitOfWork
     {
-        private FilmsCatalogContext db;
-        private GenericRepository<Film> filmRepository;
+        private readonly FilmsCatalogContext _db;
+        private readonly IGenericRepository<Film> _filmRepository;
         private bool disposed = false;
 
         public UnitOfWork(FilmsCatalogContext context)
         {
-            db = context;
+            _db = context;
         }
 
         public IGenericRepository<Film> Films
         {
-            get => filmRepository ?? new GenericRepository<Film>(db);
+            get => _filmRepository ?? new GenericRepository<Film>(_db);
         }
 
         public async Task SaveAsync()
         {
-            await db.SaveChangesAsync();
+            await _db.SaveChangesAsync();
         }
 
         protected virtual void Dispose(bool disposing)
@@ -33,7 +33,7 @@ namespace FilmsCatalog.DAL.EF.EF
             {
                 if (disposing)
                 {
-                    db.Dispose();
+                    _db.Dispose();
                 }
                 disposed = true;
             }

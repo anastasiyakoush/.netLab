@@ -11,7 +11,7 @@ namespace FilmsCatalog.Core.Validation
             RuleFor(x => x.Year)
                 .GreaterThanOrEqualTo(Consts.FirstFilmYear)
                 .LessThanOrEqualTo(Consts.CurrentYear)
-                .WithMessage($"Unreal years, please select year between 1910 and {Consts.CurrentYear}");
+                .WithMessage($"Invalid year");
             RuleFor(x => x.Director).NotEmpty();
         }
     }

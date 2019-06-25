@@ -16,50 +16,63 @@ namespace FilmsCatalog.API.Controllers
     [ApiController]
     public class FilmCatalogController : ControllerBase
     {
-        private readonly IFilmService _service;
+        private readonly IFilmService _filmService;
         private readonly IMapper _mapper;
 
         public FilmCatalogController(IFilmService filmService, IMapper mapper)
         {
-            _service = filmService;
+            _filmService = filmService;
             _mapper = mapper;
         }
 
         [HttpGet("[action]/{id:int}")]
-        public async Task<FilmModel> GetFilm(int id)
+        public async Task<IActionResult> GetFilm(int id)
         {
-            var film = await _service.GetFilmAsync(id);
-            return _mapper.Map<FilmDTO, FilmModel>(film);
+            var film = await _filmService.GetFilmAsync(id);
+            var filmModel = _mapper.Map<FilmDTO, FilmModel>(film);
+            return Ok(filmModel);
         }
 
         [HttpGet("all")]
-        public async Task<IEnumerable<FilmModel>> GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var films = await _service.GetAllFilmsAsync();
-            return _mapper.Map<IEnumerable<FilmDTO>, IEnumerable<FilmModel>>(films);
+            var films = await _filmService.GetAllFilmsAsync();
+            var filmModels = _mapper.Map<IEnumerable<FilmDTO>, IEnumerable<FilmModel>>(films);
+            return Ok(filmModels);
         }
 
         [HttpPost("[action]")]
-        public async Task<ActionResult> Create([FromBody] FilmModel model)
+        public async Task<IActionResult> Create(FilmModel model)
         {
             var film = _mapper.Map<FilmModel, FilmDTO>(model);
-            await _service.AddFilmAsync(film);
+            await _filmService.AddFilmAsync(film);
             return Ok();
         }
 
         [HttpPut("[action]")]
-        public async Task<ActionResult> Update([FromBody] FilmModel model)
+        public async Task<IActionResult> Update(FilmModel model)
         {
             var film = _mapper.Map<FilmModel, FilmDTO>(model);
-            await _service.UpdateFilmAsync(film);
-            return Ok();
+            var updatedFilmDTO = await _filmService.UpdateFilmAsync(film);
+            if (updatedFilmDTO != null)
+            {
+                var updatedFilm = _mapper.Map<FilmDTO, FilmModel>(updatedFilmDTO);
+                return Ok(updatedFilm);
+            }
+            return BadRequest();
         }
 
         [HttpDelete("[action]/{id:int}")]
-        public async Task<ActionResult> Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            await _service.RemoveFilmAsync(id);
-            return Ok();
+            var filmInDb = await _filmService.GetFilmAsync(id);
+            if (filmInDb != null)
+            {
+                bool isDeleted = await _filmService.RemoveFilmAsync(id);
+                if (isDeleted) return Ok();
+
+            }
+            return BadRequest();
         }
     }
 }
