@@ -2,42 +2,29 @@
 using FilmsCatalog.DAL.Core.Interfaces;
 using FilmsCatalog.DAL.Core.Entities;
 using FilmsCatalog.DAL.EF.Repositories;
-using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 
 namespace FilmsCatalog.DAL.EF.EF
 {
-    public class EFUnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork
     {
         private FilmsCatalogContext db;
         private GenericRepository<Film> filmRepository;
         private bool disposed = false;
 
-        public EFUnitOfWork(/*DbContextOptions<FilmsCatalogContext> options*/)
+        public UnitOfWork(FilmsCatalogContext context)
         {
-            db = new FilmsCatalogContext();
-        }
-
-        public DbContext Context
-        {
-            get { return db; }
+            db = context;
         }
 
         public IGenericRepository<Film> Films
         {
-            get
-            {
-                if (filmRepository == null)
-                {
-                    filmRepository = new GenericRepository<Film>(this);
-                    return filmRepository;
-                }
-                return filmRepository;
-            }
+            get => filmRepository ?? new GenericRepository<Film>(db);
         }
 
-        public void SaveAsync()
+        public async Task SaveAsync()
         {
-            db.SaveChangesAsync();
+            await db.SaveChangesAsync();
         }
 
         protected virtual void Dispose(bool disposing)

@@ -25,7 +25,6 @@
   <ItemGroup>
     <ProjectReference Include="..\FilmsCatalog.BLL\FilmsCatalog.BLL.csproj" />
     <ProjectReference Include="..\FilmsCatalog.Core\FilmsCatalog.Core.csproj" />
-    <ProjectReference Include="..\Validation\Validation.csproj" />
   </ItemGroup>
 
 </Project>

@@ -4,18 +4,21 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-
 using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using NLog.Extensions.Logging;
-
 using FilmsCatalog.API.Configuration.Filters;
 using FilmsCatalog.API.Configuration.Profiles;
 using FilmsCatalog.API.Logging.Filters;
 using FilmsCatalog.API.Models;
-using FilmsCatalog.API.Validators;
 using FilmsCatalog.BLL.Core.Configuration.Profiles;
+using FilmsCatalog.DAL.EF.EF;
+using Microsoft.EntityFrameworkCore;
+using FilmsCatalog.DAL.Core.Interfaces;
+using FilmsCatalog.API.Validators;
+using FilmsCatalog.BLL.Services;
+using FilmsCatalog.BLL.Interfaces;
 
 namespace FilmsCatalog.API
 {
@@ -34,6 +37,12 @@ namespace FilmsCatalog.API
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<FilmModelValidator>());
             services.AddTransient<IValidator<FilmModel>, FilmModelValidator>();
 
+            string connectionString = Configuration.GetConnectionString("FilmsCatalogConnection");
+           
+            services.AddDbContext<FilmsCatalogContext>(options => options.UseSqlServer(connectionString));
+            services.AddTransient<IUnitOfWork, UnitOfWork>();
+            services.AddTransient<IFilmService, FilmService>();
+
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<FilmProfile>();
@@ -51,9 +60,6 @@ namespace FilmsCatalog.API
             app.UseDeveloperExceptionPage();
             app.UseHttpsRedirection();
             app.UseMvc();
-
-            //Logging and added UseNLog to Program.cs
-            loggerFactory.AddNLog();
         }
     }
 }

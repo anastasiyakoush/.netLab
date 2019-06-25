@@ -5,9 +5,9 @@ namespace FilmsCatalog.DAL.Core.Interfaces
 {
     public interface IGenericRepository<TEntity> where TEntity : class
     {
-        void CreateAsync(TEntity entity);
+        Task CreateAsync(TEntity entity);
         Task<TEntity> GetAsync(int id);
-        IEnumerable<TEntity> GetAll();
+        Task<IEnumerable<TEntity>> GetAllAsync();
         void Update(TEntity entity);
         void Delete(TEntity entity);
     }

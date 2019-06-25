@@ -1,60 +1,58 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-
 using AutoMapper;
-
 using FilmsCatalog.BLL.Interfaces;
 using FilmsCatalog.BLL.Core.DTO;
 using FilmsCatalog.DAL.Core.Interfaces;
-using FilmsCatalog.DAL.EF.EF;
 using FilmsCatalog.DAL.Core.Entities;
 
 namespace FilmsCatalog.BLL.Services
 {
     public class FilmService : IFilmService
     {
-        private static IUnitOfWork db;
-        private IMapper mapper;
+        private readonly IUnitOfWork _uow;
+        private readonly IMapper _mapper;
 
-        public FilmService(IMapper mapper/*DbContextOptions<FilmsCatalogContext> options*/)
+        public FilmService(IMapper mapper, IUnitOfWork uow)
         {
-            db = new EFUnitOfWork();
-            this.mapper = mapper;
+            _uow = uow;
+            _mapper = mapper;
         }
 
-        public void AddFilm(FilmDTO filmDTO)
+        public async Task AddFilmAsync(FilmDTO filmDTO)
         {
-            var film = mapper.Map<FilmDTO, Film>(filmDTO);
-            db.Films.CreateAsync(film);
-            db.SaveAsync();
+            var film = _mapper.Map<FilmDTO, Film>(filmDTO);
+            await _uow.Films.CreateAsync(film);
+            await _uow.SaveAsync();
         }
 
-        public IEnumerable<FilmDTO> GetAllFilms()
+        public async Task<IEnumerable<FilmDTO>> GetAllFilmsAsync()
         {
-            return mapper.Map<IEnumerable<Film>, IEnumerable<FilmDTO>>(db.Films.GetAll());
+            var films = await _uow.Films.GetAllAsync();
+            return _mapper.Map<IEnumerable<Film>, IEnumerable<FilmDTO>>(films);
         }
 
         public async Task<FilmDTO> GetFilmAsync(int id)
         {
-            var film = await db.Films.GetAsync(id);
-            return mapper.Map<Film, FilmDTO>(film);
+            var film = await _uow.Films.GetAsync(id);
+            return _mapper.Map<Film, FilmDTO>(film);
         }
 
-        public void RemoveFilm(int id)
+        public async Task RemoveFilmAsync(int id)
         {
-            var toDelete = db.Films.GetAsync(id).Result;
-            if (toDelete != null)
+            var film = await _uow.Films.GetAsync(id);
+            if (film != null)
             {
-                db.Films.Delete(toDelete);
-                db.SaveAsync();
+                _uow.Films.Delete(film);
+                await _uow.SaveAsync();
             }
         }
 
-        public void UpdateFilmInfo(FilmDTO filmDTO)
+        public async Task UpdateFilmAsync(FilmDTO filmDTO)
         {
-            var updatedFilm = mapper.Map<FilmDTO, Film>(filmDTO);
-            db.Films.Update(updatedFilm);
-            db.SaveAsync();
+            var film = _mapper.Map<FilmDTO, Film>(filmDTO);
+            _uow.Films.Update(film);
+            await _uow.SaveAsync();
         }
     }
 }

@@ -1,5 +1,4 @@
 ﻿using FluentValidation.Attributes;
-
 using FilmsCatalog.Core.Interfaces;
 
 namespace FilmsCatalog.API.Models

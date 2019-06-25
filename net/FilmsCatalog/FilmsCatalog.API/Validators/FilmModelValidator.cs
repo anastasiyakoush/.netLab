@@ -1,5 +1,5 @@
-﻿using Validation;
-using FilmsCatalog.API.Models;
+﻿using FilmsCatalog.API.Models;
+using FilmsCatalog.Core.Validation;
 
 namespace FilmsCatalog.API.Validators
 {

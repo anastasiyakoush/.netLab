@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
-
 using FilmsCatalog.DAL.Core.Interfaces;
 
 namespace FilmsCatalog.DAL.EF.Repositories
@@ -11,13 +10,13 @@ namespace FilmsCatalog.DAL.EF.Repositories
         private DbContext db;
         private DbSet<TEntity> entities;
 
-        public GenericRepository(IUnitOfWork unitOfWork)
+        public GenericRepository(DbContext context)
         {
-            db = unitOfWork.Context;
-            entities = unitOfWork.Context.Set<TEntity>();
+            db = context;
+            entities = db.Set<TEntity>();
         }
 
-        public async void CreateAsync(TEntity entity)
+        public async Task CreateAsync(TEntity entity)
         {
             await entities.AddAsync(entity);
         }
@@ -32,9 +31,9 @@ namespace FilmsCatalog.DAL.EF.Repositories
             return await entities.FindAsync(id);
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public Task<IEnumerable<TEntity>> GetAllAsync()
         {
-            return entities;
+            return Task.Run(() => (IEnumerable<TEntity>)entities);
         }
 
         public void Update(TEntity entity)

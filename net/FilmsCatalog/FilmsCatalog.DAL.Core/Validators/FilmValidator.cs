@@ -1,5 +1,4 @@
-﻿using Validation;
-
+﻿using FilmsCatalog.Core.Validation;
 using FilmsCatalog.DAL.Core.Entities;
 
 namespace FilmsCatalog.DAL.Core.Validators
