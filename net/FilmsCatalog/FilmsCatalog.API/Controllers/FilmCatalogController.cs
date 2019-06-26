@@ -7,11 +7,13 @@ using FilmsCatalog.BLL.Interfaces;
 using FilmsCatalog.API.Configuration.Filters;
 using FilmsCatalog.API.Logging.Filters;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FilmsCatalog.API.Controllers
-{
+{   
     [ServiceFilter(typeof(ExceptionFilter))]
     [ServiceFilter(typeof(LoggingFilter))]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class FilmCatalogController : ControllerBase
@@ -32,7 +34,7 @@ namespace FilmsCatalog.API.Controllers
             var filmModel = _mapper.Map<FilmDTO, FilmModel>(film);
             return Ok(filmModel);
         }
-
+                
         [HttpGet("all")]
         public async Task<IActionResult> GetAll()
         {

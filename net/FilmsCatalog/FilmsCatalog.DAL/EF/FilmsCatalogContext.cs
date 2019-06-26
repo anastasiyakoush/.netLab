@@ -15,7 +15,7 @@ namespace FilmsCatalog.DAL.EF.EF
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<IdentityUser>()
+            builder.Entity<User>()
                 .Ignore(p => p.PhoneNumber)
                 .Ignore(p => p.PhoneNumberConfirmed)
                 .Ignore(p => p.TwoFactorEnabled)

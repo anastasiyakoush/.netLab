@@ -7,7 +7,6 @@ using Microsoft.Extensions.Logging;
 using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
-using NLog.Extensions.Logging;
 using FilmsCatalog.API.Configuration.Filters;
 using FilmsCatalog.API.Configuration.Profiles;
 using FilmsCatalog.API.Logging.Filters;
@@ -19,7 +18,12 @@ using FilmsCatalog.DAL.Core.Interfaces;
 using FilmsCatalog.API.Validators;
 using FilmsCatalog.BLL.Services;
 using FilmsCatalog.BLL.Interfaces;
-using FilmsCatalog.API.Configuration;
+using FilmsCatalog.DAL.Core.Entities;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using FilmsCatalog.Core.Configuration;
+using FilmsCatalog.BLL.Core.Interfaces;
 
 namespace FilmsCatalog.API
 {
@@ -35,30 +39,63 @@ namespace FilmsCatalog.API
 
         public void ConfigureServices(IServiceCollection services)
         {
+            //services for mvc and api model validation
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<FilmModelValidator>());
             services.AddTransient<IValidator<FilmModel>, FilmModelValidator>();
+            services.AddTransient<IValidator<RegisterUserModel>, RegisterUserModelValidator>();
+            services.AddTransient<IValidator<LoginModel>, LoginModelValidator>();
 
+            //services for context and films table
             services.AddDbContext<FilmsCatalogContext>(options => options.UseSqlServer(AppConfiguration.ConnectionString));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
             services.AddTransient<IFilmService, FilmService>();
 
+            //services for identity
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<FilmsCatalogContext>()
+                .AddDefaultTokenProviders();
+
+            //add authentication
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.RequireHttpsMetadata = false;
+                    options.SaveToken = true;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(AppConfiguration.Secret),
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true
+                    };
+                });
+            services.AddTransient<IAccountService, AccountService>();
+
+
+            //mapping
             services.AddAutoMapper(cfg =>
             {
                 cfg.AddProfile<FilmProfile>();
+                cfg.AddProfile<UserProfile>();
                 cfg.AddProfile<BLLFilmProfile>();
+                cfg.AddProfile<BLLUserProfile>();
             },
            typeof(BLLFilmProfile), typeof(FilmProfile)
            );
 
+            //services for loggers
             services.AddScoped<LoggingFilter>();
             services.AddScoped<ExceptionFilter>();
+            //for appConfiguration class
             services.AddSingleton<IConfiguration>(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             app.UseDeveloperExceptionPage();
+            app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
         }
