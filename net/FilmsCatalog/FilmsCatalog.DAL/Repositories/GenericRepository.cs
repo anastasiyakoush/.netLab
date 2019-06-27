@@ -26,7 +26,7 @@ namespace FilmsCatalog.DAL.EF.Repositories
             entities.Remove(entity);
         }
 
-        public async Task<TEntity> GetAsync(int id)
+        public virtual async Task<TEntity> GetAsync(int id)
         {
             return await entities.FindAsync(id);
         }

@@ -5,6 +5,7 @@ using FilmsCatalog.BLL.Interfaces;
 using FilmsCatalog.BLL.Core.DTO;
 using FilmsCatalog.DAL.Core.Interfaces;
 using FilmsCatalog.DAL.Core.Entities;
+using System.Linq;
 
 namespace FilmsCatalog.BLL.Services
 {
@@ -58,6 +59,6 @@ namespace FilmsCatalog.BLL.Services
             var updatedFilm = await _uow.Films.GetAsync(filmDTO.Id);
             var updatedFilmDTO = _mapper.Map<Film, FilmDTO>(updatedFilm);
             return updatedFilmDTO;
-        }
+        }                
     }
 }

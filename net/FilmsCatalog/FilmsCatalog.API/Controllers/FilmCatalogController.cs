@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 
 namespace FilmsCatalog.API.Controllers
-{   
+{
     [ServiceFilter(typeof(ExceptionFilter))]
     [ServiceFilter(typeof(LoggingFilter))]
     [Authorize(AuthenticationSchemes = "Bearer")]
@@ -18,12 +18,12 @@ namespace FilmsCatalog.API.Controllers
     [ApiController]
     public class FilmCatalogController : ControllerBase
     {
-        private readonly IFilmService _filmService;
+        private readonly IFilmService _filmService;     
         private readonly IMapper _mapper;
 
         public FilmCatalogController(IFilmService filmService, IMapper mapper)
         {
-            _filmService = filmService;
+            _filmService = filmService;      
             _mapper = mapper;
         }
 
@@ -34,7 +34,7 @@ namespace FilmsCatalog.API.Controllers
             var filmModel = _mapper.Map<FilmDTO, FilmModel>(film);
             return Ok(filmModel);
         }
-                
+
         [HttpGet("all")]
         public async Task<IActionResult> GetAll()
         {
@@ -63,6 +63,8 @@ namespace FilmsCatalog.API.Controllers
             }
             return BadRequest();
         }
+
+    
 
         [HttpDelete("[action]/{id:int}")]
         public async Task<IActionResult> Delete(int id)

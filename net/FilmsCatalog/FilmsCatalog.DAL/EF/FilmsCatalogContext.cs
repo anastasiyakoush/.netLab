@@ -10,6 +10,7 @@ namespace FilmsCatalog.DAL.EF.EF
         public FilmsCatalogContext(DbContextOptions options) : base(options) { }
 
         public DbSet<Film> Films { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -21,6 +22,8 @@ namespace FilmsCatalog.DAL.EF.EF
                 .Ignore(p => p.TwoFactorEnabled)
                 .Ignore(p => p.AccessFailedCount)
                 .Ignore(p => p.EmailConfirmed);
+
+            builder.Entity<Rating>().HasKey(x => new { x.FilmId, x.UserId });
         }
     }
 }

@@ -46,7 +46,14 @@ namespace FilmsCatalog.BLL.Services
             return null;
         }
 
-        public async Task<string> RegisterAsync(UserDTO userDTO)
+        public async Task<UserDTO> GetUserByIdAsync(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            var userDTO = _mapper.Map<User, UserDTO>(user);
+            return userDTO;
+        }
+
+        public async Task<string> RegistrateAsync(UserDTO userDTO)
         {
             var user = _mapper.Map<UserDTO, User>(userDTO);
             user.Id = null;
@@ -60,6 +67,11 @@ namespace FilmsCatalog.BLL.Services
             return null;
         }
 
+        public async Task LogoutAsync()
+        {
+            await _signInManager.SignOutAsync();
+        }
+
         private async Task<string> GenerateJwtTokenAsync(User user)
         {
             var now = DateTime.Now;
@@ -68,8 +80,7 @@ namespace FilmsCatalog.BLL.Services
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Email),
-                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.NameIdentifier, user.Id)
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             };
 
             var jwtToken = new JwtSecurityToken(

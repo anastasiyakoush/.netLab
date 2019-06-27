@@ -49,7 +49,12 @@ namespace FilmsCatalog.API
             //services for context and films table
             services.AddDbContext<FilmsCatalogContext>(options => options.UseSqlServer(AppConfiguration.ConnectionString));
             services.AddTransient<IUnitOfWork, UnitOfWork>();
+
+            //services
             services.AddTransient<IFilmService, FilmService>();
+            services.AddTransient<ICommentService, CommentService>();
+            services.AddTransient<IRatingService, RatingService>();
+            services.AddTransient<IAccountService, AccountService>();
 
             //services for identity
             services.AddIdentity<User, IdentityRole>()
@@ -79,8 +84,11 @@ namespace FilmsCatalog.API
             {
                 cfg.AddProfile<FilmProfile>();
                 cfg.AddProfile<UserProfile>();
+                cfg.AddProfile<RatingProfile>();
                 cfg.AddProfile<BLLFilmProfile>();
                 cfg.AddProfile<BLLUserProfile>();
+                cfg.AddProfile<BLLCommentProfile>();
+                cfg.AddProfile<BLLRatingProfile>();
             },
            typeof(BLLFilmProfile), typeof(FilmProfile)
            );

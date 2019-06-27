@@ -19,6 +19,27 @@ namespace FilmsCatalog.DAL.EF.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("FilmsCatalog.DAL.Core.Entities.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Content");
+
+                    b.Property<int>("FilmId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("FilmId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Comment");
+                });
+
             modelBuilder.Entity("FilmsCatalog.DAL.Core.Entities.Film", b =>
                 {
                     b.Property<int>("Id")
@@ -34,6 +55,21 @@ namespace FilmsCatalog.DAL.EF.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Films");
+                });
+
+            modelBuilder.Entity("FilmsCatalog.DAL.Core.Entities.Rating", b =>
+                {
+                    b.Property<int>("FilmId");
+
+                    b.Property<string>("UserId");
+
+                    b.Property<int>("Rate");
+
+                    b.HasKey("FilmId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Ratings");
                 });
 
             modelBuilder.Entity("FilmsCatalog.DAL.Core.Entities.User", b =>
@@ -185,6 +221,31 @@ namespace FilmsCatalog.DAL.EF.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens");
+                });
+
+            modelBuilder.Entity("FilmsCatalog.DAL.Core.Entities.Comment", b =>
+                {
+                    b.HasOne("FilmsCatalog.DAL.Core.Entities.Film", "Film")
+                        .WithMany("Comments")
+                        .HasForeignKey("FilmId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("FilmsCatalog.DAL.Core.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("FilmsCatalog.DAL.Core.Entities.Rating", b =>
+                {
+                    b.HasOne("FilmsCatalog.DAL.Core.Entities.Film", "Film")
+                        .WithMany()
+                        .HasForeignKey("FilmId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("FilmsCatalog.DAL.Core.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

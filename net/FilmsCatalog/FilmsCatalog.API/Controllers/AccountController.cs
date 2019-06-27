@@ -5,6 +5,7 @@ using FilmsCatalog.API.Logging.Filters;
 using FilmsCatalog.API.Models;
 using FilmsCatalog.BLL.Core.DTO;
 using FilmsCatalog.BLL.Core.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace FilmsCatalog.API.Controllers
@@ -24,11 +25,11 @@ namespace FilmsCatalog.API.Controllers
             _mapper = mapper;
         }
 
-        [HttpPost("register")]
-        public async Task<IActionResult> Register(RegisterUserModel model)
+        [HttpPost("signup")]
+        public async Task<IActionResult> SignUp(RegisterUserModel model)
         {
             var userDTO = _mapper.Map<RegisterUserModel, UserDTO>(model);
-            var token = await _accountService.RegisterAsync(userDTO);
+            var token = await _accountService.RegistrateAsync(userDTO);
             if (token != null)
             {
                 return Ok(token);
@@ -48,5 +49,18 @@ namespace FilmsCatalog.API.Controllers
             }
             return BadRequest();
         }
+
+        //[Authorize]
+        [HttpPost("logout")]
+        public async Task<IActionResult> Logout()
+        {
+            await _accountService.LogoutAsync();
+            if (HttpContext.User.Identity.IsAuthenticated)
+            {
+                return BadRequest();
+            }
+            return Ok();
+        }
+
     }
 }
