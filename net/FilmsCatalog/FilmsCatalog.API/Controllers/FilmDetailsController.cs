@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using FilmsCatalog.BLL.Core.Interfaces;
-using FilmsCatalog.DAL.Core.Entities;
 using AutoMapper;
 using FilmsCatalog.API.Models;
 using FilmsCatalog.BLL.Core.DTO;
@@ -36,19 +34,17 @@ namespace FilmsCatalog.API.Controllers
             return Ok();
         }
 
-        [HttpGet("comment/{id:int}")]
+        [HttpGet("comment/{filmId}")]
         public async Task<IActionResult> GetFilmCommentsAsync(int filmId)
         {
-            var commentsDTO = await _commentService.GetFilmCommentsAsync(filmId);
-            var comments = _mapper.Map<IEnumerable<CommentDTO>, IEnumerable<Comment>>(commentsDTO);
+            var comments = await _commentService.GetFilmCommentsAsync(filmId);
             return Ok(comments);
         }
 
-        [HttpGet("user/{id}")]
+        [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetUserCommentsAsync(string userId)
         {
-            var commentsDTO = await _commentService.GetUserCommentsAsync(userId);
-            var comments = _mapper.Map<IEnumerable<CommentDTO>, IEnumerable<Comment>>(commentsDTO);
+            var comments= await _commentService.GetUserCommentsAsync(userId);
             return Ok(comments);
         }
 

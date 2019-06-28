@@ -53,6 +53,13 @@ namespace FilmsCatalog.BLL.Services
             return userDTO;
         }
 
+        public async Task<UserDTO> GetUserByNameAsync(string userName)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            var userDTO = _mapper.Map<User, UserDTO>(user);
+            return userDTO;
+        }
+
         public async Task<string> RegistrateAsync(UserDTO userDTO)
         {
             var user = _mapper.Map<UserDTO, User>(userDTO);

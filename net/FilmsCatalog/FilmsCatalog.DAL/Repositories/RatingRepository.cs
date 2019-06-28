@@ -37,7 +37,7 @@ namespace FilmsCatalog.DAL.EF.Repositories
 
         public async Task<Rating> GetFilmAndUserAsync(int filmId, string userId)
         {
-            var result = _context.Ratings.SingleOrDefault(x => x.FilmId == filmId && x.UserId == userId);
+            var result = await Task.Run(() => _context.Ratings.SingleOrDefault(x => x.FilmId == filmId && x.UserId == userId));
             return result;
         }
     }

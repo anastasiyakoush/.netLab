@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using FilmsCatalog.DAL.Core.Interfaces;
+using System.Linq;
 
 namespace FilmsCatalog.DAL.EF.Repositories
 {
@@ -31,9 +32,9 @@ namespace FilmsCatalog.DAL.EF.Repositories
             return await entities.FindAsync(id);
         }
 
-        public Task<IEnumerable<TEntity>> GetAllAsync()
+        public Task<IQueryable<TEntity>> GetAllAsync()
         {
-            return Task.Run(() => (IEnumerable<TEntity>)entities);
+            return Task.Run(() => (IQueryable<TEntity>)entities);
         }
 
         public void Update(TEntity entity)

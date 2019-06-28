@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace FilmsCatalog.DAL.Core.Interfaces
@@ -7,7 +8,7 @@ namespace FilmsCatalog.DAL.Core.Interfaces
     {
         Task CreateAsync(TEntity entity);
         Task<TEntity> GetAsync(int id);
-        Task<IEnumerable<TEntity>> GetAllAsync();
+        Task<IQueryable<TEntity>> GetAllAsync();
         void Update(TEntity entity);
         void Delete(TEntity entity);
     }

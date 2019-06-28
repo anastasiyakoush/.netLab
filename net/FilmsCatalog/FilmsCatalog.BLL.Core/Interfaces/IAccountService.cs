@@ -8,6 +8,7 @@ namespace FilmsCatalog.BLL.Core.Interfaces
         Task<string> RegistrateAsync(UserDTO userDTO);
         Task<string> AuthenticateAsync(UserDTO userDTO);
         Task<UserDTO> GetUserByIdAsync(string userId);
+        Task<UserDTO> GetUserByNameAsync(string userName);
         Task LogoutAsync();
     }
 }

@@ -8,7 +8,11 @@ namespace FilmsCatalog.BLL.Core.Configuration.Profiles
     {
         public BLLCommentProfile()
         {
-            CreateMap<CommentDTO, Comment>().ReverseMap();
+            CreateMap<Comment, CommentDTO>()
+                .IncludeMembers(s => s.User)
+                .ReverseMap();
+            CreateMap<User, CommentDTO>(MemberList.None)
+                .ForMember(dest => dest.UserName, src => src.MapFrom(x => x.UserName));
         }
     }
 }

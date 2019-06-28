@@ -41,8 +41,7 @@ namespace FilmsCatalog.BLL.Services
                 rating.Film = film;
                 await _uow.Ratings.CreateAsync(rating);
                 await _uow.SaveAsync();
-            }
-            
+            }            
         }
 
         public async Task<IQueryable> GetAllRatingsAsync()
