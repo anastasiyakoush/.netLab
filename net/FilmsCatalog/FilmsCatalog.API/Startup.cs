@@ -55,6 +55,7 @@ namespace FilmsCatalog.API
             services.AddTransient<ICommentService, CommentService>();
             services.AddTransient<IRatingService, RatingService>();
             services.AddTransient<IAccountService, AccountService>();
+            services.AddTransient<IImageService, ImageService>();
 
             //services for identity
             services.AddIdentity<User, IdentityRole>()
@@ -102,6 +103,7 @@ namespace FilmsCatalog.API
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            app.UseCors(x=>x.AllowAnyOrigin());
             app.UseDeveloperExceptionPage();
             app.UseAuthentication();
             app.UseHttpsRedirection();

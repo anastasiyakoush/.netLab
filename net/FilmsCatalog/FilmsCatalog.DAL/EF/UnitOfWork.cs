@@ -11,6 +11,7 @@ namespace FilmsCatalog.DAL.EF.EF
         private readonly FilmsCatalogContext _db;
         private readonly IGenericRepository<Film> _filmRepository;
         private readonly IGenericRepository<Comment> _commentRepository;
+        private readonly IFilmImageRepository _filmImageRepository;
         private readonly IRatingRepository _ratingRepository;
         private bool disposed = false;
 
@@ -32,6 +33,11 @@ namespace FilmsCatalog.DAL.EF.EF
         public IRatingRepository Ratings
         {
             get => _ratingRepository ?? new RatingRepository(_db);
+        }
+
+        public IFilmImageRepository Images
+        {
+            get => _filmImageRepository ?? new FilmImagesRepository(_db);
         }
 
         public async Task SaveAsync()

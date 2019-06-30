@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using FilmsCatalog.DAL.Core.Entities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.AspNetCore.Identity;
 
 namespace FilmsCatalog.DAL.EF.EF
 {
@@ -11,6 +10,7 @@ namespace FilmsCatalog.DAL.EF.EF
 
         public DbSet<Film> Films { get; set; }
         public DbSet<Rating> Ratings { get; set; }
+        public DbSet<FilmImage> FilmImages { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -24,6 +24,9 @@ namespace FilmsCatalog.DAL.EF.EF
                 .Ignore(p => p.EmailConfirmed);
 
             builder.Entity<Rating>().HasKey(x => new { x.FilmId, x.UserId });
+
+            builder.Entity<FilmImage>().Property(x => x.Url).IsRequired();
+            builder.Entity<FilmImage>().Property(x => x.FilmId).IsRequired();
         }
     }
 }

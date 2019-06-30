@@ -8,6 +8,7 @@ namespace FilmsCatalog.DAL.Core.Interfaces
     {
         IGenericRepository<Film> Films { get; }
         IGenericRepository<Comment> Comments { get; }
+        IFilmImageRepository Images { get; }
         IRatingRepository Ratings { get; }
         Task SaveAsync();
     }

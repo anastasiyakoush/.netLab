@@ -6,6 +6,12 @@ using FilmsCatalog.API.Models;
 using FilmsCatalog.BLL.Core.DTO;
 using FilmsCatalog.API.Configuration.Filters;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections;
+using Microsoft.AspNetCore.Http;
+using System.Net.Http;
+using System.Net;
+using System.Net.Http.Headers;
+using Newtonsoft.Json;
 
 namespace FilmsCatalog.API.Controllers
 {
@@ -17,12 +23,14 @@ namespace FilmsCatalog.API.Controllers
     {
         private readonly ICommentService _commentService;
         private readonly IRatingService _ratingService;
+        private readonly IImageService _imageService;
         private readonly IMapper _mapper;
 
-        public FilmDetailsController(ICommentService commentService, IRatingService ratingService, IMapper mapper)
+        public FilmDetailsController(ICommentService commentService, IRatingService ratingService, IImageService imageService, IMapper mapper)
         {
             _commentService = commentService;
             _ratingService = ratingService;
+            _imageService = imageService;
             _mapper = mapper;
         }
 
@@ -44,7 +52,7 @@ namespace FilmsCatalog.API.Controllers
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetUserCommentsAsync(string userId)
         {
-            var comments= await _commentService.GetUserCommentsAsync(userId);
+            var comments = await _commentService.GetUserCommentsAsync(userId);
             return Ok(comments);
         }
 
@@ -69,5 +77,24 @@ namespace FilmsCatalog.API.Controllers
             var ratings = await _ratingService.GetAllRatingsAsync();
             return Ok(ratings);
         }
+        [AllowAnonymous]
+        [HttpGet("image/{filmId}")]
+        public async Task<IActionResult> GetImage(int filmId)
+        {
+            // var images = await _imageService.GetAllImages(filmId);
+            //// images.Headers.ContentType = new MediaTypeHeaderValue( "image/jpeg");
+            // return images;
+            using (var httpClient = new HttpClient())
+            {
+                var requestUrl = "https://cloud-api.yandex.net:443/v1/disk/public/resources/download?public_key=" + "https://yadi.sk/i/i0wsvvXH6LLESA";
+                var message = await httpClient.GetAsync(requestUrl);
+                var content = await message.Content.ReadAsStringAsync();
+                var downloaderUrl = JsonConvert.DeserializeObject<YandexDiskResponse>(content).Href;
+
+                message = await httpClient.GetAsync(downloaderUrl);                
+                return Ok(message);
+            }
+        }
     }
 }
+
