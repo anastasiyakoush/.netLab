@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using FluentValidation.Attributes;
+﻿using FluentValidation.Attributes;
 
 namespace FilmsCatalog.API.Models
 {

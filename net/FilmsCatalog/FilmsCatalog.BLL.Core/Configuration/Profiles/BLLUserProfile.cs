@@ -8,7 +8,8 @@ namespace FilmsCatalog.BLL.Core.Configuration.Profiles
     {
         public BLLUserProfile()
         {
-            CreateMap<User, UserDTO>().ReverseMap();
+            CreateMap<UserDTO, User>();
+            CreateMap<User, AuthenticatedUserDTO>();
         }
     }
 }

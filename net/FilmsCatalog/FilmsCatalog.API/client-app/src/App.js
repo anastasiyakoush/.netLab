@@ -1,8 +1,13 @@
 import React from "react";
-import SignUp from './containers/SignUp/index'
+import { BrowserRouter } from "react-router-dom"
+import AppRouter from './routing/AppRouter'
 
 function App() {
-    return <SignUp />;
+    return (
+        <BrowserRouter>
+            <AppRouter />
+        </BrowserRouter>
+    );
 }
 
 export default App;

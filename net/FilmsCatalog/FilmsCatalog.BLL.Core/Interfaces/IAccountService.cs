@@ -5,10 +5,9 @@ namespace FilmsCatalog.BLL.Core.Interfaces
 {
     public interface IAccountService
     {
-        Task<string> RegistrateAsync(UserDTO userDTO);
-        Task<string> AuthenticateAsync(UserDTO userDTO);
+        Task<AuthenticatedUserDTO> RegistrateAsync(UserDTO userDTO);
+        Task<AuthenticatedUserDTO> AuthenticateAsync(UserDTO userDTO);
         Task<UserDTO> GetUserByIdAsync(string userId);
         Task<UserDTO> GetUserByNameAsync(string userName);
-        Task LogoutAsync();
     }
 }

@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-
 using FilmsCatalog.DAL.Core.Entities;
 using FilmsCatalog.BLL.Core.DTO;
 

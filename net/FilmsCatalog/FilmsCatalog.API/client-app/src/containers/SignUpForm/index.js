@@ -6,7 +6,7 @@ import styles from "./styles";
 import { withStyles } from "@material-ui/styles";
 import { signup } from "../../actions/actions";
 
-let SignUp = props => {
+let SignUpForm = props => {
     const { signUp, email, username, password, confirmPassword } = props;
 
     const handleSubmit = (e) => {
@@ -49,7 +49,7 @@ let SignUp = props => {
     );
 };
 
-SignUp = reduxForm({ form: 'signUp' })(withStyles(styles)(SignUp));
+SignUpForm = reduxForm({ form: 'signUp' })(withStyles(styles)(SignUpForm));
 
 const selector = formValueSelector("signUp");
 
@@ -69,9 +69,9 @@ const mapDispatchToProps = dispatch => {
     }
 }
 
-SignUp = connect(
+SignUpForm = connect(
     mapStateToProps,
     mapDispatchToProps
-)(SignUp);
+)(SignUpForm);
 
-export default SignUp;
+export default SignUpForm;

@@ -1,6 +1,10 @@
-﻿namespace FilmsCatalog.API.Models
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace FilmsCatalog.BLL.Core.DTO
 {
-    public class UserModel
+    public class AuthenticatedUserDTO
     {
         public string UserName { get; set; }
         public string Email { get; set; }

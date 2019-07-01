@@ -6,12 +6,6 @@ using FilmsCatalog.API.Models;
 using FilmsCatalog.BLL.Core.DTO;
 using FilmsCatalog.API.Configuration.Filters;
 using Microsoft.AspNetCore.Authorization;
-using System.Collections;
-using Microsoft.AspNetCore.Http;
-using System.Net.Http;
-using System.Net;
-using System.Net.Http.Headers;
-using Newtonsoft.Json;
 
 namespace FilmsCatalog.API.Controllers
 {
@@ -79,21 +73,10 @@ namespace FilmsCatalog.API.Controllers
         }
         [AllowAnonymous]
         [HttpGet("image/{filmId}")]
-        public async Task<IActionResult> GetImage(int filmId)
+        public async Task<IActionResult> GetImagesUrls(int filmId)
         {
-            // var images = await _imageService.GetAllImages(filmId);
-            //// images.Headers.ContentType = new MediaTypeHeaderValue( "image/jpeg");
-            // return images;
-            using (var httpClient = new HttpClient())
-            {
-                var requestUrl = "https://cloud-api.yandex.net:443/v1/disk/public/resources/download?public_key=" + "https://yadi.sk/i/i0wsvvXH6LLESA";
-                var message = await httpClient.GetAsync(requestUrl);
-                var content = await message.Content.ReadAsStringAsync();
-                var downloaderUrl = JsonConvert.DeserializeObject<YandexDiskResponse>(content).Href;
-
-                message = await httpClient.GetAsync(downloaderUrl);                
-                return Ok(message);
-            }
+            var urls =await _imageService.GetUrlsAsync(filmId);
+            return Ok(urls);
         }
     }
 }

@@ -5,7 +5,6 @@ using System.Collections.Generic;
 
 namespace FilmsCatalog.DAL.Core.Entities
 {
-    [Validator(typeof(Film))]
     public class Film : IId, IFilmInfo
     {
         public int Id { get; set; }

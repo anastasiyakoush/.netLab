@@ -8,9 +8,9 @@ namespace FilmsCatalog.API.Configuration.Profiles
     {
         public UserProfile()
         {
-            CreateMap<RegisterUserModel, UserDTO>();
+            CreateMap<AuthenticatedUserDTO, UserModel>();
             CreateMap<LoginModel, UserDTO>();
-            CreateMap<UserDTO, UserModel>();
+            CreateMap<RegisterUserModel, UserDTO>();
         }
     }
 }
