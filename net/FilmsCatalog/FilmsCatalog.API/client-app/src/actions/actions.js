@@ -17,7 +17,9 @@ export const signup = user => dispatch => {
     dispatch(loading());
     accountService.signUp(user)
         .then(response => {
-            localStorage.setItem("user-token", response.data);
+            localStorage.setItem("username", response.data.userName);
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("email", response.data.email);
             dispatch(requestSuccess(response))
         })
         .catch(errors =>
@@ -29,7 +31,9 @@ export const login = user => dispatch => {
     dispatch(loading());
     accountService.login(user)
         .then(response => {
-            localStorage.setItem("user-token", response.data);
+            localStorage.setItem("username", response.data.userName);
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("email", response.data.email);
             dispatch(requestSuccess(response))
         })
         .catch(errors =>
@@ -39,5 +43,7 @@ export const login = user => dispatch => {
 };
 //???
 export const logout = () => dispatch => {
-    localStorage.removeItem("user-token");
+    localStorage.removeItem("username");
+    localStorage.removeItem("email");
+    localStorage.removeItem("token");
 }

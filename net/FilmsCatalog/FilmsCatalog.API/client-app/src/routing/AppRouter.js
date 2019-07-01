@@ -13,6 +13,7 @@ const AppRouter = () => {
             <Route path={`${root()}${routes.login}`} component={LoginForm} />
             <Route path={`${root()}${routes.signUp}`} component={SignUpForm} />
             <PrivateRoute exact path={`${root()}`} component={HomePage} />
+            <PrivateRoute exact path={`${root()}${routes.account}`} component={HomePage} />
 
             <Route path={`${root()}${routes.notFound}`} component={NotFound} />
             <Redirect to={`${root()}${routes.notFound}`} />

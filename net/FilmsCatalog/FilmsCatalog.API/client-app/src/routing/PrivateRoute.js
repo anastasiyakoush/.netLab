@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route, Redirect } from "react-router-dom"
-import { root, routes } from "./routes"
+import { routes } from "./routes"
 
 const isAuthenticated = localStorage.getItem("username") && localStorage.getItem("token");
 
