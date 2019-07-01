@@ -103,7 +103,7 @@ namespace FilmsCatalog.API
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseCors(x=>x.AllowAnyOrigin());
+            app.UseCors(x=>x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseDeveloperExceptionPage();
             app.UseAuthentication();
             app.UseHttpsRedirection();

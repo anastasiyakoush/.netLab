@@ -1,23 +1,43 @@
-import * as types from "./types";
+import { LOADING, REQUEST_SUCCESS, REQUEST_FAILURE } from "./types";
+import { accountService } from "../api/accountService"
 
-//signup
-export const setEmail = (email, isValid) => ({
-    type: types.SET_EMAIL,
-    payload: { email, isValid }
+const loading = () => ({
+    type: LOADING
 });
-export const setUsername = (username, isValid) => ({
-    type: types.SET_USERNAME,
-    payload: { username, isValid }
+const requestSuccess = response => ({
+    type: REQUEST_SUCCESS,
+    payload: { response }
 });
-export const setPassword = (password, isValid) => ({
-    type: types.SET_PASSWORD,
-    payload: { password, isValid }
+const requestFailure = errors => ({
+    type: REQUEST_FAILURE,
+    payload: { errors }
 });
-export const setConfirmPassword = (confirmPassword, isValid) => ({
-    type: types.SET_CONFIRMPASSWORD,
-    payload: { confirmPassword, isValid }
-});
-export const signup = (email, username, password, isValid) => ({
-    type: types.SIGNUP,
-    payload: { email, username, password, isValid }
-});
+
+export const signup = user => dispatch => {
+    dispatch(loading());
+    accountService.signUp(user)
+        .then(response => {
+            localStorage.setItem("user-token", response.data);
+            dispatch(requestSuccess(response))
+        })
+        .catch(errors =>
+            dispatch(requestFailure(errors))
+        );
+
+};
+export const login = user => dispatch => {
+    dispatch(loading());
+    accountService.login(user)
+        .then(response => {
+            localStorage.setItem("user-token", response.data);
+            dispatch(requestSuccess(response))
+        })
+        .catch(errors =>
+            dispatch(requestFailure(errors))
+        )
+
+};
+//???
+export const logout = () => dispatch => {
+    localStorage.removeItem("user-token");
+}

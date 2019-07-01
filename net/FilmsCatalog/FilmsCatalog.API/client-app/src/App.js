@@ -1,7 +1,8 @@
 import React from "react";
+import SignUp from './containers/SignUp/index'
 
 function App() {
-    return <></>;
+    return <SignUp />;
 }
 
 export default App;
