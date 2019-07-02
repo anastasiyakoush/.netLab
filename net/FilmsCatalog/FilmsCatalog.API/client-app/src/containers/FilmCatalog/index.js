@@ -1,8 +1,14 @@
 import React from "react"
 import { connect } from "react-redux"
+import { Card, CardHeader, CardMedia, CardActions, CardContent, Button, Typography } from "@material-ui/core";
+import FilmCard from "../../components/FilmCard";
 
 const FilmsCatalog = props => {
-    return (<div>Here will be fils list</div>)
+    return (
+        <>
+            <FilmCard></FilmCard>
+        </>
+    )
 
 }
 
