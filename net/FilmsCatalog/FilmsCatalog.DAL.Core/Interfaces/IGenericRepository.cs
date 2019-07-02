@@ -1,15 +1,14 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using System.Threading.Tasks;
 
 namespace FilmsCatalog.DAL.Core.Interfaces
 {
-    public interface IGenericRepository<TEntity> where TEntity : class
+    public interface IGenericRepository<T> where T : class
     {
-        Task CreateAsync(TEntity entity);
-        Task<TEntity> GetAsync(int id);
-        Task<IQueryable<TEntity>> GetAllAsync();
-        void Update(TEntity entity);
-        void Delete(TEntity entity);
+        Task CreateAsync(T entity);
+        Task<T> GetAsync(int id);
+        IQueryable<T> GetAll();
+        void Update(T entity);
+        void Delete(T entity);
     }
 }

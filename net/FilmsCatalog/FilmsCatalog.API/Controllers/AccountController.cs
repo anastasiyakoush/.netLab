@@ -27,10 +27,12 @@ namespace FilmsCatalog.API.Controllers
         {
             var userDTO = _mapper.Map<RegisterUserModel, UserDTO>(model);
             var user = await _accountService.RegistrateAsync(userDTO);
+
             if (user != null)
             {
                 return Ok(user);
             }
+
             return BadRequest();
         }
 
@@ -39,10 +41,12 @@ namespace FilmsCatalog.API.Controllers
         {
             var userDTO = _mapper.Map<LoginModel, UserDTO>(model);
             var user = await _accountService.AuthenticateAsync(userDTO);
+
             if (user != null)
             {
                 return Ok(user);
             }
+
             return BadRequest();
         }
     }

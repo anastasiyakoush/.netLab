@@ -11,8 +11,8 @@ namespace FilmsCatalog.DAL.EF.EF
         private readonly FilmsCatalogContext _db;
         private readonly IGenericRepository<Film> _filmRepository;
         private readonly IGenericRepository<Comment> _commentRepository;
-        private readonly IFilmImageRepository _filmImageRepository;
-        private readonly IRatingRepository _ratingRepository;
+        private readonly IGenericRepository<FilmImage> _filmImageRepository;
+        private readonly IGenericRepository<Rating> _ratingRepository;
         private bool disposed = false;
 
         public UnitOfWork(FilmsCatalogContext context)
@@ -20,25 +20,10 @@ namespace FilmsCatalog.DAL.EF.EF
             _db = context;
         }
 
-        public IGenericRepository<Film> Films
-        {
-            get => _filmRepository ?? new GenericRepository<Film>(_db);
-        }
-
-        public IGenericRepository<Comment> Comments
-        {
-            get => _commentRepository ?? new GenericRepository<Comment>(_db);
-        }
-
-        public IRatingRepository Ratings
-        {
-            get => _ratingRepository ?? new RatingRepository(_db);
-        }
-
-        public IFilmImageRepository Images
-        {
-            get => _filmImageRepository ?? new FilmImagesRepository(_db);
-        }
+        public IGenericRepository<Film> Films => _filmRepository ?? new GenericRepository<Film>(_db);
+        public IGenericRepository<Comment> Comments => _commentRepository ?? new GenericRepository<Comment>(_db);
+        public IGenericRepository<Rating> Ratings => _ratingRepository ?? new GenericRepository<Rating>(_db);
+        public IGenericRepository<FilmImage> Images => _filmImageRepository ?? new GenericRepository<FilmImage>(_db);
 
         public async Task SaveAsync()
         {
@@ -62,6 +47,5 @@ namespace FilmsCatalog.DAL.EF.EF
             Dispose(true);
             GC.SuppressFinalize(this);
         }
-
     }
 }

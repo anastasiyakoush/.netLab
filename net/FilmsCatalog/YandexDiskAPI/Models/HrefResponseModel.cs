@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace FilmsCatalog.BLL.Core.DTO
+﻿namespace YandexDiskAPI.Models
 {
-    public class YandexDiskResponse
+    public class HrefResponseModel
     {
+
         public string Href { get; set; }
         public string Method { get; set; }
         public bool Templated { get; set; }

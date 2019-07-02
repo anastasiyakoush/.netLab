@@ -2,12 +2,11 @@
 
 namespace FilmsCatalog.DAL.Core.Entities
 {
-    public class FilmImage : IId
+    public class FilmImage : IIdModel
     {
         public int Id { get; set; }
         public int FilmId { get; set; }
         public string Url { get; set; }
-
-        public Film Film { get; set; }
+        public virtual Film Film { get; set; }
     }
 }

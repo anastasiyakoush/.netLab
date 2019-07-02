@@ -6,6 +6,9 @@ using FilmsCatalog.BLL.Core.DTO;
 using FilmsCatalog.DAL.Core.Interfaces;
 using FilmsCatalog.DAL.Core.Entities;
 using System.Linq;
+using Microsoft.EntityFrameworkCore;
+using System;
+using FilmsCatalog.Core;
 
 namespace FilmsCatalog.BLL.Services
 {
@@ -25,13 +28,14 @@ namespace FilmsCatalog.BLL.Services
             var film = _mapper.Map<FilmDTO, Film>(filmDTO);
             await _uow.Films.CreateAsync(film);
             await _uow.SaveAsync();
-        }
+
+        } 
 
         public async Task<IEnumerable<FilmDTO>> GetAllFilmsAsync()
         {
-            var films = await _uow.Films.GetAllAsync();
+            var films = await _uow.Films.GetAll().ToListAsync();
             return _mapper.Map<IEnumerable<Film>, IEnumerable<FilmDTO>>(films);
-        }
+        }  
 
         public async Task<FilmDTO> GetFilmAsync(int id)
         {
@@ -39,26 +43,30 @@ namespace FilmsCatalog.BLL.Services
             return _mapper.Map<Film, FilmDTO>(film);
         }
 
-        public async Task<bool> RemoveFilmAsync(int id)
+        public async Task RemoveFilmAsync(int id)
         {
             var film = await _uow.Films.GetAsync(id);
+
+            if (film == null)
+            {
+                throw new Exception(Consts.FilmNotExistedMessage);
+            }
+
             _uow.Films.Delete(film);
             await _uow.SaveAsync();
-            var isDeleted = await _uow.Films.GetAsync(id) == null;
-            return isDeleted;
         }
 
-        public async Task<FilmDTO> UpdateFilmAsync(FilmDTO filmDTO)
+        public async Task UpdateFilmAsync(FilmDTO filmDTO)
         {
-            if (filmDTO != null)
+            if (filmDTO == null)
             {
-                var film = _mapper.Map<FilmDTO, Film>(filmDTO);
-                _uow.Films.Update(film);
-                await _uow.SaveAsync();
+                throw new Exception(Consts.FilmNotExistedMessage);
             }
-            var updatedFilm = await _uow.Films.GetAsync(filmDTO.Id);
-            var updatedFilmDTO = _mapper.Map<Film, FilmDTO>(updatedFilm);
-            return updatedFilmDTO;
-        }                
+
+            var film = _mapper.Map<FilmDTO, Film>(filmDTO);
+
+            _uow.Films.Update(film);
+            await _uow.SaveAsync();
+        }
     }
 }

@@ -4,10 +4,14 @@ using FilmsCatalog.DAL.Core.Entities;
 
 namespace FilmsCatalog.BLL.Core.Configuration.Profiles
 {
-    public class BLLCommentProfile : Profile
+    public class BLLProfile : Profile
     {
-        public BLLCommentProfile()
+        public BLLProfile()
         {
+            CreateMap<Film, FilmDTO>().ReverseMap();
+            CreateMap<RatingDTO, Rating>().ReverseMap();
+            CreateMap<UserDTO, User>().ForMember(user => user.Id, opt => opt.MapFrom(dto => dto.UserId)).ReverseMap();
+            CreateMap<User, AuthenticatedUserDTO>();
             CreateMap<Comment, CommentDTO>()
                 .IncludeMembers(s => s.User)
                 .ReverseMap();

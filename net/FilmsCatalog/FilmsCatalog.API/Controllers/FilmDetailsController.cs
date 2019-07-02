@@ -6,6 +6,7 @@ using FilmsCatalog.API.Models;
 using FilmsCatalog.BLL.Core.DTO;
 using FilmsCatalog.API.Configuration.Filters;
 using Microsoft.AspNetCore.Authorization;
+using System;
 
 namespace FilmsCatalog.API.Controllers
 {
@@ -31,52 +32,103 @@ namespace FilmsCatalog.API.Controllers
         [HttpPost("comment")]
         public async Task<IActionResult> AddCommentAsync(CommentModel comment)
         {
-            var commentDTO = _mapper.Map<CommentModel, CommentDTO>(comment);
-            await _commentService.AddCommentAsync(commentDTO);
-            return Ok();
+            try
+            {
+                var commentDTO = _mapper.Map<CommentModel, CommentDTO>(comment);
+                await _commentService.AddCommentAsync(commentDTO);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [HttpGet("comment/{filmId}")]
         public async Task<IActionResult> GetFilmCommentsAsync(int filmId)
         {
-            var comments = await _commentService.GetFilmCommentsAsync(filmId);
-            return Ok(comments);
+            try
+            {
+                var comments = await _commentService.GetFilmCommentsAsync(filmId);
+                return Ok(comments);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [HttpGet("user/{userId}")]
         public async Task<IActionResult> GetUserCommentsAsync(string userId)
         {
-            var comments = await _commentService.GetUserCommentsAsync(userId);
-            return Ok(comments);
+            try
+            {
+                var comments = await _commentService.GetUserCommentsAsync(userId);
+                return Ok(comments);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [HttpPost("rate")]
         public async Task<IActionResult> RateFilmAsync(RatingModel model)
         {
-            var ratingDTO = _mapper.Map<RatingModel, RatingDTO>(model);
-            await _ratingService.AddFilmRatingAsync(ratingDTO);
-            return Ok();
+            try
+            {
+                var ratingDTO = _mapper.Map<RatingModel, RatingDTO>(model);
+                await _ratingService.AddFilmRatingAsync(ratingDTO);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [HttpGet("rate/{filmId:int}")]
         public async Task<IActionResult> GetFilmRatingAsync(int filmId)
         {
-            var rating = await _ratingService.GetFilmRatingAsync(filmId);
-            return Ok(rating);
+            try
+            {
+                var rating = await _ratingService.GetFilmRatingAsync(filmId);
+                return Ok(rating);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
 
         [HttpGet("rate/all")]
         public async Task<IActionResult> GetAllFilmRatingsAsync()
         {
-            var ratings = await _ratingService.GetAllRatingsAsync();
-            return Ok(ratings);
+            try
+            {
+                var ratings = await _ratingService.GetAllRatingsAsync();
+                return Ok(ratings);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
-        [AllowAnonymous]
+              
         [HttpGet("image/{filmId}")]
         public async Task<IActionResult> GetImagesUrls(int filmId)
         {
-            var urls =await _imageService.GetUrlsAsync(filmId);
-            return Ok(urls);
+            try
+            {
+                var urls = await _imageService.GetUrlsAsync(filmId);
+                return Ok(urls);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
         }
     }
 }

@@ -30,26 +30,32 @@ namespace FilmsCatalog.BLL.Services
         {
             var user = _mapper.Map<UserDTO, User>(userDTO);
             var identityResult = await _userManager.CreateAsync(user, userDTO.Password);
+
             if (identityResult.Succeeded)
             {
                 return await AuthenticateAsync(userDTO);
             }
+
             return null;
         }
 
         public async Task<AuthenticatedUserDTO> AuthenticateAsync(UserDTO userDTO)
         {
             var user = await _userManager.FindByEmailAsync(userDTO.Email);
+
             if (user != null)
             {
                 var result = await _signInManager.PasswordSignInAsync(user.UserName, userDTO.Password, false, false);
+
                 if (result.Succeeded)
                 {
                     var authenticatedUserDTO = _mapper.Map<User, AuthenticatedUserDTO>(user);
-                    authenticatedUserDTO.Token = await GenerateJwtTokenAsync(user);
+                    authenticatedUserDTO.Token = GenerateJwtTokenAsync(user);
+
                     return authenticatedUserDTO;
                 }
             }
+
             return null;
         }
 
@@ -57,6 +63,7 @@ namespace FilmsCatalog.BLL.Services
         {
             var user = await _userManager.FindByIdAsync(id);
             var userDTO = _mapper.Map<User, UserDTO>(user);
+
             return userDTO;
         }
 
@@ -64,10 +71,11 @@ namespace FilmsCatalog.BLL.Services
         {
             var user = await _userManager.FindByNameAsync(userName);
             var userDTO = _mapper.Map<User, UserDTO>(user);
+
             return userDTO;
         }
 
-        private async Task<string> GenerateJwtTokenAsync(User user)
+        private string GenerateJwtTokenAsync(User user)
         {
             var now = DateTime.Now;
             var expires = now.AddHours(AppConfiguration.Lifetime);
@@ -80,11 +88,12 @@ namespace FilmsCatalog.BLL.Services
             };
 
             var jwtToken = new JwtSecurityToken(
-                notBefore: now,
-                claims: claims,
-                expires: expires,
-                signingCredentials: signingCredentials
+                    notBefore: now,
+                    claims: claims,
+                    expires: expires,
+                    signingCredentials: signingCredentials
                 );
+
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
     }

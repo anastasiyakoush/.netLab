@@ -24,6 +24,8 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using FilmsCatalog.Core.Configuration;
 using FilmsCatalog.BLL.Core.Interfaces;
+using YandexDiskAPI.Services;
+using YandexDiskAPITransmitter.Interfaces;
 
 namespace FilmsCatalog.API
 {
@@ -57,6 +59,9 @@ namespace FilmsCatalog.API
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IImageService, ImageService>();
 
+            //api
+            services.AddTransient<IDiskAPI, ImageAPITransmitter>();
+
             //services for identity
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<FilmsCatalogContext>()
@@ -83,15 +88,10 @@ namespace FilmsCatalog.API
             //mapping
             services.AddAutoMapper(cfg =>
             {
-                cfg.AddProfile<FilmProfile>();
-                cfg.AddProfile<UserProfile>();
-                cfg.AddProfile<RatingProfile>();
-                cfg.AddProfile<BLLFilmProfile>();
-                cfg.AddProfile<BLLUserProfile>();
-                cfg.AddProfile<BLLCommentProfile>();
-                cfg.AddProfile<BLLRatingProfile>();
+                cfg.AddProfile<APIProfile>();
+                cfg.AddProfile<BLLProfile>();
             },
-           typeof(BLLFilmProfile), typeof(FilmProfile)
+           typeof(BLLProfile), typeof(APIProfile)
            );
 
             //services for loggers
@@ -103,7 +103,7 @@ namespace FilmsCatalog.API
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            app.UseCors(x=>x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseDeveloperExceptionPage();
             app.UseAuthentication();
             app.UseHttpsRedirection();

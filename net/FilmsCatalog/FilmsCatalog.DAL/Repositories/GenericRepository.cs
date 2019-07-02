@@ -1,43 +1,42 @@
-﻿using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Threading.Tasks;
 using FilmsCatalog.DAL.Core.Interfaces;
 using System.Linq;
 
 namespace FilmsCatalog.DAL.EF.Repositories
 {
-    public class GenericRepository<TEntity> : IGenericRepository<TEntity> where TEntity : class
+    public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         private DbContext db;
-        private DbSet<TEntity> entities;
+        private DbSet<T> entities;
 
         public GenericRepository(DbContext context)
         {
             db = context;
-            entities = db.Set<TEntity>();
+            entities = db.Set<T>();
         }
 
-        public async Task CreateAsync(TEntity entity)
+        public async Task CreateAsync(T entity)
         {
             await entities.AddAsync(entity);
         }
 
-        public void Delete(TEntity entity)
+        public void Delete(T entity)
         {
             entities.Remove(entity);
         }
 
-        public virtual async Task<TEntity> GetAsync(int id)
+        public async Task<T> GetAsync(int id)
         {
             return await entities.FindAsync(id);
         }
 
-        public Task<IQueryable<TEntity>> GetAllAsync()
+        public IQueryable<T> GetAll()
         {
-            return Task.Run(() => (IQueryable<TEntity>)entities);
+            return entities;
         }
 
-        public void Update(TEntity entity)
+        public void Update(T entity)
         {
             db.Update(entity);
         }

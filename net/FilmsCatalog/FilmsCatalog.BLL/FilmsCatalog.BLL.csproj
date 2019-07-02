@@ -18,6 +18,7 @@
   <ItemGroup>
     <ProjectReference Include="..\FilmsCatalog.BLL.Core\FilmsCatalog.BLL.Core.csproj" />
     <ProjectReference Include="..\FilmsCatalog.DAL\FilmsCatalog.DAL.EF.csproj" />
+    <ProjectReference Include="..\YandexDiskAPI\YandexDiskAPITransmitter.csproj" />
   </ItemGroup>
 
 </Project>

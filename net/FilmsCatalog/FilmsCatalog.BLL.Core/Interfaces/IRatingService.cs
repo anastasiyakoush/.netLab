@@ -1,4 +1,5 @@
 ﻿using FilmsCatalog.BLL.Core.DTO;
+using System.Collections;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -8,6 +9,6 @@ namespace FilmsCatalog.BLL.Core.Interfaces
     {
         Task<double> GetFilmRatingAsync(int filmId);
         Task AddFilmRatingAsync(RatingDTO ratingDTO);
-        Task<IQueryable> GetAllRatingsAsync();
+        Task<IEnumerable> GetAllRatingsAsync();
     }
 }

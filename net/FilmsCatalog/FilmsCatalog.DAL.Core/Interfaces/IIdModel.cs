@@ -1,6 +1,6 @@
 ﻿namespace FilmsCatalog.DAL.Core.Interfaces
 {
-    public interface IId
+    public interface IIdModel
     {
         int Id { get; set; }
     }
