@@ -14,7 +14,7 @@ export const filmCrudService = {
     getPosters() {
         return instance.get("posters");
     },
-    getfilmById(id) {
+    getFilmById(id) {
         return instance.get(`getfilm/${id}`);
     }
 };

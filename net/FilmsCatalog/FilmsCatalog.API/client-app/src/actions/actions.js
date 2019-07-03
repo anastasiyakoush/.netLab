@@ -3,11 +3,20 @@ import {
     REQUEST_SUCCESS,
     REQUEST_FAILURE,
     SET_FILMS_LIST,
-    SET_POSTERS
+    SET_POSTERS,
+    SET_FILM_ID,
+    SET_FILM_NAME,
+    SET_FILM_YEAR,
+    SET_FILM_DIRECTOR,
+    SET_FILM_OVERVIEW,
+    ADD_FILM_RATING,
+    ADD_FILM_COMMENTS,
+    ADD_FILM_IMAGES
 } from "./types";
+
 import { accountService } from "../api/accountService";
 import { filmCrudService } from "../api/filmCrudService";
-import { resolve } from "dns";
+import { filmService } from "../api/filmService";
 
 const loading = () => ({
     type: LOADING
@@ -27,6 +36,39 @@ const setFilmsList = films => ({
 const setPosters = data => ({
     type: SET_POSTERS,
     payload: data
+});
+
+const setFilmId = id => ({
+    type: SET_FILM_ID,
+    payload: id
+});
+const setFilmName = name => ({
+    type: SET_FILM_NAME,
+    payload: name
+});
+const setFilmYear = year => ({
+    type: SET_FILM_YEAR,
+    payload: year
+});
+const setFilmDirector = director => ({
+    type: SET_FILM_DIRECTOR,
+    payload: director
+});
+const setFilmOverview = overview => ({
+    type: SET_FILM_OVERVIEW,
+    payload: overview
+});
+const addFilmRating = rating => ({
+    type: ADD_FILM_RATING,
+    payload: rating
+});
+const addFilmComments = comments => ({
+    type: ADD_FILM_COMMENTS,
+    payload: comments
+});
+const addFilmImages = images => ({
+    type: ADD_FILM_IMAGES,
+    payload: images
 });
 
 export const signup = user => dispatch => {
@@ -96,4 +138,47 @@ export const getFilmsList = () => dispatch => {
         .catch(errors => {
             dispatch(requestFailure(errors));
         });
+};
+//////
+export const getFilmDetails = filmId => dispatch => {
+    dispatch(loading());
+
+    filmCrudService
+        .getFilmById(filmId)
+        .then(response => {
+            const newFilm = response.data;
+
+            return new Promise(resolve => {
+                dispatch(setFilmId(newFilm.id));
+                dispatch(setFilmName(newFilm.name));
+                dispatch(setFilmYear(newFilm.year));
+                dispatch(setFilmDirector(newFilm.director));
+                dispatch(setFilmOverview(newFilm.overview));
+
+                resolve();
+            });
+        })
+        .then(() => {
+            filmService.getFilmImages(filmId);
+        })
+        .then(response => {
+            return new Promise(resolve => {
+                dispatch(addFilmImages(response.data));
+            });
+        })
+        .then(() => {
+            filmService.getFilmRating(filmId);
+        })
+        .then(response => {
+            return new Promise(resolve => {
+                dispatch(addFilmRating(response.data));
+            });
+        })
+        .then(() => {
+            filmService.getFilmComments(filmId);
+        })
+        .then(response => {
+            dispatch(addFilmComments(response.data));
+        })
+        .catch(errors => dispatch(requestFailure(errors)));
 };

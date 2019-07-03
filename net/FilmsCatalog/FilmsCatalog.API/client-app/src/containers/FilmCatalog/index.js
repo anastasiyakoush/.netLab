@@ -1,12 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import FilmCard from "../../components/FilmCard";
-import { getFilmsList } from "../../actions/actions";
+import { getFilmsList, getFilmDetails } from "../../actions/actions";
 import { withStyles } from "@material-ui/styles";
+import { root, routes } from "../../routing//routes";
 import styles from "./styles";
 
 const FilmsCatalog = props => {
     const { films, loading, error, getFilms, classes } = props;
+
+    const goToDetails = filmId => {
+        console.log(props);
+        props.history.push({
+            pathname: `${root()}${routes.film}?id=${filmId}`
+        });
+    };
+
     useEffect(() => {
         getFilms();
     }, [getFilms]);
@@ -18,7 +28,12 @@ const FilmsCatalog = props => {
                 !error &&
                 films &&
                 films.map(x => (
-                    <FilmCard title={x.name} year={x.year} src={x.poster} />
+                    <FilmCard
+                        title={x.name}
+                        year={x.year}
+                        src={x.poster}
+                        onClick={() => goToDetails(x.id)}
+                    />
                 ))}
         </div>
     );
@@ -35,6 +50,9 @@ const mapDispatcToProps = dispatch => {
     return {
         getFilms: () => {
             dispatch(getFilmsList());
+        },
+        getDetails: filmId => {
+            dispatch(getFilmDetails(filmId));
         }
     };
 };
@@ -42,4 +60,4 @@ const mapDispatcToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispatcToProps
-)(withStyles(styles)(FilmsCatalog));
+)(withRouter(withStyles(styles)(FilmsCatalog)));

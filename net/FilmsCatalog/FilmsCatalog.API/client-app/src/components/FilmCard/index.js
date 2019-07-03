@@ -2,7 +2,7 @@ import React from 'react'
 import { Card, CardHeader, CardMedia, CardActions, CardContent, Button, Typography, withStyles } from "@material-ui/core";
 import styles from './styles';
 
-const FilmCard = ({ classes, title, src, year }) => {
+const FilmCard = ({ classes, title, src, year,onClick }) => {
     return (
         <Card className={classes.container}>
             <CardHeader className={classes.header} title={title}></CardHeader>
@@ -12,7 +12,7 @@ const FilmCard = ({ classes, title, src, year }) => {
                 <Typography>{year}</Typography>
             </CardContent>
             <CardActions className={classes.buttons}>
-                <Button>More</Button>
+                <Button onClick={onClick}>More</Button>
             </CardActions>
         </Card>
     )
