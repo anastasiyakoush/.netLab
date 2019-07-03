@@ -9,6 +9,7 @@ using FilmsCatalog.API.Logging.Filters;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using System;
+using FilmsCatalog.BLL.Core.Interfaces;
 
 namespace FilmsCatalog.API.Controllers
 {
@@ -20,11 +21,13 @@ namespace FilmsCatalog.API.Controllers
     public class FilmCatalogController : ControllerBase
     {
         private readonly IFilmService _filmService;
+        private readonly IImageService _imageService;
         private readonly IMapper _mapper;
 
-        public FilmCatalogController(IFilmService filmService, IMapper mapper)
+        public FilmCatalogController(IFilmService filmService, IImageService imageService, IMapper mapper)
         {
             _filmService = filmService;
+            _imageService = imageService;
             _mapper = mapper;
         }
 
@@ -74,7 +77,7 @@ namespace FilmsCatalog.API.Controllers
             try
             {
                 var film = _mapper.Map<FilmModel, FilmDTO>(model);
-                await _filmService.UpdateFilmAsync(film);           
+                await _filmService.UpdateFilmAsync(film);
 
                 return Ok();
             }
@@ -93,6 +96,20 @@ namespace FilmsCatalog.API.Controllers
                 await _filmService.RemoveFilmAsync(id);
                 return Ok();
 
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("posters")]
+        public async Task<IActionResult> GetPostersAsync()
+        {
+            try
+            {
+                var posters = await _imageService.GetPostersAsync();
+                return Ok(posters);
             }
             catch (Exception ex)
             {

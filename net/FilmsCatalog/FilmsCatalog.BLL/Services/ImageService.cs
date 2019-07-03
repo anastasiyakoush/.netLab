@@ -11,22 +11,32 @@ namespace FilmsCatalog.BLL.Services
     public class ImageService : IImageService
     {
         private IUnitOfWork _uow;
-        private IDiskAPI _diskApi;
+        //  private IDiskAPI _diskApi;
 
         public ImageService(IUnitOfWork uow, IDiskAPI diskAPI)
         {
             _uow = uow;
-            _diskApi = diskAPI;
+            // _diskApi = diskAPI;
         }
 
         public async Task<IEnumerable<string>> GetUrlsAsync(int filmId)
         {
-            var publicUrls = await _uow.Images.GetAll()
+            var urls = await _uow.Images.GetAll()
                                    .Where(x => x.FilmId == filmId)
                                    .Select(x => x.Url)
                                    .ToListAsync();
 
-            var urls = await _diskApi.GetDownloaderUrlsAsync(publicUrls);
+            //  var urls = await _diskApi.GetDownloaderUrlsAsync(publicUrls);
+
+            return urls;
+        }
+
+        public async Task<IEnumerable<string>> GetPostersAsync()
+        {
+            var urls = await _uow.Images.GetAll()
+                                   .Select(x => x.Url)
+                                   .Where(x => x.Contains("p.jpg"))
+                                   .ToListAsync();
 
             return urls;
         }
