@@ -31,14 +31,23 @@ namespace FilmsCatalog.BLL.Services
             return urls;
         }
 
-        public async Task<IEnumerable<string>> GetPostersAsync()
+        public async Task<IEnumerable<object>> GetPostersAsync()
         {
             var urls = await _uow.Images.GetAll()
-                                   .Select(x => x.Url)
-                                   .Where(x => x.Contains("p.jpg"))
+                                   .Where(x => x.Url.Contains("p.jpg"))
+                                   .Select(x => PostersResponse(x.FilmId, x.Url))
                                    .ToListAsync();
 
             return urls;
+        }
+
+        private object PostersResponse(int filmId, string url)
+        {
+            return new
+            {
+                FilmId = filmId,
+                Url = url
+            };
         }
     }
 }

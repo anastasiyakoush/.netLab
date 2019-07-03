@@ -85,7 +85,7 @@ namespace FilmsCatalog.DAL.EF.EF
                 new FilmImage { Id = 47, FilmId = 12, Url = "https://filmimages.blob.core.windows.net/images/Fim%20Images/Wonder%20Woman/aPEhtVLrZRnJufKHwbHgqwirv7J.jpg" },
                 new FilmImage { Id = 48, FilmId = 12, Url = "https://filmimages.blob.core.windows.net/images/Fim%20Images/Wonder%20Woman/p.jpg" },
                 new FilmImage { Id = 49, FilmId = 13, Url = "https://filmimages.blob.core.windows.net/images/Fim%20Images/Cinderella/943FR0MnOi70lBB2dK89yTlRtEl.jpg" },
-                new FilmImage { Id = 50, FilmId = 13, Url = "https://filmimages.blob.core.windows.net/images/Fim%20Images/Cinderella/f6jSPjlPD5HJ92VVxIBNfIxL6IP.jpg" },
+                new FilmImage { Id = 50, FilmId = 13, Url = "https://filmimages.blob.core.windows.net/images/Fim%20Images/Cinderella/f6jSPjlPD5HJ92VVxIBNfIxL6Ie.jpg" },
                 new FilmImage { Id = 51, FilmId = 13, Url = "https://filmimages.blob.core.windows.net/images/Fim%20Images/Cinderella/p.jpg" },
                 new FilmImage { Id = 52, FilmId = 13, Url = "https://filmimages.blob.core.windows.net/images/Fim%20Images/Cinderella/syhULVJLKugutEfqvz45xL1oQyB.jpg" },
                 new FilmImage { Id = 53, FilmId = 14, Url = "https://filmimages.blob.core.windows.net/images/Fim%20Images/Star%20Wars/c4zJK1mowcps3wvdrm31knxhur2.jpg" },

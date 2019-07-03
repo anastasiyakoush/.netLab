@@ -1,8 +1,9 @@
 const styles = {
     container: {
-        width: "20%",
+        width: "22%",
         minHeight: "400px",
-        color:"#F44336"
+        color:"#F44336",
+        margin:"20px 0"
     },
     content: {
 
