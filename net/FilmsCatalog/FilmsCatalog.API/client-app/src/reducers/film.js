@@ -1,5 +1,6 @@
 import {
     SET_FILM_ID,
+    GET_POSTER,
     SET_FILM_NAME,
     SET_FILM_YEAR,
     SET_FILM_DIRECTOR,
@@ -16,6 +17,7 @@ const initialState = {
     director: "",
     overview: "",
     rating: "",
+    poster: "",
     images: [],
     comments: []
 };
@@ -61,6 +63,11 @@ export default function filmReducer(state = initialState, action) {
             return {
                 ...state,
                 rating: action.payload
+            };
+        case GET_POSTER:
+            return {
+                ...state,
+                poster: state.images.filter(x => x.includes("p.jpg") || x.includes("p.jpeg"))[0]
             };
         default:
             return state;

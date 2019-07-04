@@ -12,14 +12,16 @@ const FilmsCatalog = props => {
 
     const goToDetails = filmId => {
         console.log(props);
+        console.log(filmId);
         props.history.push({
-            pathname: `${root()}${routes.film}?id=${filmId}`
+            pathname: `${root()}${routes.film}/${filmId}`
         });
     };
 
     useEffect(() => {
         getFilms();
     }, [getFilms]);
+
     return (
         <div className={classes.container}>
             {loading && <div>LOADING!!!!!</div>}

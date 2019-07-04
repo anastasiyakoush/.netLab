@@ -5,7 +5,6 @@ import NavBar from "../NavBar/index"
 const HomePage = () => {
     return (
         <>
-            <NavBar />
             <FilmsCatalog />
         </>
     )

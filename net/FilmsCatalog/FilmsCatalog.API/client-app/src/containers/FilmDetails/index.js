@@ -1,26 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { getFilmDetails } from "../../actions/actions";
+import NavBar from "../NavBar";
+import FilmInfo from "../../components/FilmInfo/index";
+import ImagesContainer from "../../components/ImagesContainer/index";
+import CommentsContainer from "../../components/CommentsContainer/index";
 
 const FilmDetails = props => {
+    const { match, loadFilmInfo, film } = props;
+    const filmId = match.params.id;
+
+    useEffect(() => {
+        loadFilmInfo(filmId)
+    }, [])
+
     return (
         <div>
-            <p>{props.match.params.id}</p>
-            
+            <FilmInfo info={film} />
+            <ImagesContainer images={film.images} />
+            <CommentsContainer comments={film.comments} />
         </div>
     );
 };
 
 const mapStateToProps = state => {
-    return { ...state };
-    /*  id: state.id,
-        name: state.id,
-        year: state.id,
-        director: state.id,
-        overview: state.id,
-        rating: state.id,
-        images: state.id,
-        comments: state.id */
+    return {
+        ...state,
+        film: { ...state.filmReducer }
+    };
 };
 
 const mapDispatchToProps = dispatch => {
@@ -32,4 +40,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispatchToProps
-)(FilmDetails);
+)(withRouter(FilmDetails));

@@ -76,7 +76,7 @@ namespace FilmsCatalog.BLL.Services
             var rating = await _uow.Ratings.GetAll()
                                .Where(x => x.FilmId == filmId).Select(x => x.Rate).ToListAsync();
 
-            return rating.Average();
+            return rating.Count() > 0 ? rating.Average() : 0;
         }
 
         private Rating FillRatingFiels(Rating rating, User user, Film film)

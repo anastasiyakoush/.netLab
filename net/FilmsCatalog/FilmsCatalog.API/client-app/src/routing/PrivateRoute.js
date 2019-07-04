@@ -1,8 +1,7 @@
 import React from 'react'
 import { Route, Redirect } from "react-router-dom"
 import { routes } from "./routes"
-
-const isAuthenticated = localStorage.getItem("username") && localStorage.getItem("token");
+import { isAuthenticated } from "../helpers"
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
     return <Route {...rest} render={props =>

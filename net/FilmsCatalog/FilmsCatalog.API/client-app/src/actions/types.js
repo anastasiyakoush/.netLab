@@ -4,6 +4,7 @@ export const REQUEST_FAILURE = "REQUEST_FAILURE";
 
 export const SET_FILMS_LIST = "SET_FILMS_LIST";
 export const SET_POSTERS = "SET_POSTERS";
+export const GET_POSTER = "GET_POSTER";
 
 export const SET_FILM_ID = "SET_FILM_ID";
 export const SET_FILM_NAME = "SET_FILM_NAME";

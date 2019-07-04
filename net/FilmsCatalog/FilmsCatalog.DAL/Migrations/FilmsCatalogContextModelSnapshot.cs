@@ -539,7 +539,7 @@ namespace FilmsCatalog.DAL.EF.Migrations
                         {
                             Id = 50,
                             FilmId = 13,
-                            Url = "https://filmimages.blob.core.windows.net/images/Fim%20Images/Cinderella/f6jSPjlPD5HJ92VVxIBNfIxL6IP.jpg"
+                            Url = "https://filmimages.blob.core.windows.net/images/Fim%20Images/Cinderella/f6jSPjlPD5HJ92VVxIBNfIxL6Ie.jpg"
                         },
                         new
                         {

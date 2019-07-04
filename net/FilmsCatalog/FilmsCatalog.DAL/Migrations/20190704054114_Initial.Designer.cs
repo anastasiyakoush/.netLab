@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace FilmsCatalog.DAL.EF.Migrations
 {
     [DbContext(typeof(FilmsCatalogContext))]
-    [Migration("20190703095418_Add Seed Image urls")]
-    partial class AddSeedImageurls
+    [Migration("20190704054114_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -541,7 +541,7 @@ namespace FilmsCatalog.DAL.EF.Migrations
                         {
                             Id = 50,
                             FilmId = 13,
-                            Url = "https://filmimages.blob.core.windows.net/images/Fim%20Images/Cinderella/f6jSPjlPD5HJ92VVxIBNfIxL6IP.jpg"
+                            Url = "https://filmimages.blob.core.windows.net/images/Fim%20Images/Cinderella/f6jSPjlPD5HJ92VVxIBNfIxL6Ie.jpg"
                         },
                         new
                         {

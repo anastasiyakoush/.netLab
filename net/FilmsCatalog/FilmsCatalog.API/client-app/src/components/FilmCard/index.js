@@ -1,8 +1,10 @@
 import React from 'react'
 import { Card, CardHeader, CardMedia, CardActions, CardContent, Button, Typography, withStyles } from "@material-ui/core";
 import styles from './styles';
+import { Link } from "react-router-dom"
+import { root, routes } from "../../routing//routes";
 
-const FilmCard = ({ classes, title, src, year,onClick }) => {
+const FilmCard = ({ classes, title, src, year, onClick }) => {
     return (
         <Card className={classes.container}>
             <CardHeader className={classes.header} title={title}></CardHeader>
@@ -12,7 +14,8 @@ const FilmCard = ({ classes, title, src, year,onClick }) => {
                 <Typography>{year}</Typography>
             </CardContent>
             <CardActions className={classes.buttons}>
-                <Button onClick={onClick}>More</Button>
+             
+                 <Button onClick={() => onClick()}>More</Button>
             </CardActions>
         </Card>
     )
