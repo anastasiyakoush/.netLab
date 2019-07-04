@@ -1,17 +1,19 @@
 import React from 'react'
-import { noPosterImage } from "../../consts"
+import { noPosterImage } from "../../consts";
+import styles from "./styles"
+import { withStyles } from '@material-ui/styles';
 
-const Poster = ({ src }) => {
+const Poster = ({ src, classes }) => {
     return (
-        <div>
+        <div className={classes.container}>
             {
                 src
-                    ? <img src={src} alt="Poster" />
-                    : <img src={noPosterImage} alt="No Poster" />
+                    ? <img className={classes.img} src={src} alt="Poster" />
+                    : <img className={classes.img} src={noPosterImage} alt="No Poster" />
             }
         </div>
 
     );
 }
 
-export default Poster;
+export default withStyles(styles)(Poster);

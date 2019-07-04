@@ -7,6 +7,8 @@ using FilmsCatalog.BLL.Core.DTO;
 using FilmsCatalog.API.Configuration.Filters;
 using Microsoft.AspNetCore.Authorization;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace FilmsCatalog.API.Controllers
 {
@@ -50,7 +52,8 @@ namespace FilmsCatalog.API.Controllers
         {
             try
             {
-                var comments = await _commentService.GetFilmCommentsAsync(filmId);
+                var commentDTOs = await _commentService.GetFilmCommentsAsync(filmId);
+                var comments = _mapper.Map<IEnumerable< CommentDTO>, IEnumerable<CommentModel>>(commentDTOs);
                 return Ok(comments);
             }
             catch (Exception ex)

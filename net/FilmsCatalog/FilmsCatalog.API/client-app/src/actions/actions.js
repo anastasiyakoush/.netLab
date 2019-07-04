@@ -170,3 +170,45 @@ export const getFilmDetails = filmId => dispatch => {
         })
         .catch(errors => dispatch(requestFailure(errors)));
 };
+export const postComment = text => dispatch => {
+    dispatch(loading());
+    filmService.postFilmComment(text)
+        .then(response => {
+            response.status === 200
+                ? dispatch(requestSuccess())
+                : dispatch(requestFailure(response));
+        })
+        .catch(errors => {
+            dispatch(requestFailure(errors));
+        })
+};
+export const loadComments = filmId => dispatch => {
+    dispatch(loading());
+
+    filmService.getFilmComments(filmId)
+        .then(response => {
+            dispatch(addFilmComments(response.data));
+        })
+        .catch(errors => dispatch(requestFailure(errors)));
+};
+export const rateFilm = body => dispatch => {
+    dispatch(loading());
+    filmService.postFilmRating(body)
+        .then(response => {
+            response.status === 200
+                ? dispatch(requestSuccess())
+                : dispatch(requestFailure(response));
+        })
+        .catch(errors => {
+            dispatch(requestFailure(errors));
+        })
+};
+export const loadRating = filmId => dispatch => {
+    dispatch(loading());
+
+    filmService.getFilmRating(filmId)
+        .then(response => {
+            dispatch(addFilmRating(response.data));
+        })
+        .catch(errors => dispatch(requestFailure(errors)));
+};

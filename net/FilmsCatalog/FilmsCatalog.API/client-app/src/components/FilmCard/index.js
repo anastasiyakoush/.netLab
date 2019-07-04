@@ -1,24 +1,19 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Card, CardHeader, CardMedia, CardActions, CardContent, Button, Typography, withStyles } from "@material-ui/core";
 import styles from './styles';
-import { Link } from "react-router-dom"
-import { root, routes } from "../../routing//routes";
 
 const FilmCard = ({ classes, title, src, year, onClick }) => {
+    const [showMore, setShowMore] = useState(false);
+
     return (
-        <Card className={classes.container}>
-            <CardHeader className={classes.header} title={title}></CardHeader>
-            <CardMedia className={classes.image} component="img" src={src}></CardMedia>
-            <CardContent className={classes.content}>
-                <Typography>Year</Typography>
-                <Typography>{year}</Typography>
-            </CardContent>
-            <CardActions className={classes.buttons}>
-             
-                 <Button onClick={() => onClick()}>More</Button>
-            </CardActions>
+        <Card className={classes.container} onClick={() => onClick()} onMouseEnter={() => setShowMore(true)} onMouseLeave={() => setShowMore(false)}>
+            <img className={classes.image} src={src} alt="Poster" />
+            {showMore &&
+                <div className={classes.focus}>
+                    <Typography variant="h3" className={classes.header}>{title}</Typography>
+                    <Typography variant="h5">{year}</Typography>
+                </div>}
         </Card>
     )
-
 }
 export default withStyles(styles)(FilmCard);

@@ -16,7 +16,7 @@ const initialState = {
     year: "",
     director: "",
     overview: "",
-    rating: "",
+    rating: 0,
     poster: "",
     images: [],
     comments: []

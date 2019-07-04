@@ -9,7 +9,8 @@ const styles = {
         },
     },
     tabs: {
-        backgroundColor: "#000"
+        backgroundColor: "#000",
+        borderBottom: "1px solid #C2185B",
     }
 };
 

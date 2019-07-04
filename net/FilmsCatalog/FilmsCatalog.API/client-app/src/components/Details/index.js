@@ -1,15 +1,22 @@
 import React from 'react'
+import { Typography, withStyles } from '@material-ui/core';
+import styles from "./styles"
+import Rating from '../Rating';
 
 const Details = props => {
-    const { name, year, overview, director } = props.info;
+    const { name, year, overview, director, rating, id } = props.info;
+    const { classes } = props;
+
     return (
-        <div>
-            <p>{name}</p>
-            <p>{year}</p>
-            <p>{director}</p>
-            <p>{overview}</p>
+        <div className={classes.container}>
+            <Typography variant="h2">{name}</Typography>
+            <Typography variant="subtitle2" className={classes.year}>{year}</Typography>
+            <Rating rating={rating} filmId={id}></Rating>
+            <Typography variant="subtitle1" className={classes.director}>Director</Typography>
+            <Typography variant="h6" className={classes.text}>{director}</Typography>
+            <Typography variant="subtitle1" className={classes.content}>{overview}</Typography>
         </div>
 
     );
 }
-export default Details;
+export default withStyles(styles)(Details);

@@ -6,6 +6,7 @@ import { getFilmsList, getFilmDetails } from "../../actions/actions";
 import { withStyles } from "@material-ui/styles";
 import { root, routes } from "../../routing//routes";
 import styles from "./styles";
+import Loading from "../../components/Loading";
 
 const FilmsCatalog = props => {
     const { films, loading, error, getFilms, classes } = props;
@@ -20,11 +21,12 @@ const FilmsCatalog = props => {
 
     useEffect(() => {
         getFilms();
-    }, [getFilms]);
+    }, [getFilms, loading]);
 
     return (
         <div className={classes.container}>
-            {loading && <div>LOADING!!!!!</div>}
+            {loading &&
+                <Loading></Loading>}
             {error && <div>{error}</div>}
             {!loading &&
                 !error &&
