@@ -2,9 +2,11 @@ import React from "react";
 import { withRouter } from "react-router";
 import { Link } from "react-router-dom";
 import { Tab, Tabs } from "@material-ui/core";
+
 import { routes, root } from "../../routing/routes";
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
+import Logout from "../../components/Logout";
 
 const NavBar = props => {
     const { classes } = props;
@@ -17,6 +19,7 @@ const NavBar = props => {
                 component={Link}
                 to={`${root()}${routes.homePage}`}
             />
+            <Tab className={classes.tab} component={Logout} />
         </Tabs>
     )
 };

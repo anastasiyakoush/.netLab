@@ -4,9 +4,10 @@ import { withRouter } from "react-router-dom";
 import FilmCard from "../../components/FilmCard";
 import { getFilmsList, getFilmDetails } from "../../actions/actions";
 import { withStyles } from "@material-ui/styles";
+import { LinearProgress } from "@material-ui/core";
 import { root, routes } from "../../routing//routes";
 import styles from "./styles";
-import Loading from "../../components/Loading";
+import LinearIndeterminate from "../../components/Spinner";
 
 const FilmsCatalog = props => {
     const { films, loading, error, getFilms, classes, history } = props;
@@ -19,12 +20,10 @@ const FilmsCatalog = props => {
 
     useEffect(() => {
         getFilms(history);
-    }, [getFilms, loading]);
+    }, [loading]);
 
     return (
-        <div className={classes.container}>
-            {loading &&
-                <Loading />}
+        <div className={classes.container}>           
             {error && <div>{error}</div>}
             {!loading &&
                 !error &&

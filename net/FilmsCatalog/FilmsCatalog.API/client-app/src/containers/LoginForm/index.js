@@ -37,7 +37,7 @@ let LoginForm = props => {
                     fullWidth
                     variant="contained"
                     className={classes.button}
-                    onClick={(e) => handleSubmit(e)}
+                    onSubmit={(e) => handleSubmit(e)}
                 >Login</Button>
                 <Link href={`${root()}${routes.signUp}`} variant="body1" className={classes.link}>Don't have an account? Sign Up</Link>
             </form>
