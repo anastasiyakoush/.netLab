@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Card, CardHeader, CardMedia, CardActions, CardContent, Button, Typography, withStyles } from "@material-ui/core";
+import { Card, Typography, withStyles } from "@material-ui/core";
 import styles from './styles';
 
 const FilmCard = ({ classes, title, src, year, onClick }) => {

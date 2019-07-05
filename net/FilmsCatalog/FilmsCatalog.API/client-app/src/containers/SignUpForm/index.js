@@ -1,54 +1,64 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm, formValueSelector } from "redux-form";
-import { Link } from 'react-router-dom'
+import {  withRouter } from 'react-router-dom'
 import FormInput from "../../components/FormInput/index"
 import styles from "./styles";
 import { withStyles } from "@material-ui/styles";
+import { Typography,  Button, Container,Link } from "@material-ui/core";
 import { signup } from "../../actions/actions";
 import { root, routes } from "../../routing/routes"
 import validate from "../../validation/formValidator"
 
 let SignUpForm = props => {
-    const { signUp, email, username, password, classes } = props;
+    const { signUp, email, username, password, classes, history } = props;
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        signUp({ "email": email, "username": username, "password": password });
+        const user = { "email": email, "username": username, "password": password }
+        signUp(user, history);
     }
 
     return (
-        <form className={classes.formContainer}>
-            <Field
-                name="userName"
-                type="text"
-                label="Username"
-                component={FormInput}
-            />
-            <Field
-                name="email"
-                type="email"
-                label="Email"
-                component={FormInput}
-            />
-            <Field
-                name="password"
-                type="password"
-                label="Password"
-                component={FormInput}
-            />
-            <Field
-                name="confirmPassword"
-                type="password"
-                label="Confirm password"
-                component={FormInput}
-            />
-            <button className={classes.button} type="submit" onClick={(e) => handleSubmit(e)}>Sign Up</button>
-            <Link to={`${root()}${routes.login}`} className={classes.link}>Log in</Link>
-        </form>
+        <Container component="main" className={classes.container}>
+            <Typography component="h1" variant="h5">Sign Up</Typography>
+            <form className={classes.form}>
+                <Field
+                    name="userName"
+                    type="text"
+                    label="Username"
+                    component={FormInput}
+                />
+                <Field
+                    name="email"
+                    type="email"
+                    label="Email"
+                    component={FormInput}
+                />
+                <Field
+                    name="password"
+                    type="password"
+                    label="Password"
+                    component={FormInput}
+                />
+                <Field
+                    name="confirmPassword"
+                    type="password"
+                    label="Confirm password"
+                    component={FormInput}
+                />
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    className={classes.button}
+                    onClick={(e) => handleSubmit(e)}
+                >Sign Up</Button>
+                <Link href={`${root()}${routes.login}`} variant="body1" className={classes.link}>Already have an account? Login</Link>
+            </form>
+        </Container>
     );
 };
-
 SignUpForm = reduxForm({ form: 'signUp', validate })(withStyles(styles)(SignUpForm));
 
 const selector = formValueSelector("signUp");
@@ -63,9 +73,7 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
     return {
-        signUp: user => {
-            dispatch(signup(user));
-        }
+        signUp: (user, history) => dispatch(signup(user, history))
     }
 }
 
@@ -74,4 +82,4 @@ SignUpForm = connect(
     mapDispatchToProps
 )(SignUpForm);
 
-export default SignUpForm;
+export default withRouter(SignUpForm);

@@ -1,6 +1,7 @@
 const styles = {
     input: {
-        width: "100%",
+        width: "400px",
+        marginTop:"30px",
         "&:invalid": {
             color: "#F8BBD0",
             fontWeight: "600"
@@ -10,7 +11,8 @@ const styles = {
         backgroundColor: "#F8BBD0",
         borderRadius: "3px",
         padding: "3px",
-        fontWeight: "600"
+        fontWeight: "600",
+        width: "400px",
     },
     label: {
         display: "block",

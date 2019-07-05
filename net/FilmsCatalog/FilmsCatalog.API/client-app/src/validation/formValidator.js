@@ -1,4 +1,4 @@
-import { emailRegEx, usernameRegEx, PASSWORD_MINCOUNT } from "../consts"
+import { emailRegEx, usernameRegEx, passwordRegEx } from "../consts"
 
 const validate = values => {
     const errors = {}
@@ -14,8 +14,8 @@ const validate = values => {
     }
     if (!values.password) {
         errors.password = "Required"
-    } else if (values.password.length < PASSWORD_MINCOUNT) {
-        errors.password = "Password maust be at least 6 characters"
+    } else if (!passwordRegEx.test(values.password)) {
+        errors.password = " Should have at least one lower case, at least one upper case,  at least one number,  at least one special character \n Minimum 8 characters";
     }
     if (values.confirmPassword !== values.password) {
         errors.confirmPassword = "Passwords didn't match"

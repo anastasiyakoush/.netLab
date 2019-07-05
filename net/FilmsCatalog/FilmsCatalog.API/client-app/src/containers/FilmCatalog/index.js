@@ -9,24 +9,22 @@ import styles from "./styles";
 import Loading from "../../components/Loading";
 
 const FilmsCatalog = props => {
-    const { films, loading, error, getFilms, classes } = props;
+    const { films, loading, error, getFilms, classes, history } = props;
 
     const goToDetails = filmId => {
-        console.log(props);
-        console.log(filmId);
-        props.history.push({
+        history.push({
             pathname: `${root()}${routes.film}/${filmId}`
         });
     };
 
     useEffect(() => {
-        getFilms();
+        getFilms(history);
     }, [getFilms, loading]);
 
     return (
         <div className={classes.container}>
             {loading &&
-                <Loading></Loading>}
+                <Loading />}
             {error && <div>{error}</div>}
             {!loading &&
                 !error &&
@@ -52,8 +50,8 @@ const mapStateToProps = state => {
 };
 const mapDispatcToProps = dispatch => {
     return {
-        getFilms: () => {
-            dispatch(getFilmsList());
+        getFilms: history => {
+            dispatch(getFilmsList(history));
         },
         getDetails: filmId => {
             dispatch(getFilmDetails(filmId));

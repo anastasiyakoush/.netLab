@@ -12,15 +12,23 @@ import {
     SET_FILM_OVERVIEW,
     ADD_FILM_RATING,
     ADD_FILM_COMMENTS,
-    ADD_FILM_IMAGES
+    ADD_FILM_IMAGES,
+    LOGIN,
+    LOGOUT
 } from "./types";
-
 import { accountService } from "../api/accountService";
 import { filmCrudService } from "../api/filmCrudService";
 import { filmService } from "../api/filmService";
+import { root, routes } from "../routing/routes";
 
 const loading = () => ({
     type: LOADING
+});
+const login = () => ({
+    type: LOGIN
+});
+const logout = () => ({
+    type: LOGOUT
 });
 const requestSuccess = response => ({
     type: REQUEST_SUCCESS,
@@ -74,7 +82,7 @@ const addFilmImages = images => ({
     payload: images
 });
 
-export const signup = user => dispatch => {
+export const signup = (user, history) => dispatch => {
     dispatch(loading());
     accountService
         .signUp(user)
@@ -82,11 +90,16 @@ export const signup = user => dispatch => {
             localStorage.setItem("username", response.data.userName);
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("email", response.data.email);
+            dispatch(login());
             dispatch(requestSuccess(response));
+            history.push(`${root()}`)
         })
-        .catch(errors => dispatch(requestFailure(errors)));
+        .catch(errors => {
+            dispatch(requestFailure(errors));
+        })
+
 };
-export const login = user => dispatch => {
+export const authenticate = (user, history) => dispatch => {
     dispatch(loading());
     accountService
         .login(user)
@@ -94,27 +107,28 @@ export const login = user => dispatch => {
             localStorage.setItem("username", response.data.userName);
             localStorage.setItem("token", response.data.token);
             localStorage.setItem("email", response.data.email);
+            dispatch(login())
             dispatch(requestSuccess(response));
+            history.push(`${root()}`)
         })
         .catch(errors => {
             dispatch(requestFailure(errors));
         });
 };
-//???
-export const logout = () => dispatch => {
+export const deAuthenticate = history => dispatch => {
     localStorage.removeItem("username");
     localStorage.removeItem("email");
     localStorage.removeItem("token");
+    dispatch(logout())
+    history.push(`${root()}${routes.login}`)
 };
 ////////////////
-export const getFilmsList = () => dispatch => {
+export const getFilmsList = ({ history }) => dispatch => {
     dispatch(loading());
 
     filmCrudService
         .getFilmList()
         .then(response => {
-            console.log(response);
-
             dispatch(setFilmsList(response.data));
             dispatch(requestSuccess());
         })
@@ -152,7 +166,6 @@ export const getFilmDetails = filmId => dispatch => {
 
     filmService.getFilmImages(filmId)
         .then(response => {
-            console.log(response)
             dispatch(addFilmImages(response.data));
             dispatch(getPoster())
         })
