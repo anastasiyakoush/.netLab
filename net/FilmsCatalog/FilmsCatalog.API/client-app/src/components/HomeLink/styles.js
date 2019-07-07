@@ -1,11 +1,7 @@
 const styles = {
-    icon: {
-        marginLeft: "5px",
-    },
-    wrapper: {
-        display: "flex",
-        alignItems: "center",
-        borderRadius: 0,        
+    container: {
+        margin: "auto 0",
+        padding: "15px",
         color: "#fff",
         "&:hover": {
             color: "#000",

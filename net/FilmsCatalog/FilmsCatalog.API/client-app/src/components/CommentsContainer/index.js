@@ -1,6 +1,5 @@
 import React from 'react'
 import Comment from "../Comment/index"
-import CommentForm from '../CommentForm/index';
 
 const CommentsContainer = ({ comments }) => {
     const noComment = {

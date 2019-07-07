@@ -43,7 +43,7 @@ namespace FilmsCatalog.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -58,7 +58,7 @@ namespace FilmsCatalog.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -72,7 +72,7 @@ namespace FilmsCatalog.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -88,7 +88,7 @@ namespace FilmsCatalog.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -97,12 +97,14 @@ namespace FilmsCatalog.API.Controllers
         {
             try
             {
+                dynamic s = "abc";
+                Console.WriteLine(s.GetAllFilmRatingsAsync());
                 var rating = await _ratingService.GetFilmRatingAsync(filmId);
                 return Ok(rating);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -116,7 +118,7 @@ namespace FilmsCatalog.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
               
@@ -130,7 +132,7 @@ namespace FilmsCatalog.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
     }

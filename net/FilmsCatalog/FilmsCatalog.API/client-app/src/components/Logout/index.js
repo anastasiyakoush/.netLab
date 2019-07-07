@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { Typography, Button } from "@material-ui/core";
 import { ExitToApp } from "@material-ui/icons";
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles"
-import { deAuthenticate } from '../../actions/actions';
+import { deAuthenticate } from '../../actions/thunks';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { root, routes } from '../../routing/routes';
@@ -20,7 +20,7 @@ const Logout = ({ classes, logout, history, isAuthenticated }) => {
 
     return (
         <Button className={classes.wrapper} onClick={() => onClickHandler()}>
-            <Typography variant="body2" className={classes.title}>{isAuthenticated ? "Log out" : "Log in"}</Typography>
+            <Typography variant="body2">{isAuthenticated ? "Log out" : "Log in"}</Typography>
             <ExitToApp className={classes.icon} />
         </Button >
     )

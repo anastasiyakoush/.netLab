@@ -34,25 +34,33 @@ namespace FilmsCatalog.API.Controllers
         [HttpGet("[action]/{id:int}")]
         public async Task<IActionResult> GetFilm(int id)
         {
-            var film = await _filmService.GetFilmAsync(id);
-
-            if (film == null)
+            try
             {
-                return BadRequest();
+                var film = await _filmService.GetFilmAsync(id);
+                var filmModel = _mapper.Map<FilmDTO, FilmModel>(film);
+
+                return Ok(filmModel);
             }
-
-            var filmModel = _mapper.Map<FilmDTO, FilmModel>(film);
-
-            return Ok(filmModel);
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpGet("all")]
         public async Task<IActionResult> GetAll()
         {
-            var films = await _filmService.GetAllFilmsAsync();
-            var filmModels = _mapper.Map<IEnumerable<FilmDTO>, IEnumerable<FilmModel>>(films);
+            try
+            {
+                var films = await _filmService.GetAllFilmsAsync();
+                var filmModels = _mapper.Map<IEnumerable<FilmDTO>, IEnumerable<FilmModel>>(films);
 
-            return Ok(filmModels);
+                return Ok(filmModels);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("[action]")]
@@ -67,7 +75,7 @@ namespace FilmsCatalog.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -83,19 +91,19 @@ namespace FilmsCatalog.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
         [HttpDelete("[action]/{id:int}")]
         public async Task<IActionResult> Delete(int id)
         {
-            var filmInDb = await _filmService.GetFilmAsync(id);
             try
             {
+                var filmInDb = await _filmService.GetFilmAsync(id);
                 await _filmService.RemoveFilmAsync(id);
-                return Ok();
 
+                return Ok();
             }
             catch (Exception ex)
             {

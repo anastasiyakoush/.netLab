@@ -1,17 +1,17 @@
 const styles = {
     tab: {
         fontSize: "20px",
-        maxWidth: '300px',
-        color: "#fff",
+        maxWidth: "300px",
+        color: "#fff",     
         "&:hover": {
-            borderBottom: "2px solid #C2185B",
-            backgroundColor: "#C2185B"
-        },
+            color: "#000",
+            backgroundColor: "rgba(255,255,255,0.9)"
+        }   
     },
     tabs: {
         backgroundColor: "#000",
         borderBottom: "1px solid #C2185B",
-        height:"50px"
+        height: "50px"
     }
 };
 

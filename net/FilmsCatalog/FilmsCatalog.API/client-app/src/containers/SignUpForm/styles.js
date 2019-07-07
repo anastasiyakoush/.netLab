@@ -24,6 +24,10 @@ const styles = {
         margin: "10px auto",
         textAlign: "center",
         color: " #C2185B",
+    },
+    error:{
+        color:"#EF5350",
+        marginTop: "20px"
     }
 }
 export default styles;

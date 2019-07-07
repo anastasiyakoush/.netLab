@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import styles from "./styles"
 import { withStyles } from '@material-ui/styles';
 import { Button, InputBase } from '@material-ui/core';
-import { postComment } from '../../actions/actions';
+import { postComment } from '../../actions/thunks';
 import { connect } from 'react-redux';
 import { getUserName } from "../../helpers"
 

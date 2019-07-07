@@ -10,6 +10,7 @@ using FilmsCatalog.Core.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
 using System.Security.Claims;
+using System.Linq;
 
 namespace FilmsCatalog.BLL.Services
 {
@@ -31,37 +32,36 @@ namespace FilmsCatalog.BLL.Services
             var user = _mapper.Map<UserDTO, User>(userDTO);
             var identityResult = await _userManager.CreateAsync(user, userDTO.Password);
 
-            if (identityResult.Succeeded)
+            if (!identityResult.Succeeded)
             {
-                return await AuthenticateAsync(userDTO);
+                throw new Exception(identityResult.Errors.ToList().FirstOrDefault().Description);
             }
 
-            return null;
+            return await AuthenticateAsync(userDTO);
         }
 
         public async Task<AuthenticatedUserDTO> AuthenticateAsync(UserDTO userDTO)
         {
             var user = await _userManager.FindByEmailAsync(userDTO.Email);
+            await IsUserExistedCheck(user);
 
-            if (user != null)
+            var signInResult = await _signInManager.PasswordSignInAsync(user.UserName, userDTO.Password, false, false);
+
+            if (!signInResult.Succeeded)
             {
-                var result = await _signInManager.PasswordSignInAsync(user.UserName, userDTO.Password, false, false);
-
-                if (result.Succeeded)
-                {
-                    var authenticatedUserDTO = _mapper.Map<User, AuthenticatedUserDTO>(user);
-                    authenticatedUserDTO.Token = GenerateJwtTokenAsync(user);
-
-                    return authenticatedUserDTO;
-                }
+                throw new Exception("Incorrect email or password.");
             }
 
-            return null;
+            var authenticatedUserDTO = _mapper.Map<User, AuthenticatedUserDTO>(user);
+            authenticatedUserDTO.Token = GenerateJwtTokenAsync(user);
+
+            return authenticatedUserDTO;
         }
 
         public async Task<UserDTO> GetUserByIdAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
+            await IsUserExistedCheck(user);
             var userDTO = _mapper.Map<User, UserDTO>(user);
 
             return userDTO;
@@ -70,6 +70,7 @@ namespace FilmsCatalog.BLL.Services
         public async Task<UserDTO> GetUserByNameAsync(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
+            await IsUserExistedCheck(user);
             var userDTO = _mapper.Map<User, UserDTO>(user);
 
             return userDTO;
@@ -95,6 +96,14 @@ namespace FilmsCatalog.BLL.Services
                 );
 
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
+        }
+
+        private async Task IsUserExistedCheck(User user)
+        {
+            if (user == null)
+            {
+                throw new Exception("User with specified credentials doesn't exist, please sign up.");
+            }
         }
     }
 }

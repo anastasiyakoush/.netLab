@@ -12,7 +12,6 @@ export default function filmsCrud(state = initialState, action) {
                 films: action.payload
             };
         case SET_POSTERS:
-           // debugger;
             return {
                 ...state,
                 films: state.films.map(film => {

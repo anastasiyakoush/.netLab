@@ -1,5 +1,4 @@
 import React from 'react'
-import Image from "../Image/"
 import { isPoster } from '../../helpers';
 import { withStyles } from '@material-ui/styles';
 import { Carousel } from 'react-responsive-carousel';

@@ -1,16 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import FilmCard from "../../components/FilmCard";
-import { getFilmsList, getFilmDetails } from "../../actions/actions";
+import { getFilmsList, getFilmDetails } from "../../actions/thunks";
 import { withStyles } from "@material-ui/styles";
-import { LinearProgress } from "@material-ui/core";
 import { root, routes } from "../../routing//routes";
 import styles from "./styles";
-import LinearIndeterminate from "../../components/Spinner";
 
 const FilmsCatalog = props => {
-    const { films, loading, error, getFilms, classes, history } = props;
+    const { films, loading, getFilms, classes, history } = props;
 
     const goToDetails = filmId => {
         history.push({
@@ -20,22 +18,23 @@ const FilmsCatalog = props => {
 
     useEffect(() => {
         getFilms(history);
-    }, [loading]);
+    },[]);
 
     return (
-        <div className={classes.container}>           
-            {error && <div>{error}</div>}
+        <div className={classes.container}>
             {!loading &&
-                !error &&
-                films &&
-                films.map(x => (
-                    <FilmCard
-                        title={x.name}
-                        year={x.year}
-                        src={x.poster}
-                        onClick={() => goToDetails(x.id)}
-                    />
-                ))}
+                films.length > 0 &&
+                films.map(
+                    (x, i) =>
+                        films[i].poster && (
+                            <FilmCard
+                                title={x.name}
+                                year={x.year}
+                                src={x.poster}
+                                onClick={() => goToDetails(x.id)}
+                            />
+                        )
+                )}
         </div>
     );
 };
