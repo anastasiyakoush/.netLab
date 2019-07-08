@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Rater from "react-rater";
-import "react-rater/lib/react-rater.css";
-import { rateFilm, loadRating } from "../../actions/thunks";
 import { connect } from "react-redux";
 import { Typography, Button, withStyles } from "@material-ui/core";
+import { rateFilm, loadRating } from "../../actions/thunks";
 import { getUserName } from "../../helpers";
+import "react-rater/lib/react-rater.css";
 import styles from "./styles";
 
-const Rating = ({ rating, filmId, postRating, classes, updateRating }) => {
-    const [rate, setRate] = useState(0);
+const Rating = ({ rating, filmId, postRating, classes }) => {
+    const [rate, setRate] = useState(rating || 0);
     const [isRated, setIsRated] = useState(false);
 
     const onRateHandler = rating => {
@@ -26,9 +26,6 @@ const Rating = ({ rating, filmId, postRating, classes, updateRating }) => {
         setRate(0);
         setIsRated(false);
     };
-    useEffect(() => {
-        updateRating(filmId);
-    });
 
     return (
         <div className={classes.container}>
@@ -62,6 +59,7 @@ const mapDispatchToProps = dispatch => {
         updateRating: filmId => dispatch(loadRating(filmId))
     };
 };
+
 export default connect(
     mapStateToProps,
     mapDispatchToProps

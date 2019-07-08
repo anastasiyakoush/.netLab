@@ -24,8 +24,6 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using FilmsCatalog.Core.Configuration;
 using FilmsCatalog.BLL.Core.Interfaces;
-using YandexDiskAPI.Services;
-using YandexDiskAPITransmitter.Interfaces;
 
 namespace FilmsCatalog.API
 {
@@ -59,13 +57,18 @@ namespace FilmsCatalog.API
             services.AddTransient<IAccountService, AccountService>();
             services.AddTransient<IImageService, ImageService>();
 
-            //api
-            services.AddTransient<IDiskAPI, ImageAPITransmitter>();
-
             //services for identity
             services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<FilmsCatalogContext>()
                 .AddDefaultTokenProviders();
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequireDigit = true;
+                options.Password.RequiredLength = 6;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.User.RequireUniqueEmail = true;
+            });
 
             //add authentication
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)

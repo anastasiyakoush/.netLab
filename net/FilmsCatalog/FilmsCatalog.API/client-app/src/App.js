@@ -1,15 +1,13 @@
 import React from "react";
+import { connect } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import AppRouter from "./routing/AppRouter";
-import { connect } from "react-redux";
 import NavBar from "./containers/NavBar";
-import Spinner from "./components/Spinner/index";
 
 const App = ({ isAuthenticated, loading }) => {
     return (
-        <BrowserRouter>
+        <BrowserRouter forceRefresh={true}>
             <NavBar />
-            {loading && <Spinner />}
             <AppRouter isAuthenticated={isAuthenticated} />
         </BrowserRouter>
     );

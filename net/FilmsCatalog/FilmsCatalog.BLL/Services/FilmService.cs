@@ -68,5 +68,12 @@ namespace FilmsCatalog.BLL.Services
             _uow.Films.Update(film);
             await _uow.SaveAsync();
         }
+
+        public async Task<IEnumerable<FilmDTO>> Search(string query)
+        {
+            var results = await _uow.Films.GetAll().Where(x => x.Name.Contains(query)).Take(5).ToListAsync();
+
+            return _mapper.Map<IEnumerable<Film>, IEnumerable<FilmDTO>>(results);
+        }
     }
 }

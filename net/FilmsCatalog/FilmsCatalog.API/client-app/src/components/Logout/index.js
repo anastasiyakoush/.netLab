@@ -1,22 +1,15 @@
-import React from 'react'
-import { Typography, Button } from "@material-ui/core";
-import { ExitToApp } from "@material-ui/icons";
-import { withStyles } from "@material-ui/styles";
-import styles from "./styles"
-import { deAuthenticate } from '../../actions/thunks';
+import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { Typography, Button } from "@material-ui/core";
+import { ExitToApp } from "@material-ui/icons";
+import { deAuthenticate } from '../../actions/thunks';
 import { root, routes } from '../../routing/routes';
+import { withStyles } from "@material-ui/styles";
+import styles from "./styles";
 
 const Logout = ({ classes, logout, history, isAuthenticated }) => {
-    const onClickHandler = () => {
-        if (isAuthenticated) {
-            logout(history)
-        }
-        else {
-            history.push(`${root()}${routes.login}`)
-        }
-    }
+    const onClickHandler = () => isAuthenticated ? logout(history) : history.push(`${root()}${routes.login}`);
 
     return (
         <Button className={classes.wrapper} onClick={() => onClickHandler()}>
@@ -36,4 +29,5 @@ const mapDispatchToProps = dispatch => {
         logout: history => dispatch(deAuthenticate(history))
     }
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(Logout)));

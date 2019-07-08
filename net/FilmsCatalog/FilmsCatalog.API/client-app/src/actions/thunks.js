@@ -1,6 +1,6 @@
-import { accountService } from "../api/accountService";
-import { filmCrudService } from "../api/filmCrudService";
-import { filmService } from "../api/filmService";
+import { accountService } from "../apiCallers/accountService";
+import { filmCatalogService } from "../apiCallers/filmsCatalogService";
+import { filmService } from "../apiCallers/filmService";
 import { root, routes } from "../routing/routes";
 import {
     loading,
@@ -18,19 +18,26 @@ import {
     setFilmOverview,
     getPoster,
     addFilmRating,
-    addFilmComments
+    addFilmComments,
 } from "./actions";
+import { setUser, removeUser, getUserToken } from "../helpers";
 
 const handleError = (error, dispatch, history) => {
     if (error.response) {
         if (error.response.status === 401) {
+            getUserToken() !== null && dispatch(getFilmsList);
             dispatch(deAuthenticate(history));
-            return;
         }
-        dispatch(requestFailure(error.response.data));
-        return;
+        else {
+            dispatch(requestFailure(error.response.data));
+        }
     }
-    dispatch(requestFailure(error));
+    else if (error.request) {
+        dispatch(requestFailure(error.request));
+    }
+    else {
+        dispatch(requestFailure(error));
+    }
 };
 
 export const signup = (user, history) => dispatch => {
@@ -38,63 +45,45 @@ export const signup = (user, history) => dispatch => {
     accountService
         .signUp(user)
         .then(response => {
-            sessionStorage.setItem("username", response.data.userName);
-            sessionStorage.setItem("token", response.data.token);
-            sessionStorage.setItem("email", response.data.email);
+            setUser(response.data);
             dispatch(login());
             dispatch(requestSuccess(response));
             history.push(`${root()}${routes.homePage}`);
         })
-        .catch(errors => {
-            dispatch(requestFailure(errors.response.data));
-        });
+        .catch(errors => handleError(errors, dispatch, history));
 };
+
 export const authenticate = (user, history) => dispatch => {
     dispatch(loading());
-    accountService
-        .login(user)
-        .then(response => {
-            dispatch(login());
-            history.push(`${root()}${routes.homePage}`);
-            sessionStorage.setItem("username", response.data.userName);
-            sessionStorage.setItem("token", response.data.token);
-            sessionStorage.setItem("email", response.data.email);
-            dispatch(requestSuccess(response));
-        })
-        .catch(errors => {
-            dispatch(requestFailure(errors.response.data));
-        });
+    accountService.login(user)
+        .then(response => setUser(response.data))
+        .then(() => dispatch(login()))
+        .then(() => history.push(`${root()}${routes.homePage}`))
+        .catch(errors => handleError(errors, dispatch, history));
 };
+
 export const deAuthenticate = history => dispatch => {
-    sessionStorage.removeItem("username");
-    sessionStorage.removeItem("email");
-    sessionStorage.removeItem("token");
+    removeUser("user");
     dispatch(logout());
     history.push(`${root()}${routes.login}`);
 };
 
 export const getFilmsList = history => dispatch => {
     dispatch(loading());
-    return new Promise(resolve =>
-        filmCrudService
-            .getFilmList()
-            .then(response => {
-                dispatch(setFilmsList(response.data));
-            })
-            .then(() => filmCrudService.getPosters())
-            .then(response => {
-                dispatch(setPosters(response.data));
-                dispatch(requestSuccess());
-                resolve();
-            })
-    ).catch(errors => {
-        handleError(errors, dispatch, history);
-    });
+
+    filmCatalogService
+        .getFilmList()
+        .then(response => dispatch(setFilmsList(response.data)))
+        .then(() => filmCatalogService.getPosters())
+        .then(response => dispatch(setPosters(response.data)))
+        .then(() => dispatch(requestSuccess()))
+        .catch(errors => handleError(errors, dispatch, history));
 };
 
 export const getFilmDetails = (filmId, history) => dispatch => {
     dispatch(loading());
-    filmCrudService
+
+    filmCatalogService
         .getFilmById(filmId)
         .then(response => {
             const newFilm = response.data;
@@ -121,8 +110,10 @@ export const getFilmDetails = (filmId, history) => dispatch => {
             handleError(errors, dispatch, history);
         });
 };
+
 export const postComment = (text, history) => dispatch => {
     dispatch(loading());
+
     filmService
         .postFilmComment(text)
         .then(response => {
@@ -134,9 +125,8 @@ export const postComment = (text, history) => dispatch => {
             handleError(errors, dispatch, history);
         });
 };
-export const loadComments = (filmId, history) => dispatch => {
-    dispatch(loading());
 
+export const loadComments = (filmId, history) => dispatch => {
     filmService
         .getFilmComments(filmId)
         .then(response => {
@@ -147,22 +137,20 @@ export const loadComments = (filmId, history) => dispatch => {
             handleError(errors, dispatch, history);
         });
 };
+
 export const rateFilm = (body, history) => dispatch => {
     dispatch(loading());
     filmService
         .postFilmRating(body)
         .then(response => {
-            response.status === 200
-                ? dispatch(requestSuccess())
-                : dispatch(requestFailure(response));
+            dispatch(requestSuccess())
         })
         .catch(errors => {
             handleError(errors, dispatch, history);
         });
 };
-export const loadRating = (filmId, history) => dispatch => {
-    dispatch(loading());
 
+export const loadRating = (filmId, history) => dispatch => {
     filmService
         .getFilmRating(filmId)
         .then(response => {
@@ -173,3 +161,14 @@ export const loadRating = (filmId, history) => dispatch => {
             handleError(errors, dispatch, history);
         });
 };
+
+export const findFilm = (query, history) => dispatch => {
+    filmCatalogService.getSearchResults(query)
+        .then(response => dispatch(setFilmsList(response.data)))
+        .then(() => filmCatalogService.getPosters())
+        .then(response => dispatch(setPosters(response.data)))
+        .then(() => dispatch(requestSuccess()))
+        .catch(errors => {
+            handleError(errors, dispatch, history);
+        });
+}

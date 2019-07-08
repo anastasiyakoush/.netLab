@@ -1,7 +1,7 @@
 import React from 'react'
 import { noPosterImage } from "../../consts";
-import styles from "./styles"
 import { withStyles } from '@material-ui/styles';
+import styles from "./styles"
 
 const Poster = ({ src, classes }) => {
     return (
@@ -15,5 +15,4 @@ const Poster = ({ src, classes }) => {
 
     );
 }
-
 export default withStyles(styles)(Poster);

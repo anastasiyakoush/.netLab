@@ -1,10 +1,10 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import { Link } from "@material-ui/core";
 import { Home } from "@material-ui/icons";
+import { root, routes } from "../../routing/routes";
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
-import { withRouter } from "react-router-dom";
-import { root, routes } from "../../routing/routes";
 
 const HomeLink = ({classes}) => {
     return (
@@ -13,5 +13,4 @@ const HomeLink = ({classes}) => {
         </Link>
     );
 };
-
 export default withRouter(withStyles(styles)(HomeLink));

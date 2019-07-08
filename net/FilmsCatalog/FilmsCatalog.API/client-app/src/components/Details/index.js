@@ -1,7 +1,7 @@
 import React from 'react'
 import { Typography, withStyles } from '@material-ui/core';
-import styles from "./styles"
 import Rating from '../Rating';
+import styles from "./styles"
 
 const Details = props => {
     const { name, year, overview, director, id } = props.info;

@@ -14,5 +14,4 @@ const styles = {
         height: "50px"
     }
 };
-
 export default styles;

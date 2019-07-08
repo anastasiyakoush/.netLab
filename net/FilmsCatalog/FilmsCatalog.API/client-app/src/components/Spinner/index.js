@@ -1,7 +1,7 @@
 import React from 'react';
-import { withStyles } from '@material-ui/styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { Typography } from '@material-ui/core';
+import { withStyles } from '@material-ui/styles';
 import styles from "./styles"
 
 const Spinner = ({ classes }) => {

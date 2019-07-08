@@ -2,11 +2,11 @@ import React from "react";
 import { Route, Switch, Redirect, withRouter } from "react-router-dom";
 import { root, routes } from "../routing/routes";
 import PrivateRoute from "./PrivateRoute";
+import FilmCatalog from "../containers/FilmCatalog";
 import LoginForm from "../containers/LoginForm/index";
 import SignUpForm from "../containers/SignUpForm/index";
 import NotFound from "../containers/NotFound/index";
 import FilmDetails from "../containers/FilmDetails/index";
-import FilmCatalog from "../containers/FilmCatalog";
 
 const AppRouter = ({ isAuthenticated }) => {
     return (
@@ -21,6 +21,7 @@ const AppRouter = ({ isAuthenticated }) => {
                 path={`${root()}${routes.signUp}`}
                 component={SignUpForm}
             />
+
             {!isAuthenticated && <Redirect to={`${root()}${routes.login}`} />}
 
             <PrivateRoute
@@ -28,7 +29,6 @@ const AppRouter = ({ isAuthenticated }) => {
                 component={FilmDetails}
                 isAuthenticated
             />
-
             <PrivateRoute
                 exact
                 path={`${root()}${routes.homePage}`}

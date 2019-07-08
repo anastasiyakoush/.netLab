@@ -4,19 +4,16 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using YandexDiskAPITransmitter.Interfaces;
 
 namespace FilmsCatalog.BLL.Services
 {
     public class ImageService : IImageService
     {
         private IUnitOfWork _uow;
-        //  private IDiskAPI _diskApi;
 
-        public ImageService(IUnitOfWork uow, IDiskAPI diskAPI)
+        public ImageService(IUnitOfWork uow)
         {
             _uow = uow;
-            // _diskApi = diskAPI;
         }
 
         public async Task<IEnumerable<string>> GetUrlsAsync(int filmId)
@@ -25,8 +22,6 @@ namespace FilmsCatalog.BLL.Services
                                    .Where(x => x.FilmId == filmId)
                                    .Select(x => x.Url)
                                    .ToListAsync();
-
-            //  var urls = await _diskApi.GetDownloaderUrlsAsync(publicUrls);
 
             return urls;
         }

@@ -4,7 +4,8 @@ const styles = {
         display: "flex",
         alignItems: "center",
         width: "500px",
-        margin: "100px auto"
+        padding: "10% 50%",
+        backgroundColor: "#fff"
     },
     form: {
         height: "100%",
@@ -25,8 +26,8 @@ const styles = {
         textAlign: "center",
         color: " #C2185B",
     },
-    error:{
-        color:"#EF5350",
+    error: {
+        color: "#EF5350",
         marginTop: "20px"
     }
 }

@@ -2,13 +2,13 @@ import React from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import { withRouter } from "react-router-dom";
-import FormInput from "../../components/FormInput/index";
-import styles from "./styles";
-import { withStyles } from "@material-ui/styles";
 import { Typography, Button, Container, Link } from "@material-ui/core";
 import { signup } from "../../actions/thunks";
 import { root, routes } from "../../routing/routes";
 import validate from "../../validation/formValidator";
+import FormInput from "../../components/FormInput/index";
+import { withStyles } from "@material-ui/styles";
+import styles from "./styles";
 
 let SignUpForm = props => {
     const {
@@ -18,21 +18,22 @@ let SignUpForm = props => {
         password,
         classes,
         history,
-        errors
+        errors,
+        handleSubmit,
     } = props;
 
-    const handleSubmit = e => {
-        e.preventDefault();
+    const onSubmitHandler = e => {
         const user = { email: email, username: username, password: password };
         signUp(user, history);
     };
 
     return (
         <Container component="main" className={classes.container}>
-            <Typography component="h1" variant="h5">
-                Sign Up
-            </Typography>
-            <form className={classes.form}>
+            <Typography variant="h5" className={classes.title}>Sign Up</Typography>
+            <form
+                noValidate={true}
+                className={classes.form}
+                onSubmit={handleSubmit(onSubmitHandler)}>
                 <Field
                     name="userName"
                     type="text"
@@ -67,7 +68,7 @@ let SignUpForm = props => {
                     fullWidth
                     variant="contained"
                     className={classes.button}
-                    onClick={e => handleSubmit(e)}>
+                    onSubmit={e => handleSubmit(e)}>
                     Sign Up
                 </Button>
                 <Link
@@ -80,7 +81,8 @@ let SignUpForm = props => {
         </Container>
     );
 };
-SignUpForm = reduxForm({ form: "signUp", validate })(
+
+SignUpForm = reduxForm({ form: "signUp", validate, destroyOnUnmount: true })(
     withStyles(styles)(SignUpForm)
 );
 

@@ -1,24 +1,21 @@
 import React from "react";
 import { withRouter } from "react-router";
-import { Tab, Tabs } from "@material-ui/core";
-import { withStyles } from "@material-ui/styles";
-import styles from "./styles";
+import { Toolbar } from "@material-ui/core";
 import Logout from "../../components/Logout";
 import SearchField from "../../components/SearchField";
 import HomeLink from "../../components/HomeLink";
 import Title from "../../components/Title";
+import { withStyles } from "@material-ui/styles";
+import styles from "./styles";
 
-const NavBar = props => {
-    const { classes } = props;
-
+const NavBar = ({classes}) => {
     return (
-        <Tabs className={classes.tabs} indicatorColor="#4DB6AC" centered={true}>
-            <Tab className={classes.tab} component={HomeLink} />
-            <Tab className={classes.tab} component={Title} />
-            <Tab className={classes.tab} component={SearchField} />
-            <Tab className={classes.tab} component={Logout} />
-        </Tabs>
+        <Toolbar className={classes.tabs} >
+            <HomeLink />
+            <Title />
+            <SearchField />
+            <Logout />
+        </Toolbar>
     );
 };
-
 export default withRouter(withStyles(styles)(NavBar));

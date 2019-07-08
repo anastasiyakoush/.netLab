@@ -10,7 +10,9 @@ import { isAuthenticated } from "../helpers";
 const initialState = {
     loading: false,
     error: null,
-    isAuthenticated: isAuthenticated
+    isAuthenticated: isAuthenticated,
+    isSearch: false
+
 };
 
 export default function requestReducer(state = initialState, action) {

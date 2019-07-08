@@ -14,7 +14,7 @@ import {
     ADD_FILM_COMMENTS,
     ADD_FILM_IMAGES,
     LOGIN,
-    LOGOUT
+    LOGOUT,
 } from "./types";
 
 export const loading = () => ({

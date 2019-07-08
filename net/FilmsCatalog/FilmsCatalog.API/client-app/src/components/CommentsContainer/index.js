@@ -9,8 +9,8 @@ const CommentsContainer = ({ comments }) => {
     return (
         <div>           
             {comments.length > 0 ?
-                comments.map(x =>
-                    <Comment info={x} />
+                comments.map((x,i) =>
+                    <Comment info={x} key={i}/>
                 ) :
                 <Comment info={noComment}></Comment>
             }

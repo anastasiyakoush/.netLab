@@ -124,5 +124,22 @@ namespace FilmsCatalog.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("search/{query}")]
+        public async Task<IActionResult> Search(string query)
+        {
+            try
+            {
+                var resultsDTOs = await _filmService.Search(query);
+                var results = _mapper.Map<IEnumerable<FilmDTO>, IEnumerable<FilmModel>>(resultsDTOs);
+
+
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

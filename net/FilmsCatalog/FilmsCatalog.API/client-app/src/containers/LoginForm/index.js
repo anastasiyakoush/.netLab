@@ -1,14 +1,14 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm, formValueSelector } from "redux-form";
-import { withRouter } from "react-router-dom";
-import FormInput from "../../components/FormInput";
-import { withStyles } from "@material-ui/styles";
+import { withRouter, Redirect } from "react-router-dom";
 import { Button, Link, Container, Typography } from "@material-ui/core";
-import styles from "./styles";
 import { authenticate } from "../../actions/thunks";
 import { root, routes } from "../../routing/routes";
 import validate from "../../validation/formValidator";
+import FormInput from "../../components/FormInput";
+import { withStyles } from "@material-ui/styles";
+import styles from "./styles";
 
 let LoginForm = props => {
     const {
@@ -18,17 +18,18 @@ let LoginForm = props => {
         classes,
         handleSubmit,
         history,
-        errors
+        errors,
+        isAuthenticated
     } = props;
 
-    const onSubmitHandler = () => {
-        login({ email, password }, history);
-    };
+    const onSubmitHandler = () => login({ email, password }, history);
+
     return (
         <Container component="main" className={classes.container}>
-            <Typography component="h1" variant="h5">
-                Login
-            </Typography>
+
+            {isAuthenticated && <Redirect to={`${root()}${routes.homePage}`} />}
+
+            <Typography component="h1" variant="h5">Login</Typography>
             <form
                 noValidate={true}
                 className={classes.form}
@@ -69,7 +70,7 @@ let LoginForm = props => {
     );
 };
 
-LoginForm = reduxForm({ form: "login", validate})(
+LoginForm = reduxForm({ form: "login", validate, destroyOnUnmount: true })(
     withStyles(styles)(LoginForm)
 );
 
@@ -79,7 +80,8 @@ const mapStateToProps = state => {
     return {
         email: selector(state, "email"),
         password: selector(state, "password"),
-        errors: state.requestReducer.error
+        errors: state.requestReducer.error,
+        isAuthenticated: state.requestReducer.isAuthenticated
     };
 };
 const mapDispatchToProps = dispatch => {

@@ -1,7 +1,6 @@
 const styles = {
     container: {
-        width: "60%",
-        //color: "#fff",     
+        width: "60%",    
         display: "flex",
         flexDirection: "column",
         marginBottom: "50px",
@@ -13,7 +12,6 @@ const styles = {
         borderRadius: "4px",
         padding: "15px",
         color: "#fff",
-        // borderBottom: "1px solid #E0E0E0",
     },
     button: {
         width: "10%",

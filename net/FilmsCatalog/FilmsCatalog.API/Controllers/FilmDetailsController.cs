@@ -97,8 +97,6 @@ namespace FilmsCatalog.API.Controllers
         {
             try
             {
-                dynamic s = "abc";
-                Console.WriteLine(s.GetAllFilmRatingsAsync());
                 var rating = await _ratingService.GetFilmRatingAsync(filmId);
                 return Ok(rating);
             }

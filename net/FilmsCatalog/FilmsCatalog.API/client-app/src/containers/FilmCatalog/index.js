@@ -1,33 +1,33 @@
 import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
-import FilmCard from "../../components/FilmCard";
-import { getFilmsList, getFilmDetails } from "../../actions/thunks";
-import { withStyles } from "@material-ui/styles";
+import { Typography } from "@material-ui/core";
 import { root, routes } from "../../routing//routes";
+import { getFilmsList, getFilmDetails } from "../../actions/thunks";
+import FilmCard from "../../components/FilmCard";
+import Spinner from "../../components/Spinner";
+import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
 
 const FilmsCatalog = props => {
     const { films, loading, getFilms, classes, history } = props;
 
     const goToDetails = filmId => {
-        history.push({
-            pathname: `${root()}${routes.film}/${filmId}`
-        });
+        history.push({ pathname: `${root()}${routes.film}/${filmId}` });
     };
 
-    useEffect(() => {
-        getFilms(history);
-    },[]);
+    useEffect(() => getFilms(history), []);
 
     return (
         <div className={classes.container}>
-            {!loading &&
-                films.length > 0 &&
+            {loading && <Spinner />}
+            {!loading && films.length < 1 && <Typography variant="h6" className={classes.noResults}>No results found</Typography>}
+            {!loading && films.length > 0 &&
                 films.map(
                     (x, i) =>
                         films[i].poster && (
                             <FilmCard
+                                key={i}
                                 title={x.name}
                                 year={x.year}
                                 src={x.poster}
@@ -42,7 +42,7 @@ const FilmsCatalog = props => {
 const mapStateToProps = state => {
     return {
         films: state.filmsCrud.films,
-        loading: state.loading,
+        loading: state.requestReducer.loading,
         failure: state.error
     };
 };

@@ -6,8 +6,13 @@ namespace FilmsCatalog.DAL.EF.EF
 {
     public static class DataSeeder
     {
+        public static void Seed(this ModelBuilder modelBuilder)
+        {
+            SeedFilms(modelBuilder);
+            SeedImages(modelBuilder);
+        }
 
-        public static void SeedFilms(this ModelBuilder modelBuilder)
+        private static void SeedFilms(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Film>().HasData(
                 new Film { Id = 20, Name = "Toy Story 4", Year = 2019, Director = "Josh Cooley", Overview = overviews[0] },
@@ -33,7 +38,7 @@ namespace FilmsCatalog.DAL.EF.EF
                 );
         }
 
-        public static void SeedImages(this ModelBuilder modelBuilder)
+        private static void SeedImages(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<FilmImage>().HasData(
                 new FilmImage { Id = 1, FilmId = 1, Url = "https://filmimages.blob.core.windows.net/images/Fim%20Images/Shazam!/p.jpg" },

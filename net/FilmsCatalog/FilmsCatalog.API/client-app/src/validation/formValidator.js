@@ -1,26 +1,32 @@
 import { emailRegEx, usernameRegEx, passwordRegEx } from "../consts"
 
 const validate = values => {
-    const errors = {}
+    const errors = {};
+
     if (!values.email) {
-        errors.email = "Required"
-    } else if (!emailRegEx.test(values.email)) {
-        errors.email = "Incorrect format of email"
+        errors.email = "This field is required."
+    } else if (!emailRegEx.test(values.email.toLowerCase())) {
+        errors.email = "Email has wrong format. "
     }
+
     if (!values.userName) {
-        errors.userName = "Required"
+        errors.userName = "This field is required."
     } else if (!usernameRegEx.test(values.userName)) {
-        errors.userName = "Username can contains only letters and should't start with space or dot"
+        errors.userName = "Username can contains only letters and should't start with space or dot."
     }
+
     if (!values.password) {
-        errors.password = "Required"
+        errors.password = "This field is required."
+    } else if (values.password.length < 6) {
+        errors.password = "Password must be at least 6 characters and have at least one digit.";
     } else if (!passwordRegEx.test(values.password)) {
-        errors.password = " Should have at least one lower case, at least one upper case,  at least one number,  at least one special character \n Minimum 8 characters";
+        errors.password = "Password should have at least one digit.";
     }
+
     if (values.confirmPassword !== values.password) {
-        errors.confirmPassword = "Passwords didn't match"
+        errors.confirmPassword = "Passwords don't match."
     }
+
     return errors;
 }
-
 export default validate;
