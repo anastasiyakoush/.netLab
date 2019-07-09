@@ -22,6 +22,7 @@ const styles = {
         flexDirection: "column",
         alignItems: "center",
         justifyContent: "center",
+        cursor:"pointer"
     },
     image: {
         width: "100%",

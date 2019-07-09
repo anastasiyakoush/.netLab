@@ -23,20 +23,25 @@ import {
 import { setUser, removeUser, getUserToken } from "../helpers";
 
 const handleError = (error, dispatch, history) => {
-    if (error.response) {
-        if (error.response.status === 401) {
-            getUserToken() !== null && dispatch(getFilmsList);
-            dispatch(deAuthenticate(history));
+    try {
+        if (error.response) {
+            if (error.response.status === 401) {
+                getUserToken() !== null && dispatch(getFilmsList);
+                dispatch(deAuthenticate(history));
+            }
+            else {
+                dispatch(requestFailure(error.response.data));
+            }
+        }
+        else if (error.request) {
+            dispatch(requestFailure(error.request));
         }
         else {
-            dispatch(requestFailure(error.response.data));
+            dispatch(requestFailure(error));
         }
     }
-    else if (error.request) {
-        dispatch(requestFailure(error.request));
-    }
-    else {
-        dispatch(requestFailure(error));
+    catch{
+        history.push({ pathname: `${root()}${routes.oops}` });
     }
 };
 

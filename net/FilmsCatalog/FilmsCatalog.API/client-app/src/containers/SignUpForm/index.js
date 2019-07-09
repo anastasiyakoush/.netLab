@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import { withRouter } from "react-router-dom";
-import { Typography, Button, Container, Link } from "@material-ui/core";
+import { Typography, Button, Container, Link, CircularProgress } from "@material-ui/core";
 import { signup } from "../../actions/thunks";
 import { root, routes } from "../../routing/routes";
 import validate from "../../validation/formValidator";
@@ -20,6 +20,7 @@ let SignUpForm = props => {
         history,
         errors,
         handleSubmit,
+        loading
     } = props;
 
     const onSubmitHandler = e => {
@@ -58,7 +59,8 @@ let SignUpForm = props => {
                     label="Confirm password"
                     component={FormInput}
                 />
-                {errors && (
+                {loading && <CircularProgress size={50} color="secondary" />}
+                {!loading && errors && (
                     <Typography variant="subtitle1" className={classes.error}>
                         {errors}
                     </Typography>
@@ -94,7 +96,8 @@ const mapStateToProps = state => {
         username: selector(state, "userName"),
         password: selector(state, "password"),
         confirmPassword: selector(state, "confirmPassword"),
-        errors: state.requestReducer.error
+        errors: state.requestReducer.error,
+        loading: state.requestReducer.loading,
     };
 };
 const mapDispatchToProps = dispatch => {

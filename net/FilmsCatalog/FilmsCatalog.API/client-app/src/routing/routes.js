@@ -4,5 +4,6 @@ export const routes = {
     login: "/login",
     signUp: "/signUp",
     notFound: "/notFound",
-    film:"/film"
+    film:"/film",
+    oops:"/oops",
 } 

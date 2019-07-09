@@ -7,15 +7,18 @@ import HomeLink from "../../components/HomeLink";
 import Title from "../../components/Title";
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
+import { routes } from "../../routing/routes";
 
-const NavBar = ({classes}) => {
-    return (
-        <Toolbar className={classes.tabs} >
-            <HomeLink />
-            <Title />
-            <SearchField />
-            <Logout />
-        </Toolbar>
-    );
+const NavBar = ({ classes, location }) => {
+    const isException = location.pathname.includes(`${routes.oops}`);
+
+    return  !isException
+            ? (<Toolbar className={classes.tabs} >
+                <HomeLink />
+                <Title />
+                <SearchField />
+                <Logout />
+            </Toolbar>)
+            : null;
 };
 export default withRouter(withStyles(styles)(NavBar));

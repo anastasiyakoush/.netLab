@@ -28,7 +28,8 @@ const styles = {
     },
     error: {
         color: "#EF5350",
-        marginTop: "20px"
+        marginTop: "20px",
+        height:"30px"
     }
 }
 export default styles;

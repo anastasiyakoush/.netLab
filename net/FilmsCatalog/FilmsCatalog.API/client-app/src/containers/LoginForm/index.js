@@ -2,7 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import { withRouter, Redirect } from "react-router-dom";
-import { Button, Link, Container, Typography } from "@material-ui/core";
+import { Button, Link, Container, Typography, CircularProgress } from "@material-ui/core";
 import { authenticate } from "../../actions/thunks";
 import { root, routes } from "../../routing/routes";
 import validate from "../../validation/formValidator";
@@ -19,16 +19,15 @@ let LoginForm = props => {
         handleSubmit,
         history,
         errors,
-        isAuthenticated
+        isAuthenticated,
+        loading
     } = props;
 
     const onSubmitHandler = () => login({ email, password }, history);
 
     return (
         <Container component="main" className={classes.container}>
-
             {isAuthenticated && <Redirect to={`${root()}${routes.homePage}`} />}
-
             <Typography component="h1" variant="h5">Login</Typography>
             <form
                 noValidate={true}
@@ -46,10 +45,10 @@ let LoginForm = props => {
                     label="Password"
                     component={FormInput}
                 />
-                {errors && (
-                    <Typography variant="subtitle1" className={classes.error}>
-                        {errors}
-                    </Typography>
+
+                {loading && <CircularProgress size={50} color="secondary" />}
+                {!loading && errors && (
+                    <Typography variant="subtitle1" className={classes.error}>{errors}</Typography>
                 )}
                 <Button
                     type="submit"
@@ -81,7 +80,8 @@ const mapStateToProps = state => {
         email: selector(state, "email"),
         password: selector(state, "password"),
         errors: state.requestReducer.error,
-        isAuthenticated: state.requestReducer.isAuthenticated
+        isAuthenticated: state.requestReducer.isAuthenticated,
+        loading: state.requestReducer.loading,
     };
 };
 const mapDispatchToProps = dispatch => {

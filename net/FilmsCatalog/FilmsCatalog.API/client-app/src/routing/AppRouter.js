@@ -6,11 +6,13 @@ import FilmCatalog from "../containers/FilmCatalog";
 import LoginForm from "../containers/LoginForm/index";
 import SignUpForm from "../containers/SignUpForm/index";
 import NotFound from "../containers/NotFound/index";
+import ExceptionPage from "../containers/ExceptionPage/index";
 import FilmDetails from "../containers/FilmDetails/index";
 
 const AppRouter = ({ isAuthenticated }) => {
     return (
-        <Switch>
+        <Switch>            
+            <Route path={`${root()}${routes.oops}`} component={ExceptionPage} />
             <Route
                 exact
                 path={`${root()}${routes.login}`}

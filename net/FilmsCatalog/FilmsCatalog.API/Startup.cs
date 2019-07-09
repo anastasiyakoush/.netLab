@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using AutoMapper;
 using FluentValidation;
 using FluentValidation.AspNetCore;
@@ -87,7 +85,6 @@ namespace FilmsCatalog.API
                 });
             services.AddTransient<IAccountService, AccountService>();
 
-
             //mapping
             services.AddAutoMapper(cfg =>
             {
@@ -100,12 +97,15 @@ namespace FilmsCatalog.API
             //services for loggers
             services.AddScoped<LoggingFilter>();
             services.AddScoped<ExceptionFilter>();
+
             //for appConfiguration class
             services.AddSingleton<IConfiguration>(Configuration);
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app)
         {
+            app.UseDefaultFiles();
+            app.UseStaticFiles();
             app.UseCors(x => x.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
             app.UseDeveloperExceptionPage();
             app.UseAuthentication();
