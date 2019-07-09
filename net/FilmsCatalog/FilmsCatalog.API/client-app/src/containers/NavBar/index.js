@@ -10,15 +10,14 @@ import styles from "./styles";
 import { routes } from "../../routing/routes";
 
 const NavBar = ({ classes, location }) => {
-    const isException = location.pathname.includes(`${routes.oops}`);
+    const isAuthenticated = !(location.pathname.includes(`${routes.login}`) || location.pathname.includes(`${routes.signUp}`))
 
-    return  !isException
-            ? (<Toolbar className={classes.tabs} >
-                <HomeLink />
-                <Title />
-                <SearchField />
-                <Logout />
-            </Toolbar>)
-            : null;
+    return (
+        <Toolbar className={classes.tabs} >
+            <HomeLink disabled />}
+              <Title />
+            {isAuthenticated && < SearchField />}
+            {isAuthenticated && <Logout />}
+        </Toolbar>)
 };
 export default withRouter(withStyles(styles)(NavBar));

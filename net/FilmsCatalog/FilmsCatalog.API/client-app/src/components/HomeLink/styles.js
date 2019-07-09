@@ -7,6 +7,9 @@ const styles = {
             color: "#000",
             backgroundColor: "rgba(255,255,255,0.9)"
         }
+    },
+    icon: {
+        color: "#fff",
     }
 };
 export default styles;

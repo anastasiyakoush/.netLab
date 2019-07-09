@@ -17,6 +17,7 @@ const initialState = {
     director: "",
     overview: "",
     rating: 0,
+    peopleVoted: 0,
     poster: "",
     images: [],
     comments: []
@@ -62,7 +63,8 @@ export default function filmReducer(state = initialState, action) {
         case ADD_FILM_RATING:
             return {
                 ...state,
-                rating: action.payload
+                rating: action.payload.rate,
+                peopleVoted: action.payload.votedPeople
             };
         case GET_POSTER:
             return {

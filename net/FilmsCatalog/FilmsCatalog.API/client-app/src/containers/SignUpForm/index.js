@@ -2,11 +2,12 @@ import React from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm, formValueSelector } from "redux-form";
 import { withRouter } from "react-router-dom";
-import { Typography, Button, Container, Link, CircularProgress } from "@material-ui/core";
+import { Typography, Button, Container, Link } from "@material-ui/core";
 import { signup } from "../../actions/thunks";
 import { root, routes } from "../../routing/routes";
 import validate from "../../validation/formValidator";
 import FormInput from "../../components/FormInput/index";
+import Loading from "../../components/Loading";
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
 
@@ -30,6 +31,7 @@ let SignUpForm = props => {
 
     return (
         <Container component="main" className={classes.container}>
+            {loading && <Loading />}
             <Typography variant="h5" className={classes.title}>Sign Up</Typography>
             <form
                 noValidate={true}
@@ -59,7 +61,6 @@ let SignUpForm = props => {
                     label="Confirm password"
                     component={FormInput}
                 />
-                {loading && <CircularProgress size={50} color="secondary" />}
                 {!loading && errors && (
                     <Typography variant="subtitle1" className={classes.error}>
                         {errors}

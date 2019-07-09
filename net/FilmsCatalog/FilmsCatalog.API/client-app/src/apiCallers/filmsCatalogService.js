@@ -2,13 +2,11 @@ import axios from "axios";
 import { getUserToken } from "../helpers"
 
 const instance = axios.create({
-    // baseURL: "http://localhost:1839/api/filmcatalog",
     baseURL: "https://localhost:44374/api/filmcatalog"
 });
 
 export const filmCatalogService = {
     getFilmList() {
-        console.log("Req start")
         return instance.get("all", { headers: { Authorization: "Bearer " + getUserToken() } });
     },
     getPosters() {

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { withStyles, Typography } from "@material-ui/core";
-import { getFilmDetails, loadComments, loadRating } from "../../actions/thunks";
+import { getFilmDetails} from "../../actions/thunks";
 import ImagesContainer from "../../components/ImagesContainer/index";
 import CommentsContainer from "../../components/CommentsContainer/index";
 import CommentForm from "../../components/CommentForm/index";
@@ -16,24 +16,13 @@ const FilmDetails = props => {
         loadFilmInfo,
         film,
         classes,
-        loadComments,
-        updateRating,
         history,
         loading
     } = props;
 
     useEffect(() => {
         loadFilmInfo(filmId, history);
-    }, []);
-
-    useEffect(() => {
-        updateRating(filmId, history);
-    }, [film.rating, filmId, history, updateRating]);
-
-    useEffect(() => {
-        loadComments(filmId, history);
-        updateRating(filmId, history);
-    }, [film.comments, filmId, history, loadComments]);
+    }, [filmId]);
 
     return (
         <div className={classes.container}>
@@ -61,9 +50,7 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
     return {
-        loadFilmInfo: (filmId, history) => dispatch(getFilmDetails(filmId, history)),
-        loadComments: (filmId, history) => dispatch(loadComments(filmId, history)),
-        updateRating: (filmId, history) => dispatch(loadRating(filmId, history))
+        loadFilmInfo: (filmId, history) => dispatch(getFilmDetails(filmId, history))
     };
 };
 

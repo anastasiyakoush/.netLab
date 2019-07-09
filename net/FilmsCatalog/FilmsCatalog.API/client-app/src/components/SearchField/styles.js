@@ -2,7 +2,8 @@ const styles = {
     container: {
         margin: "16px 20px auto auto",
         borderRadius: "4px",
-        padding: "0 10px"
+        padding: "0 10px",
+        maxWidth: "247px"
     },
     input: {
         backgroundColor: "#fff",
@@ -22,7 +23,7 @@ const styles = {
         }
     },
     list: {
-        backgroundColor: "rgba(255,255,255,0.6)",
+        backgroundColor: "#fff",
         marginTop: "16px"
     }
 };

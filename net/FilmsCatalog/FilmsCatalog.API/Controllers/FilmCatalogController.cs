@@ -37,7 +37,7 @@ namespace FilmsCatalog.API.Controllers
             try
             {
                 var film = await _filmService.GetFilmAsync(id);
-                var filmModel = _mapper.Map<FilmDTO, FilmModel>(film);
+                var filmModel = _mapper.Map<FilmInfoDTO, FilmInfoModel>(film);
 
                 return Ok(filmModel);
             }

@@ -59,7 +59,7 @@ const SearchField = props => {
             </div>
             {
                 suggestions.length > 0 && <div className={classes.list}>
-                    {suggestions.map(x => <Typography variant="body2" className={classes.link} onClick={() => onClickHandler(x.id)}>{x.name}</Typography>)}
+                    {suggestions.map((x,i) => <Typography variant="body2"  className={classes.link}  key={i} onClick={() => onClickHandler(x.id)}>{`${x.name} (${x.year})`}</Typography>)}
                 </div>
             }
         </div>

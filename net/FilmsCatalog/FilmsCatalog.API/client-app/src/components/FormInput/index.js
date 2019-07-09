@@ -14,7 +14,7 @@ const FormInput = ({ input, label, type, classes, meta: { touched, error } }) =>
                 label={label}
                 name={input.name}
                 className={classes.input}
-                error={touched && error}
+                error={!!(touched && error)}
                 helperText={touched && error}
             />
 

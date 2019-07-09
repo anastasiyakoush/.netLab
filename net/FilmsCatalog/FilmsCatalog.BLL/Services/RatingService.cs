@@ -66,17 +66,21 @@ namespace FilmsCatalog.BLL.Services
         {
             var ratings = await _uow.Ratings.GetAll()
                                .GroupBy(x => x.FilmId)
-                               .Select(x => FilmRatingDTOFactory(x.Key, x.Select(r => r.Rate).Average()))
+                               .Select(x => FilmRatingDTOFactory(x.Key, x.Count(), x.Select(r => r.Rate).Average()))
                                .ToListAsync();
             return ratings;
         }
 
-        public async Task<double> GetFilmRatingAsync(int filmId)
+        public async Task<FilmRatingDTO> GetFilmRatingAsync(int filmId)
         {
-            var rating = await _uow.Ratings.GetAll()
-                               .Where(x => x.FilmId == filmId).Select(x => x.Rate).ToListAsync();
+            var rating =await  _uow.Ratings.GetAll()
+                            .GroupBy(x => x.FilmId)
+                            .Where(x => x.Key == filmId)
+                            .Select(x => FilmRatingDTOFactory(x.Key, x.Count(), x.Select(r => r.Rate).Average()))
+                            .ToListAsync();
 
-            return rating.Count() > 0 ? rating.Average() : 0;
+
+            return rating.First();
         }
 
         private Rating FillRatingFiels(Rating rating, User user, Film film)
@@ -87,12 +91,13 @@ namespace FilmsCatalog.BLL.Services
             return rating;
         }
 
-        private object FilmRatingDTOFactory(int filmId, double rate)
+        private FilmRatingDTO FilmRatingDTOFactory(int filmId, int people, double rate)
         {
-            return new
+            return new FilmRatingDTO()
             {
                 FilmId = filmId,
-                Rate = rate
+                Rate = rate,
+                VotedPeople = people,
             };
         }
     }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Rater from "react-rater";
 import { connect } from "react-redux";
 import { Typography, Button, withStyles } from "@material-ui/core";
@@ -7,8 +7,8 @@ import { getUserName } from "../../helpers";
 import "react-rater/lib/react-rater.css";
 import styles from "./styles";
 
-const Rating = ({ rating, filmId, postRating, classes }) => {
-    const [rate, setRate] = useState(rating || 0);
+const Rating = ({ rating, filmId, postRating, classes, people }) => {
+    const [rate, setRate] = useState(rating);
     const [isRated, setIsRated] = useState(false);
 
     const onRateHandler = rating => {
@@ -23,17 +23,21 @@ const Rating = ({ rating, filmId, postRating, classes }) => {
             rate
         };
         postRating(body);
-        setRate(0);
         setIsRated(false);
     };
+
+    useEffect(() => {
+        setRate(rating)
+    }, [rating])
 
     return (
         <div className={classes.container}>
             <Rater
                 total={5}
-                rating={rating}
+                rating={rate}
                 onRate={({ rating }) => onRateHandler(rating)}
             />
+            <Typography variant="subtitle1" className={classes.voted}>{`Voted : ${people} people`}</Typography>
             {isRated && (
                 <div>
                     <Typography variant="body1">{`You rate ${rate} stars. Would you like to vote? `}</Typography>
@@ -50,7 +54,8 @@ const Rating = ({ rating, filmId, postRating, classes }) => {
 
 const mapStateToProps = state => {
     return {
-        rating: state.filmReducer.rating
+        rating: state.filmReducer.rating,
+        people: state.filmReducer.peopleVoted,
     };
 };
 const mapDispatchToProps = dispatch => {

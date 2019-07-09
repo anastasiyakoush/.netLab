@@ -4,16 +4,12 @@ import { isPoster } from '../../helpers';
 import { withStyles } from '@material-ui/styles';
 import { Carousel } from 'react-responsive-carousel';
 import styles from 'react-responsive-carousel/lib/styles/carousel.css';
-import extraStyles from "./styles";
 
-const ImageContainer = ({ images, classes }) => {
+const ImageContainer = ({ images }) => {
     const gallery = images.filter(x => !isPoster(x))
-        .map((x,i) => <div key={i}><img src={x} alt="Oops" /></div>);
-    return (
-        <Carousel className={classes.container} >
-            {gallery}
-        </Carousel>
-    )
+        .map((x, i) => <div key={i}><img src={x} alt="Oops" /></div>);
+
+    return (<Carousel >{gallery}</Carousel>)
 }
 
 const mapStateToProps = state => {
@@ -21,5 +17,4 @@ const mapStateToProps = state => {
         images: state.filmReducer.images,
     };
 };
-
-export default connect(mapStateToProps)(withStyles(extraStyles)(withStyles(styles)(ImageContainer)));
+export default connect(mapStateToProps)(withStyles(styles)(ImageContainer));

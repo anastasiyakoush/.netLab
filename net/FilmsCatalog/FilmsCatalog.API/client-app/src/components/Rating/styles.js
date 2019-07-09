@@ -13,6 +13,11 @@ const styles = {
     },
     isActive: {
         color: "#fc6"
-    }
+    },
+    voted: {
+        width: "25%",
+        padding: "5px 10px",
+        color:"#fff"
+    },
 }
 export default styles;

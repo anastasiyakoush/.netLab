@@ -5,7 +5,9 @@ const styles = {
         alignItems: "center",
         width: "500px",
         padding: "10% 50%",
-        backgroundColor: "#fff"
+        backgroundColor: "#fff",
+        position: "absolute",
+        "z-index":"1",
     },
     form: {
         height: "100%",
@@ -24,7 +26,6 @@ const styles = {
     link: {
         margin: "10px auto",
         textAlign: "center",
-        color: " #C2185B",
     },
     error: {
         color: "#EF5350",

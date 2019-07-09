@@ -2,7 +2,6 @@ import axios from "axios";
 import { getUserToken } from "../helpers"
 
 const instance = axios.create({
-    //  baseURL: "http://localhost:1839/api/filmdetails/",
     baseURL: "https://localhost:44374/api/filmdetails/",
 });
 

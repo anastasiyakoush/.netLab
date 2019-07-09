@@ -98,22 +98,13 @@ export const getFilmDetails = (filmId, history) => dispatch => {
             dispatch(setFilmYear(newFilm.year));
             dispatch(setFilmDirector(newFilm.director));
             dispatch(setFilmOverview(newFilm.overview));
-            dispatch(requestSuccess());
-        })
-        .catch(errors => {
-            handleError(errors, dispatch, history);
-        });
-
-    filmService
-        .getFilmImages(filmId)
-        .then(response => {
-            dispatch(addFilmImages(response.data));
+            dispatch(addFilmImages(newFilm.images));
             dispatch(getPoster());
-            dispatch(requestSuccess());
+            dispatch(addFilmComments(newFilm.comments));
+            dispatch(addFilmRating(newFilm.rating));            
         })
-        .catch(errors => {
-            handleError(errors, dispatch, history);
-        });
+        .then(()=>dispatch(requestSuccess()))
+        .catch(errors => handleError(errors, dispatch, history));
 };
 
 export const postComment = (text, history) => dispatch => {
@@ -126,30 +117,27 @@ export const postComment = (text, history) => dispatch => {
                 ? dispatch(requestSuccess())
                 : dispatch(requestFailure(response));
         })
-        .catch(errors => {
-            handleError(errors, dispatch, history);
-        });
+        .then(() => dispatch(loadComments(text.filmId, history)))
+        .then(() => dispatch(requestSuccess()))
+        .catch(errors => handleError(errors, dispatch, history));
 };
 
 export const loadComments = (filmId, history) => dispatch => {
     filmService
         .getFilmComments(filmId)
-        .then(response => {
-            dispatch(addFilmComments(response.data));
-            dispatch(requestSuccess());
-        })
-        .catch(errors => {
-            handleError(errors, dispatch, history);
-        });
+        .then(response => dispatch(addFilmComments(response.data)))
+        .then(() => dispatch(requestSuccess()))
+        .catch(errors => handleError(errors, dispatch, history));
 };
 
 export const rateFilm = (body, history) => dispatch => {
     dispatch(loading());
+
     filmService
         .postFilmRating(body)
-        .then(response => {
-            dispatch(requestSuccess())
-        })
+        .then(() => dispatch(requestSuccess()))
+        .then(() => dispatch(loadRating(body.filmId, history)))
+        .then(() => dispatch(requestSuccess()))
         .catch(errors => {
             handleError(errors, dispatch, history);
         });
@@ -158,13 +146,9 @@ export const rateFilm = (body, history) => dispatch => {
 export const loadRating = (filmId, history) => dispatch => {
     filmService
         .getFilmRating(filmId)
-        .then(response => {
-            dispatch(addFilmRating(response.data));
-            dispatch(requestSuccess());
-        })
-        .catch(errors => {
-            handleError(errors, dispatch, history);
-        });
+        .then(response => dispatch(addFilmRating(response.data)))
+        .then(() => dispatch(requestSuccess()))
+        .catch(errors => handleError(errors, dispatch, history));
 };
 
 export const findFilm = (query, history) => dispatch => {
@@ -173,7 +157,5 @@ export const findFilm = (query, history) => dispatch => {
         .then(() => filmCatalogService.getPosters())
         .then(response => dispatch(setPosters(response.data)))
         .then(() => dispatch(requestSuccess()))
-        .catch(errors => {
-            handleError(errors, dispatch, history);
-        });
+        .catch(errors => handleError(errors, dispatch, history));
 }

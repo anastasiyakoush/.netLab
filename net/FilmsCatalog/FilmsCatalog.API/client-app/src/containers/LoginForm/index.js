@@ -1,12 +1,13 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm, formValueSelector } from "redux-form";
-import { withRouter, Redirect } from "react-router-dom";
-import { Button, Link, Container, Typography, CircularProgress } from "@material-ui/core";
+import { withRouter } from "react-router-dom";
+import { Button, Link, Container, Typography } from "@material-ui/core";
 import { authenticate } from "../../actions/thunks";
 import { root, routes } from "../../routing/routes";
 import validate from "../../validation/formValidator";
 import FormInput from "../../components/FormInput";
+import Loading from "../../components/Loading";
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
 
@@ -19,7 +20,6 @@ let LoginForm = props => {
         handleSubmit,
         history,
         errors,
-        isAuthenticated,
         loading
     } = props;
 
@@ -27,7 +27,7 @@ let LoginForm = props => {
 
     return (
         <Container component="main" className={classes.container}>
-            {isAuthenticated && <Redirect to={`${root()}${routes.homePage}`} />}
+            {loading && <Loading />}
             <Typography component="h1" variant="h5">Login</Typography>
             <form
                 noValidate={true}
@@ -45,8 +45,6 @@ let LoginForm = props => {
                     label="Password"
                     component={FormInput}
                 />
-
-                {loading && <CircularProgress size={50} color="secondary" />}
                 {!loading && errors && (
                     <Typography variant="subtitle1" className={classes.error}>{errors}</Typography>
                 )}

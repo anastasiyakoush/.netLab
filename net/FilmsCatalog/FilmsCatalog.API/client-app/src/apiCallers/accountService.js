@@ -2,7 +2,6 @@ import axios from 'axios';
 
 const instance = axios.create({
     baseURL: "https://localhost:44374/api/account"
-   // baseURL: "http://localhost:1839/api/account"
 })
 
 export const accountService = {

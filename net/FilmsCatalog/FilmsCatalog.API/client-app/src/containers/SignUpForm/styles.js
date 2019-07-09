@@ -24,7 +24,6 @@ const styles = {
     link: {
         margin: "10px auto",
         textAlign: "center",
-        color: " #C2185B",
     },
     error: {
         color: "#EF5350",
