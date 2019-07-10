@@ -1,10 +1,10 @@
-import { SET_FILMS_LIST, SET_POSTERS } from "../actions/types";
+import { SET_FILMS_LIST, SET_POSTERS } from "../../actions/types";
 
 const initialState = {
     films: []
 };
 
-export default function filmsCrud(state = initialState, action) {
+export default function filmsListReducer(state = initialState, action) {
     switch (action.type) {
         case SET_FILMS_LIST:
             return {

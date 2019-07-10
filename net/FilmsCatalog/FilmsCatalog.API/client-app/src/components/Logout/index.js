@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Typography, Button } from "@material-ui/core";
 import { ExitToApp } from "@material-ui/icons";
-import { deAuthenticate } from '../../actions/thunks';
+import { deauthenticate } from '../../actions/thunks';
 import { root, routes } from '../../routing/routes';
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
@@ -21,12 +21,12 @@ const Logout = ({ classes, logout, history, isAuthenticated }) => {
 
 const mapStateToProps = state => {
     return {
-        isAuthenticated: state.requestReducer.isAuthenticated
+        isAuthenticated: state.requestStateReducer.isAuthenticated
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        logout: history => dispatch(deAuthenticate(history))
+        logout: history => dispatch(deauthenticate(history))
     }
 }
 

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import { connect } from 'react-redux';
 import { Button, InputBase } from '@material-ui/core';
 import { postComment } from '../../actions/thunks';
-import { getUserName } from "../../helpers"
+import { authHelper } from "../../helpers/authHepler"
 import { withStyles } from '@material-ui/styles';
 import styles from "./styles"
 
@@ -10,7 +10,7 @@ const CommentForm = ({ addComment, classes, filmId }) => {
     const [comment, setComment] = useState("");
 
     const onClickHandler = () => {
-        const userName = getUserName();
+        const userName = authHelper.getUserName();
         const body = { userName, filmId, content: comment };
 
         userName && filmId && comment && addComment(body);

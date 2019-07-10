@@ -12,7 +12,6 @@ namespace FilmsCatalog.BLL.Core.DTO
         public string Overview { get; set; }
         public IEnumerable<string> Images { get; set; }
         public IEnumerable<CommentDTO> Comments { get; set; }
-        public object Rating { get; set; }
-
+        public FilmRatingDTO Rating { get; set; }
     }
 }

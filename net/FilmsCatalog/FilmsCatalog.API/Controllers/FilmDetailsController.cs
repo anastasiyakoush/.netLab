@@ -53,7 +53,7 @@ namespace FilmsCatalog.API.Controllers
             try
             {
                 var commentDTOs = await _commentService.GetFilmCommentsAsync(filmId);
-                var comments = _mapper.Map<IEnumerable< CommentDTO>, IEnumerable<CommentModel>>(commentDTOs);
+                var comments = _mapper.Map<IEnumerable<CommentDTO>, IEnumerable<CommentModel>>(commentDTOs);
                 return Ok(comments);
             }
             catch (Exception ex)
@@ -77,11 +77,11 @@ namespace FilmsCatalog.API.Controllers
         }
 
         [HttpPost("rate")]
-        public async Task<IActionResult> RateFilmAsync(RatingModel model)
+        public async Task<IActionResult> RateFilmAsync(PostRatingModel model)
         {
             try
             {
-                var ratingDTO = _mapper.Map<RatingModel, RatingDTO>(model);
+                var ratingDTO = _mapper.Map<PostRatingModel, RatingDTO>(model);
                 await _ratingService.AddFilmRatingAsync(ratingDTO);
 
                 return Ok();
@@ -97,7 +97,8 @@ namespace FilmsCatalog.API.Controllers
         {
             try
             {
-                var rating = await _ratingService.GetFilmRatingAsync(filmId);
+                var ratingDTO = await _ratingService.GetFilmRatingAsync(filmId);
+                var rating = _mapper.Map<FilmRatingDTO, RatingModel>(ratingDTO);
                 return Ok(rating);
             }
             catch (Exception ex)
@@ -111,7 +112,8 @@ namespace FilmsCatalog.API.Controllers
         {
             try
             {
-                var ratings = await _ratingService.GetAllRatingsAsync();
+                var ratingsDTOs = await _ratingService.GetAllRatingsAsync();
+                var ratings = _mapper.Map<IEnumerable<FilmRatingDTO>, IEnumerable<RatingModel>>(ratingsDTOs);
                 return Ok(ratings);
             }
             catch (Exception ex)
@@ -119,7 +121,7 @@ namespace FilmsCatalog.API.Controllers
                 return BadRequest(ex.Message);
             }
         }
-              
+
         [HttpGet("image/{filmId}")]
         public async Task<IActionResult> GetImagesUrls(int filmId)
         {

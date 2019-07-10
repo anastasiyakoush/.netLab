@@ -9,7 +9,8 @@ namespace FilmsCatalog.API.Configuration.Profiles
         public APIProfile()
         {
             CreateMap<CommentModel, CommentDTO>().ReverseMap();
-            CreateMap<RatingModel, RatingDTO>().ReverseMap();
+            CreateMap<RatingModel, FilmRatingDTO>().ReverseMap();
+            CreateMap<PostRatingModel, RatingDTO>().ReverseMap();
             CreateMap<FilmDTO, FilmModel>().ReverseMap();
             CreateMap<FilmInfoDTO, FilmInfoModel>().ReverseMap();
             CreateMap<AuthenticatedUserDTO, UserModel>();

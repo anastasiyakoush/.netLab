@@ -125,12 +125,12 @@ namespace FilmsCatalog.API.Controllers
             }
         }
 
-        [HttpGet("search/{query}")]
-        public async Task<IActionResult> Search(string query)
-        {
+        [HttpGet("search/{name}")]
+        public async Task<IActionResult> Search(string name)
+     {
             try
             {
-                var resultsDTOs = await _filmService.Search(query);
+                var resultsDTOs = await _filmService.FilterByName(name);
                 var results = _mapper.Map<IEnumerable<FilmDTO>, IEnumerable<FilmModel>>(resultsDTOs);
 
 

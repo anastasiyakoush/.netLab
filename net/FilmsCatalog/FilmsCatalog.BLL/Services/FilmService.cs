@@ -52,17 +52,7 @@ namespace FilmsCatalog.BLL.Services
             var filmComments = await _commentService.GetFilmCommentsAsync(id);
             var rating = await _ratingService.GetFilmRatingAsync(id);
 
-            FilmInfoDTO filmInfo = new FilmInfoDTO()
-            {
-                Id = filmDTO.Id,
-                Name = filmDTO.Name,
-                Year = filmDTO.Year,
-                Overview = filmDTO.Overview,
-                Director = filmDTO.Director,
-                Rating = rating,
-                Images = filmImages,
-                Comments = filmComments
-            };
+            var filmInfo = createFilmInfoDTO(filmDTO, filmComments, filmImages, rating);
 
             return filmInfo;
         }
@@ -93,11 +83,26 @@ namespace FilmsCatalog.BLL.Services
             await _uow.SaveAsync();
         }
 
-        public async Task<IEnumerable<FilmDTO>> Search(string query)
+        public async Task<IEnumerable<FilmDTO>> FilterByName(string name)
         {
-            var results = await _uow.Films.GetAll().Where(x => x.Name.Contains(query)).Take(5).ToListAsync();
+            var results = await _uow.Films.GetAll().Where(x => x.Name.Contains(name)).Take(5).ToListAsync();
 
             return _mapper.Map<IEnumerable<Film>, IEnumerable<FilmDTO>>(results);
+        }
+
+        private FilmInfoDTO createFilmInfoDTO(FilmDTO filmDTO, IEnumerable<CommentDTO> filmComments, IEnumerable<string> filmImages, FilmRatingDTO ratingDTO)
+        {
+            return new FilmInfoDTO
+            {
+                Id = filmDTO.Id,
+                Name = filmDTO.Name,
+                Year = filmDTO.Year,
+                Overview = filmDTO.Overview,
+                Director = filmDTO.Director,
+                Rating = ratingDTO,
+                Images = filmImages,
+                Comments = filmComments
+            };
         }
     }
 }

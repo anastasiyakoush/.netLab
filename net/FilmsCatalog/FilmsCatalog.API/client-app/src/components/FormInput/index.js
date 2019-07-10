@@ -17,7 +17,6 @@ const FormInput = ({ input, label, type, classes, meta: { touched, error } }) =>
                 error={!!(touched && error)}
                 helperText={touched && error}
             />
-
         </div>
     )
 }

@@ -1,9 +1,9 @@
 import { combineReducers } from "redux"
 import { reducer as formReducer } from "redux-form"
-import requestReducer from "./request"
-import filmsCrud from "./filmsCrud"
-import filmReducer from "./film"
+import requestStateReducer from "./reducers/requestStateReducer"
+import filmsListReducer from "./reducers/filmsListReducer"
+import filmReducer from "./reducers/filmReducer"
 
 export default combineReducers({
-    form: formReducer, requestReducer, filmsCrud, filmReducer
+    form: formReducer, requestStateReducer, filmsListReducer, filmReducer
 })

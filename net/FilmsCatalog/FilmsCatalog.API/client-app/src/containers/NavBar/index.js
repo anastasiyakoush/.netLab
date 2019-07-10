@@ -5,19 +5,17 @@ import Logout from "../../components/Logout";
 import SearchField from "../../components/SearchField";
 import HomeLink from "../../components/HomeLink";
 import Title from "../../components/Title";
+import { authHelper } from "../../helpers/authHepler"
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
-import { routes } from "../../routing/routes";
 
-const NavBar = ({ classes, location }) => {
-    const isAuthenticated = !(location.pathname.includes(`${routes.login}`) || location.pathname.includes(`${routes.signUp}`))
-
-    return (
-        <Toolbar className={classes.tabs} >
-            <HomeLink disabled />}
+const NavBar = ({ classes }) => {
+  return (
+    <Toolbar className={classes.tabs} >
+      <HomeLink disabled />}
               <Title />
-            {isAuthenticated && < SearchField />}
-            {isAuthenticated && <Logout />}
-        </Toolbar>)
+      {authHelper.isAuthenticated() && <SearchField />}
+      {authHelper.isAuthenticated() && <Logout />}
+    </Toolbar>)
 };
 export default withRouter(withStyles(styles)(NavBar));

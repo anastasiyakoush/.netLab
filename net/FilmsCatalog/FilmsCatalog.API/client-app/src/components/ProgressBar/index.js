@@ -4,7 +4,7 @@ import { Typography } from '@material-ui/core';
 import { withStyles } from '@material-ui/styles';
 import styles from "./styles"
 
-const Spinner = ({ classes }) => {
+const ProgressBar = ({ classes }) => {
     return (
         <div className={classes.root}>
             <Typography variant='h4' className={classes.text}>Loading</Typography>
@@ -12,4 +12,4 @@ const Spinner = ({ classes }) => {
         </div>
     );
 }
-export default withStyles(styles)(Spinner)
+export default withStyles(styles)(ProgressBar)

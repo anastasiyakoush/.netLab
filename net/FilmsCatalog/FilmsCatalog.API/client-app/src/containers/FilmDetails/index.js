@@ -6,7 +6,7 @@ import { getFilmDetails} from "../../actions/thunks";
 import ImagesContainer from "../../components/ImagesContainer/index";
 import CommentsContainer from "../../components/CommentsContainer/index";
 import CommentForm from "../../components/CommentForm/index";
-import Spinner from "../../components/Spinner";
+import ProgressBar from "../../components/ProgressBar";
 import FilmInfo from "../../components/FilmInfo/index";
 import styles from "./styles";
 
@@ -26,7 +26,7 @@ const FilmDetails = props => {
 
     return (
         <div className={classes.container}>
-            {loading && !film.name && <Spinner />}
+            {loading && <ProgressBar />}
             {
                 film.images.length > 0 && film.poster && filmId == film.id &&
                 <>
@@ -45,7 +45,7 @@ const FilmDetails = props => {
 const mapStateToProps = state => {
     return {
         film: { ...state.filmReducer },
-        loading: state.requestReducer.loading
+        loading: state.requestStateReducer.loading
     };
 };
 const mapDispatchToProps = dispatch => {

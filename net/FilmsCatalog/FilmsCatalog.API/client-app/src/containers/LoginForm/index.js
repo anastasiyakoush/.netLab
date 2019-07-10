@@ -77,9 +77,8 @@ const mapStateToProps = state => {
     return {
         email: selector(state, "email"),
         password: selector(state, "password"),
-        errors: state.requestReducer.error,
-        isAuthenticated: state.requestReducer.isAuthenticated,
-        loading: state.requestReducer.loading,
+        errors: state.requestStateReducer.error,
+        loading: state.requestStateReducer.loading,
     };
 };
 const mapDispatchToProps = dispatch => {

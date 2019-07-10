@@ -4,34 +4,30 @@ import {
     REQUEST_SUCCESS,
     LOGIN,
     LOGOUT
-} from "../actions/types";
-import { isAuthenticated } from "../helpers";
+} from "../../actions/types";
+import { authHelper } from "../../helpers/authHepler";
 
 const initialState = {
     loading: false,
     error: null,
-    isAuthenticated: isAuthenticated,
-    isSearch: false
-
+    isAuthenticated: authHelper.isAuthenticated(),
 };
 
-export default function requestReducer(state = initialState, action) {
+export default function requestStateReducer(state = initialState, action) {
     switch (action.type) {
         case LOADING:
             return {
                 ...state,
-                loading: true
+                loading: action.payload
             };
         case REQUEST_SUCCESS:
             return {
                 ...state,
-                loading: false,
                 error: null
             };
         case REQUEST_FAILURE:
             return {
                 ...state,
-                loading: false,
                 error: action.payload
             };
         case LOGIN:

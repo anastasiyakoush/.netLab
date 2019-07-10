@@ -5,21 +5,21 @@ import { Input, InputAdornment, Typography } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
 import { findFilm, getFilmsList } from "../../actions/thunks";
 import { routes, root } from "../../routing/routes";
+import { minSearchRequestLength } from "../../consts"
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
 
 const SearchField = props => {
     const [query, setQuery] = useState("");
-    const [suggestions, setSuggestions] = useState([]);
+    const [suggestedMovies, setMovies] = useState([]);
 
     const {
         classes,
-        isAuthenticated,
         search,
         history,
         location,
         getAll,
-        films
+        films: filmsList
     } = props;
 
     const onInputHandler = event => {
@@ -27,16 +27,17 @@ const SearchField = props => {
         setQuery(entry);
 
         if (location.pathname.includes(`${routes.homePage}`)) {
-            entry.length !== 0 && (entry.length > 2 || entry.length < query.length) && search(entry, history);
+            entry.length !== 0 && (entry.length > minSearchRequestLength || entry.length < query.length) && search(entry, history);
             entry.length === 0 && getAll(history);
         }
         else if (location.pathname.includes(`${routes.film}`)) {
-            films.length < 1 && getAll(history);
+            filmsList.length === 0 && getAll(history);
 
-            if (films.length > 0 && entry.length > 0) {
-                setSuggestions(films.filter(x => x.name.toLowerCase().includes(entry)))
+            if (filmsList.length > 0 && entry.length > 0) {
+                setMovies(filmsList.filter(x => x.name.toLowerCase().includes(entry)))
             }
-            entry.length === 0 && setSuggestions([]);
+
+            entry.length === 0 && setMovies([]);
         }
     };
 
@@ -46,9 +47,8 @@ const SearchField = props => {
         <div className={classes.container}>
             <div className={classes.input}>
                 <Input
-                    placeholder="Search for ..."
+                    placeholder="Search for movies..."
                     disableUnderline={true}
-                    disabled={!isAuthenticated}
                     endAdornment={
                         <InputAdornment position="end">
                             <Search className={classes.icon} />
@@ -58,8 +58,8 @@ const SearchField = props => {
                 />
             </div>
             {
-                suggestions.length > 0 && <div className={classes.list}>
-                    {suggestions.map((x,i) => <Typography variant="body2"  className={classes.link}  key={i} onClick={() => onClickHandler(x.id)}>{`${x.name} (${x.year})`}</Typography>)}
+                suggestedMovies.length > 0 && <div className={classes.list}>
+                    {suggestedMovies.map((x, i) => <Typography variant="body2" className={classes.link} key={i} onClick={() => onClickHandler(x.id)}>{`${x.name} (${x.year})`}</Typography>)}
                 </div>
             }
         </div>
@@ -68,8 +68,8 @@ const SearchField = props => {
 
 const mapStateToProps = state => {
     return {
-        isAuthenticated: state.requestReducer.isAuthenticated,
-        films: state.filmsCrud.films,
+        isAuthenticated: state.requestStateReducer.isAuthenticated,
+        films: state.filmsListReducer.films,
     };
 };
 const mapDispatcToProps = dispatch => {

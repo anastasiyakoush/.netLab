@@ -1,4 +1,4 @@
-import { emailRegEx, usernameRegEx, passwordRegEx } from "../consts"
+import { emailRegEx, usernameRegEx, passwordRegEx } from "./consts"
 
 const validate = values => {
     const errors = {};

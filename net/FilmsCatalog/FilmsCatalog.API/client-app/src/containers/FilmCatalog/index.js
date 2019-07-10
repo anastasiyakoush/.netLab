@@ -5,7 +5,7 @@ import { Typography } from "@material-ui/core";
 import { root, routes } from "../../routing//routes";
 import { getFilmsList, getFilmDetails } from "../../actions/thunks";
 import FilmCard from "../../components/FilmCard";
-import Spinner from "../../components/Spinner";
+import ProgressBar from "../../components/ProgressBar";
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
 
@@ -20,9 +20,8 @@ const FilmsCatalog = props => {
 
     return (
         <div className={classes.container}>
-            {loading && <Spinner />}
-            {!loading && films.length < 1 && <Typography variant="h6" className={classes.noResults}>No results found</Typography>}
-            {!loading && films.length > 0 &&
+            {loading && <ProgressBar />}
+            {!loading && (films.length > 0 ?
                 films.map(
                     (x, i) =>
                         films[i].poster && (
@@ -34,15 +33,15 @@ const FilmsCatalog = props => {
                                 onClick={() => goToDetails(x.id)}
                             />
                         )
-                )}
+                ) : <Typography variant="h6" className={classes.noResults}>No results found</Typography>)}
         </div>
     );
 };
 
 const mapStateToProps = state => {
     return {
-        films: state.filmsCrud.films,
-        loading: state.requestReducer.loading,
+        films: state.filmsListReducer.films,
+        loading: state.requestStateReducer.loading,
         failure: state.error
     };
 };

@@ -34,7 +34,7 @@ namespace FilmsCatalog.BLL.Services
 
             if (!identityResult.Succeeded)
             {
-                throw new Exception(identityResult.Errors.ToList().FirstOrDefault().Description);
+                throw new Exception(identityResult.Errors.ToList().FirstOrDefault()?.Description ?? "Unknown error");
             }
 
             return await AuthenticateAsync(userDTO);
@@ -43,7 +43,7 @@ namespace FilmsCatalog.BLL.Services
         public async Task<AuthenticatedUserDTO> AuthenticateAsync(UserDTO userDTO)
         {
             var user = await _userManager.FindByEmailAsync(userDTO.Email);
-            await IsUserExistedCheck(user);
+            IsUserExistedCheck(user);
 
             var signInResult = await _signInManager.PasswordSignInAsync(user.UserName, userDTO.Password, false, false);
 
@@ -61,7 +61,7 @@ namespace FilmsCatalog.BLL.Services
         public async Task<UserDTO> GetUserByIdAsync(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            await IsUserExistedCheck(user);
+            IsUserExistedCheck(user);
             var userDTO = _mapper.Map<User, UserDTO>(user);
 
             return userDTO;
@@ -70,7 +70,7 @@ namespace FilmsCatalog.BLL.Services
         public async Task<UserDTO> GetUserByNameAsync(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            await IsUserExistedCheck(user);
+            IsUserExistedCheck(user);
             var userDTO = _mapper.Map<User, UserDTO>(user);
 
             return userDTO;
@@ -98,7 +98,7 @@ namespace FilmsCatalog.BLL.Services
             return new JwtSecurityTokenHandler().WriteToken(jwtToken);
         }
 
-        private async Task IsUserExistedCheck(User user)
+        private void IsUserExistedCheck(User user)
         {
             if (user == null)
             {

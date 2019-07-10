@@ -12,6 +12,6 @@ namespace FilmsCatalog.API.Models
         public string Overview { get; set; }
         public IEnumerable<string> Images { get; set; }
         public IEnumerable<CommentModel> Comments { get; set; }
-        public object Rating { get; set; }
+        public RatingModel Rating { get; set; }
     }
 }

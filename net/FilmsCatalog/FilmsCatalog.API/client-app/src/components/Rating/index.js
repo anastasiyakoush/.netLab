@@ -3,7 +3,7 @@ import Rater from "react-rater";
 import { connect } from "react-redux";
 import { Typography, Button, withStyles } from "@material-ui/core";
 import { rateFilm, loadRating } from "../../actions/thunks";
-import { getUserName } from "../../helpers";
+import { authHelper } from "../../helpers/authHepler";
 import "react-rater/lib/react-rater.css";
 import styles from "./styles";
 
@@ -16,7 +16,7 @@ const Rating = ({ rating, filmId, postRating, classes, people }) => {
         setIsRated(true);
     };
     const rateFilm = () => {
-        const userName = getUserName();
+        const userName = authHelper.getUserName();
         const body = {
             userName,
             filmId,

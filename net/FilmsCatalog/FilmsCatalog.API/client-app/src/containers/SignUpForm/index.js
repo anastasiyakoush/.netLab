@@ -97,8 +97,8 @@ const mapStateToProps = state => {
         username: selector(state, "userName"),
         password: selector(state, "password"),
         confirmPassword: selector(state, "confirmPassword"),
-        errors: state.requestReducer.error,
-        loading: state.requestReducer.loading,
+        errors: state.requestStateReducer.error,
+        loading: state.requestStateReducer.loading,
     };
 };
 const mapDispatchToProps = dispatch => {

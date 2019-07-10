@@ -1,14 +1,10 @@
 import {
-    SET_FILM_ID,
+    SET_FILM,
     GET_POSTER,
-    SET_FILM_NAME,
-    SET_FILM_YEAR,
-    SET_FILM_DIRECTOR,
-    SET_FILM_OVERVIEW,
     ADD_FILM_RATING,
     ADD_FILM_COMMENTS,
     ADD_FILM_IMAGES
-} from "../actions/types";
+} from "../../actions/types";
 
 const initialState = {
     id: "",
@@ -25,31 +21,14 @@ const initialState = {
 
 export default function filmReducer(state = initialState, action) {
     switch (action.type) {
-        case SET_FILM_ID:
+        case SET_FILM:
             return {
                 ...state,
-                id: action.payload
+                ...action.payload,
+                rating: action.payload.rating.rate,
+                peopleVoted: action.payload.rating.votedPeopleCount,
             };
-        case SET_FILM_NAME:
-            return {
-                ...state,
-                name: action.payload
-            };
-        case SET_FILM_YEAR:
-            return {
-                ...state,
-                year: action.payload
-            };
-        case SET_FILM_DIRECTOR:
-            return {
-                ...state,
-                director: action.payload
-            };
-        case SET_FILM_OVERVIEW:
-            return {
-                ...state,
-                overview: action.payload
-            };
+
         case ADD_FILM_COMMENTS:
             return {
                 ...state,
@@ -64,7 +43,7 @@ export default function filmReducer(state = initialState, action) {
             return {
                 ...state,
                 rating: action.payload.rate,
-                peopleVoted: action.payload.votedPeople
+                peopleVoted: action.payload.votedPeopleCount
             };
         case GET_POSTER:
             return {

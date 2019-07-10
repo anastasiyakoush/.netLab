@@ -4,6 +4,6 @@
     {
         public int FilmId { get; set; }
         public  double Rate { get; set; }
-        public int VotedPeople { get; set; }
+        public int VotedPeopleCount { get; set; }
     }
 }
