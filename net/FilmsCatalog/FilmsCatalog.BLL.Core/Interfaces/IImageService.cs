@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using FilmsCatalog.BLL.Core.DTO;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace FilmsCatalog.BLL.Core.Interfaces
@@ -6,5 +7,6 @@ namespace FilmsCatalog.BLL.Core.Interfaces
     public interface IImageService
     {
         Task<IEnumerable<string>> GetUrlsAsync(int filmId);
+        Task<IEnumerable<PosterDTO>> GetPostersAsync();
     }
 }

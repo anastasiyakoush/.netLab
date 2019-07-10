@@ -1,55 +1,93 @@
 import React from "react";
 import { connect } from "react-redux";
 import { Field, reduxForm, formValueSelector } from "redux-form";
-import { Link } from 'react-router-dom'
-import FormInput from "../../components/FormInput/index"
-import styles from "./styles";
+import { withRouter } from "react-router-dom";
+import { Typography, Button, Container, Link } from "@material-ui/core";
+import { signup } from "../../actions/thunks";
+import { root, routes } from "../../routing/routes";
+import validate from "../../validation/formValidator";
+import FormInput from "../../components/FormInput/index";
+import Loading from "../../components/Loading";
 import { withStyles } from "@material-ui/styles";
-import { signup } from "../../actions/actions";
-import { root, routes } from "../../routing/routes"
-import validate from "../../validation/formValidator"
+import styles from "./styles";
 
 let SignUpForm = props => {
-    const { signUp, email, username, password, classes } = props;
+    const {
+        signUp,
+        email,
+        username,
+        password,
+        classes,
+        history,
+        errors,
+        handleSubmit,
+        loading
+    } = props;
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        signUp({ "email": email, "username": username, "password": password });
-    }
+    const onSubmitHandler = e => {
+        const user = { email: email, username: username, password: password };
+        signUp(user, history);
+    };
 
     return (
-        <form className={classes.formContainer}>
-            <Field
-                name="userName"
-                type="text"
-                label="Username"
-                component={FormInput}
-            />
-            <Field
-                name="email"
-                type="email"
-                label="Email"
-                component={FormInput}
-            />
-            <Field
-                name="password"
-                type="password"
-                label="Password"
-                component={FormInput}
-            />
-            <Field
-                name="confirmPassword"
-                type="password"
-                label="Confirm password"
-                component={FormInput}
-            />
-            <button className={classes.button} type="submit" onClick={(e) => handleSubmit(e)}>Sign Up</button>
-            <Link to={`${root()}${routes.login}`} className={classes.link}>Log in</Link>
-        </form>
+        <Container component="main" className={classes.container}>
+            {loading && <Loading />}
+            <Typography variant="h5" className={classes.title}>Sign Up</Typography>
+            <form
+                noValidate={true}
+                className={classes.form}
+                onSubmit={handleSubmit(onSubmitHandler)}>
+                <Field
+                    name="userName"
+                    type="text"
+                    label="Username"
+                    component={FormInput}
+                />
+                <Field
+                    name="email"
+                    type="email"
+                    label="Email"
+                    component={FormInput}
+                />
+                <Field
+                    name="password"
+                    type="password"
+                    label="Password"
+                    component={FormInput}
+                />
+                <Field
+                    name="confirmPassword"
+                    type="password"
+                    label="Confirm password"
+                    component={FormInput}
+                />
+                {!loading && errors && (
+                    <Typography variant="subtitle1" className={classes.error}>
+                        {errors}
+                    </Typography>
+                )}
+                <Button
+                    type="submit"
+                    fullWidth
+                    variant="contained"
+                    className={classes.button}
+                    onSubmit={e => handleSubmit(e)}>
+                    Sign Up
+                </Button>
+                <Link
+                    href={`${root()}${routes.login}`}
+                    variant="body1"
+                    className={classes.link}>
+                    Already have an account? Login
+                </Link>
+            </form>
+        </Container>
     );
 };
 
-SignUpForm = reduxForm({ form: 'signUp', validate })(withStyles(styles)(SignUpForm));
+SignUpForm = reduxForm({ form: "signUp", validate, destroyOnUnmount: true })(
+    withStyles(styles)(SignUpForm)
+);
 
 const selector = formValueSelector("signUp");
 
@@ -59,19 +97,19 @@ const mapStateToProps = state => {
         username: selector(state, "userName"),
         password: selector(state, "password"),
         confirmPassword: selector(state, "confirmPassword"),
-    }
+        errors: state.requestStateReducer.error,
+        loading: state.requestStateReducer.loading,
+    };
 };
 const mapDispatchToProps = dispatch => {
     return {
-        signUp: user => {
-            dispatch(signup(user));
-        }
-    }
-}
+        signUp: (user, history) => dispatch(signup(user, history))
+    };
+};
 
 SignUpForm = connect(
     mapStateToProps,
     mapDispatchToProps
 )(SignUpForm);
 
-export default SignUpForm;
+export default withRouter(SignUpForm);

@@ -2,8 +2,7 @@
 {
     public class RatingModel
     {
-        public int FilmId { get; set; }
-        public string UserName { get; set; }
-        public int Rate { get; set; }
+        public double Rate { get; set; }
+        public int VotedPeopleCount { get; set; }
     }
 }

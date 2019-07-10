@@ -52,7 +52,7 @@ namespace FilmsCatalog.BLL.Services
         public async Task<IEnumerable<CommentDTO>> GetFilmCommentsAsync(int filmId)
         {
             var comments = await _uow.Comments.GetAll()
-                                 .Select(x => CommentDTOFactory(x.FilmId, x.User.UserName, x.Content, x.Time))
+                                 .Select(x => createCommentDTO(x.FilmId, x.User.UserName, x.Content, x.Time))
                                  .Where(x => x.FilmId == filmId)
                                  .ToListAsync();
 
@@ -79,7 +79,7 @@ namespace FilmsCatalog.BLL.Services
             return comment;
         }
 
-        private CommentDTO CommentDTOFactory(int filmId, string username, string content, DateTime time)
+        private CommentDTO createCommentDTO(int filmId, string username, string content, DateTime time)
         {
             return new CommentDTO()
             {

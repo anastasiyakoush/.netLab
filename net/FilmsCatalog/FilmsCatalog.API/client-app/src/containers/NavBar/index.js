@@ -1,31 +1,21 @@
 import React from "react";
 import { withRouter } from "react-router";
-import { Link } from "react-router-dom";
-import { Tab, Tabs } from "@material-ui/core";
-import { routes, root } from "../../routing/routes";
+import { Toolbar } from "@material-ui/core";
+import Logout from "../../components/Logout";
+import SearchField from "../../components/SearchField";
+import HomeLink from "../../components/HomeLink";
+import Title from "../../components/Title";
+import { authHelper } from "../../helpers/authHepler"
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
 
-const NavBar = props => {
-    const { classes } = props;
-    const isNotFound = props.location.pathname !== "/404";
-
-    return isNotFound ? (
-        <Tabs className={classes.tabs} indicatorColor="#4DB6AC" centered={true}>
-            <Tab
-                className={classes.tab}
-                label="Home"
-                component={Link}
-                to={`${root()}${routes.homePage}`}
-            />
-            <Tab
-                className={classes.tab}
-                label="Account"
-                component={Link}
-                to={`${root()}${routes.account}`}
-            />
-        </Tabs>
-    ) : null;
+const NavBar = ({ classes }) => {
+  return (
+    <Toolbar className={classes.tabs} >
+      <HomeLink disabled />}
+              <Title />
+      {authHelper.isAuthenticated() && <SearchField />}
+      {authHelper.isAuthenticated() && <Logout />}
+    </Toolbar>)
 };
-
 export default withRouter(withStyles(styles)(NavBar));

@@ -16,6 +16,8 @@ namespace FilmsCatalog.DAL.EF.EF
         {
             base.OnModelCreating(builder);
 
+            builder.Seed();
+
             builder.Entity<User>()
                 .Ignore(p => p.PhoneNumber)
                 .Ignore(p => p.PhoneNumberConfirmed)

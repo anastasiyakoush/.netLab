@@ -1,26 +1,36 @@
 const styles = {
-    formContainer: {
-        margin: "auto",
-        width: "300px",
-        marginTop: "200px",
-        border: "1px solid #000000",
-        padding: "50px",
-        borderRadius: "5px",
+    container: {
         flexDirection: "column",
         display: "flex",
-        flexWrap: "wrap",
+        alignItems: "center",
+        width: "500px",
+        padding: "10% 50%",
+        backgroundColor: "#fff"
+    },
+    form: {
         height: "100%",
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
     },
     button: {
-        margin: "10px auto 0",
-        display: "block",
-        padding: "10px",
+        margin: "50px 0",
+        backgroundColor: "#000",
+        color: "#fff",
+        "&:hover": {
+            backgroundColor: "#C2185B"
+        },
     },
     link: {
-        textDecoration: "none",
         margin: "10px auto",
         textAlign: "center",
-        color: " #F44336",
+    },
+    error: {
+        color: "#EF5350",
+        marginTop: "20px"
+    },
+    title: {
+        width: "100px"
     }
 }
 export default styles;

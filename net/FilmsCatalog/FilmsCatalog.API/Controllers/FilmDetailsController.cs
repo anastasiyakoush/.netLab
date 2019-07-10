@@ -7,6 +7,8 @@ using FilmsCatalog.BLL.Core.DTO;
 using FilmsCatalog.API.Configuration.Filters;
 using Microsoft.AspNetCore.Authorization;
 using System;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace FilmsCatalog.API.Controllers
 {
@@ -41,7 +43,7 @@ namespace FilmsCatalog.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -50,12 +52,13 @@ namespace FilmsCatalog.API.Controllers
         {
             try
             {
-                var comments = await _commentService.GetFilmCommentsAsync(filmId);
+                var commentDTOs = await _commentService.GetFilmCommentsAsync(filmId);
+                var comments = _mapper.Map<IEnumerable<CommentDTO>, IEnumerable<CommentModel>>(commentDTOs);
                 return Ok(comments);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -69,23 +72,23 @@ namespace FilmsCatalog.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
         [HttpPost("rate")]
-        public async Task<IActionResult> RateFilmAsync(RatingModel model)
+        public async Task<IActionResult> RateFilmAsync(PostRatingModel model)
         {
             try
             {
-                var ratingDTO = _mapper.Map<RatingModel, RatingDTO>(model);
+                var ratingDTO = _mapper.Map<PostRatingModel, RatingDTO>(model);
                 await _ratingService.AddFilmRatingAsync(ratingDTO);
 
                 return Ok();
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -94,12 +97,13 @@ namespace FilmsCatalog.API.Controllers
         {
             try
             {
-                var rating = await _ratingService.GetFilmRatingAsync(filmId);
+                var ratingDTO = await _ratingService.GetFilmRatingAsync(filmId);
+                var rating = _mapper.Map<FilmRatingDTO, RatingModel>(ratingDTO);
                 return Ok(rating);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
 
@@ -108,15 +112,16 @@ namespace FilmsCatalog.API.Controllers
         {
             try
             {
-                var ratings = await _ratingService.GetAllRatingsAsync();
+                var ratingsDTOs = await _ratingService.GetAllRatingsAsync();
+                var ratings = _mapper.Map<IEnumerable<FilmRatingDTO>, IEnumerable<RatingModel>>(ratingsDTOs);
                 return Ok(ratings);
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
-              
+
         [HttpGet("image/{filmId}")]
         public async Task<IActionResult> GetImagesUrls(int filmId)
         {
@@ -127,7 +132,7 @@ namespace FilmsCatalog.API.Controllers
             }
             catch (Exception ex)
             {
-                return BadRequest(ex);
+                return BadRequest(ex.Message);
             }
         }
     }

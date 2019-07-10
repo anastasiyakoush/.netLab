@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using AutoMapper;
 using FilmsCatalog.API.Configuration.Filters;
 using FilmsCatalog.API.Models;
@@ -25,29 +26,31 @@ namespace FilmsCatalog.API.Controllers
         [HttpPost("signup")]
         public async Task<IActionResult> SignUp(RegisterUserModel model)
         {
-            var userDTO = _mapper.Map<RegisterUserModel, UserDTO>(model);
-            var user = await _accountService.RegistrateAsync(userDTO);
-
-            if (user != null)
+            try
             {
+                var userDTO = _mapper.Map<RegisterUserModel, UserDTO>(model);
+                var user = await _accountService.RegistrateAsync(userDTO);
                 return Ok(user);
             }
-
-            return BadRequest();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(LoginModel model)
         {
-            var userDTO = _mapper.Map<LoginModel, UserDTO>(model);
-            var user = await _accountService.AuthenticateAsync(userDTO);
-
-            if (user != null)
+            try
             {
+                var userDTO = _mapper.Map<LoginModel, UserDTO>(model);
+                var user = await _accountService.AuthenticateAsync(userDTO);
                 return Ok(user);
             }
-
-            return BadRequest();
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
     }
 }

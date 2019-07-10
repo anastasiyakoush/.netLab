@@ -3,6 +3,7 @@
     public class FilmRatingDTO
     {
         public int FilmId { get; set; }
-        public int Rate { get; set; }
+        public  double Rate { get; set; }
+        public int VotedPeopleCount { get; set; }
     }
 }

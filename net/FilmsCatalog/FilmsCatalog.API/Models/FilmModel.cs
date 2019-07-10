@@ -1,5 +1,6 @@
 ﻿using FluentValidation.Attributes;
 using FilmsCatalog.Core.Interfaces;
+using System.Collections.Generic;
 
 namespace FilmsCatalog.API.Models
 {
@@ -10,5 +11,6 @@ namespace FilmsCatalog.API.Models
         public string Name { get; set; }
         public int Year { get; set; }
         public string Director { get; set; }
+        public string Overview { get; set; }
     }
 }

@@ -7,6 +7,7 @@ using FilmsCatalog.DAL.Core.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -62,21 +63,25 @@ namespace FilmsCatalog.BLL.Services
             await _uow.SaveAsync();
         }
 
-        public async Task<IEnumerable> GetAllRatingsAsync()
+        public async Task<IEnumerable<FilmRatingDTO>> GetAllRatingsAsync()
         {
             var ratings = await _uow.Ratings.GetAll()
                                .GroupBy(x => x.FilmId)
-                               .Select(x => FilmRatingDTOFactory(x.Key, x.Select(r => r.Rate).Average()))
+                               .Select(x => createFilmRatingDTO(x.Key, x.Count(), x.Select(r => r.Rate).Average()))
                                .ToListAsync();
             return ratings;
         }
 
-        public async Task<double> GetFilmRatingAsync(int filmId)
+        public async Task<FilmRatingDTO> GetFilmRatingAsync(int filmId)
         {
             var rating = await _uow.Ratings.GetAll()
-                               .Where(x => x.FilmId == filmId).Select(x => x.Rate).ToListAsync();
+                              .GroupBy(x => x.FilmId)
+                              .Where(x => x.Key == filmId)
+                              .Select(x => createFilmRatingDTO(x.Key, x.Count(), x.Select(r => r.Rate).Average()))
+                              .ToListAsync();
 
-            return rating.Average();
+
+            return rating.FirstOrDefault() ?? createFilmRatingDTO(filmId, 0, 0);
         }
 
         private Rating FillRatingFiels(Rating rating, User user, Film film)
@@ -87,12 +92,13 @@ namespace FilmsCatalog.BLL.Services
             return rating;
         }
 
-        private object FilmRatingDTOFactory(int filmId, double rate)
+        private FilmRatingDTO createFilmRatingDTO(int filmId, int people, double rate)
         {
-            return new
+            return new FilmRatingDTO
             {
                 FilmId = filmId,
-                Rate = rate
+                Rate = rate,
+                VotedPeopleCount = people,
             };
         }
     }
