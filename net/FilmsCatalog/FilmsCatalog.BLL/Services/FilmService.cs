@@ -37,10 +37,22 @@ namespace FilmsCatalog.BLL.Services
             await _uow.SaveAsync();
         }
 
-        public async Task<IEnumerable<FilmDTO>> GetAllFilmsAsync()
+        public async Task<IEnumerable<FilmInfoDTO>> GetAllFilmsAsync()
         {
-            var films = await _uow.Films.GetAll().ToListAsync();
-            return _mapper.Map<IEnumerable<Film>, IEnumerable<FilmDTO>>(films);
+            var filmDTOs = await _uow.Films.GetAll().ToListAsync();
+            var films = _mapper.Map<IEnumerable<Film>, IEnumerable<FilmDTO>>(filmDTOs);
+            var filmList = new List<FilmInfoDTO>(films.Count());
+
+            foreach (var film in films)
+            {
+                var filmImages = await _imageService.GetUrlsAsync(film.Id);
+                var filmComments = await _commentService.GetFilmCommentsAsync(film.Id);
+                var rating = await _ratingService.GetFilmRatingAsync(film.Id);
+
+                filmList.Add(createFilmInfoDTO(film, filmComments, filmImages, rating));
+            }
+
+            return filmList;
         }
 
         public async Task<FilmInfoDTO> GetFilmAsync(int id)
