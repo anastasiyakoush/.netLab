@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using FilmsCatalog.Core;
 using FilmsCatalog.BLL.Core.Interfaces;
+using FilmsCatalog.Core.Enums;
+using FilmsCatalog.BLL.Extentions;
 
 namespace FilmsCatalog.BLL.Services
 {
@@ -37,34 +39,23 @@ namespace FilmsCatalog.BLL.Services
             await _uow.SaveAsync();
         }
 
-        public async Task<IEnumerable<FilmInfoDTO>> GetAllFilmsAsync()
+        public async Task<IEnumerable<FilmDTO>> GetAllFilmsAsync(FilmsListDTO parameters)
         {
-            var filmDTOs = await _uow.Films.GetAll().ToListAsync();
-            var films = _mapper.Map<IEnumerable<Film>, IEnumerable<FilmDTO>>(filmDTOs);
-            var filmList = new List<FilmInfoDTO>(films.Count());
+            var filmsList = await createFilmsList(parameters);
+            var sortedList = SortFilms(filmsList, parameters);
 
-            foreach (var film in films)
-            {
-                var filmImages = await _imageService.GetUrlsAsync(film.Id);
-                var filmComments = await _commentService.GetFilmCommentsAsync(film.Id);
-                var rating = await _ratingService.GetFilmRatingAsync(film.Id);
-
-                filmList.Add(createFilmInfoDTO(film, filmComments, filmImages, rating));
-            }
-
-            return filmList;
+            return sortedList.ToList();
         }
 
-        public async Task<FilmInfoDTO> GetFilmAsync(int id)
+        public async Task<FilmDTO> GetFilmAsync(int id)
         {
             var film = await _uow.Films.GetAsync(id);
-            var filmDTO = _mapper.Map<Film, FilmDTO>(film);
 
             var filmImages = await _imageService.GetUrlsAsync(id);
             var filmComments = await _commentService.GetFilmCommentsAsync(id);
             var rating = await _ratingService.GetFilmRatingAsync(id);
 
-            var filmInfo = createFilmInfoDTO(filmDTO, filmComments, filmImages, rating);
+            var filmInfo = createFilmInfoDTO(film, filmComments, filmImages, rating);
 
             return filmInfo;
         }
@@ -95,26 +86,92 @@ namespace FilmsCatalog.BLL.Services
             await _uow.SaveAsync();
         }
 
-        public async Task<IEnumerable<FilmDTO>> FilterByName(string name)
+        public IQueryable<Film> FilterList(string name)
         {
-            var results = await _uow.Films.GetAll().Where(x => x.Name.Contains(name)).Take(5).ToListAsync();
-
-            return _mapper.Map<IEnumerable<Film>, IEnumerable<FilmDTO>>(results);
+            return string.IsNullOrEmpty(name) ? _uow.Films.GetAll() : _uow.Films.GetAll().Where(x => x.Name.Contains(name));
         }
 
-        private FilmInfoDTO createFilmInfoDTO(FilmDTO filmDTO, IEnumerable<CommentDTO> filmComments, IEnumerable<string> filmImages, FilmRatingDTO ratingDTO)
+        private FilmDTO createFilmInfoDTO(Film film, IEnumerable<CommentDTO> filmComments, IEnumerable<string> filmImages, FilmRatingDTO ratingDTO)
         {
-            return new FilmInfoDTO
+            return new FilmDTO
             {
-                Id = filmDTO.Id,
-                Name = filmDTO.Name,
-                Year = filmDTO.Year,
-                Overview = filmDTO.Overview,
-                Director = filmDTO.Director,
+                Id = film.Id,
+                Name = film.Name,
+                Year = film.Year,
+                Overview = film.Overview,
+                Director = film.Director,
                 Rating = ratingDTO,
                 Images = filmImages,
                 Comments = filmComments
             };
+        }
+
+        private async Task<IQueryable<FilmDTO>> createFilmsList(FilmsListDTO parameters)
+        {
+            var films = FilterList(parameters.QueryString);
+            films = SortBy();
+
+
+            var filmImages = await _imageService.GetUrlsAsync(film.Id);
+            var filmComments = await _commentService.GetFilmCommentsAsync(film.Id);
+
+
+            return filmList;
+        }
+
+        private SortTypesEnum ConvertToEnum(int? type)
+        {
+            return type != null ? (SortTypesEnum)type : SortTypesEnum.Default;
+        }
+
+        private IQueryable<FilmDTO> SortFilms(IQueryable<FilmDTO> films, FilmsListDTO parameters)
+        {
+            var sortByName = ConvertToEnum(parameters.SortByName);
+            var sortByYear = ConvertToEnum(parameters.SortByYear);
+            var sortByRating = ConvertToEnum(parameters.SortByRating);
+            var sortedList = films;
+
+            switch (sortByName)
+            {
+                case SortTypesEnum.Asc:
+                    {
+                        sortedList = sortedList.OrderBy().ThenBy<FilmDTO, string>(x => x.Name, SortTypesEnum.Asc);
+                        break;
+                    }
+                case SortTypesEnum.Desc:
+                    {
+                        sortedList = sortedList.SortBy<FilmDTO, string>(x => x.Name, SortTypesEnum.Desc);
+                        break;
+                    }
+            }
+            switch (sortByYear)
+            {
+                case SortTypesEnum.Asc:
+                    {
+                        sortedList = sortedList.SortBy<FilmDTO, int>(x => x.Year);
+                        break;
+                    }
+                case SortTypesEnum.Desc:
+                    {
+                        sortedList = sortedList.SortBy<FilmDTO, int>(x => x.Year);
+                        break;
+                    }
+            }
+            switch (sortByRating)
+            {
+                case SortTypesEnum.Asc:
+                    {
+                        sortedList = sortedList.SortBy<FilmDTO, double>(x => x.Rating.Rate);
+                        break;
+                    }
+                case SortTypesEnum.Desc:
+                    {
+                        sortedList = sortedList.SortBy<FilmDTO, double>(x => x.Rating.Rate);
+                        break;
+                    }
+            }
+
+            return sortedList.Skip(parameters.Start).Take(Consts.FilmsReturnPerRequest);
         }
     }
 }

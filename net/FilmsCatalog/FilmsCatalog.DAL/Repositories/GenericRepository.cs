@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using FilmsCatalog.DAL.Core.Interfaces;
 using System.Linq;
+using System.Linq.Expressions;
+using System;
 
 namespace FilmsCatalog.DAL.EF.Repositories
 {
@@ -39,6 +41,11 @@ namespace FilmsCatalog.DAL.EF.Repositories
         public void Update(T entity)
         {
             db.Update(entity);
+        }
+
+        public IQueryable<T> FilterByPredicate(Expression<Func<T, bool>> expression)
+        {
+            return entities.Where(expression);
         }
     }
 }

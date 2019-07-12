@@ -8,10 +8,9 @@ namespace FilmsCatalog.BLL.Interfaces
     public interface IFilmService
     {
         Task AddFilmAsync(FilmDTO filmDTO);
-        Task<FilmInfoDTO> GetFilmAsync(int id);
-        Task<IEnumerable<FilmInfoDTO>> GetAllFilmsAsync();
+        Task<FilmDTO> GetFilmAsync(int id);
+        Task<IEnumerable<FilmDTO>> GetAllFilmsAsync(FilmsListDTO FilmsListDTO);
         Task RemoveFilmAsync(int id);
-        Task UpdateFilmAsync(FilmDTO filmDTO);
-        Task<IEnumerable<FilmDTO>> FilterByName(string name);
+        Task UpdateFilmAsync(FilmDTO filmDTO);        
     }
 }

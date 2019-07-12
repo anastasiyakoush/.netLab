@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Input, InputAdornment, Typography } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
-import { findFilm, getFilmsList } from "../../actions/thunks";
+import { findFilm, getqueryableList } from "../../actions/thunks";
 import { routes, root } from "../../routing/routes";
 import { minSearchRequestLength } from "../../consts"
 import { withStyles } from "@material-ui/styles";
@@ -19,7 +19,7 @@ const SearchField = props => {
         history,
         location,
         getAll,
-        films: filmsList
+        queryable: queryableList
     } = props;
 
     const onInputHandler = event => {
@@ -31,10 +31,10 @@ const SearchField = props => {
             entry.length === 0 && getAll(history);
         }
         else if (location.pathname.includes(`${routes.film}`)) {
-            filmsList.length === 0 && getAll(history);
+            queryableList.length === 0 && getAll(history);
 
-            if (filmsList.length > 0 && entry.length > 0) {
-                setMovies(filmsList.filter(x => x.name.toLowerCase().includes(entry)))
+            if (queryableList.length > 0 && entry.length > 0) {
+                setMovies(queryableList.filter(x => x.name.toLowerCase().includes(entry)))
             }
 
             entry.length === 0 && setMovies([]);
@@ -69,13 +69,13 @@ const SearchField = props => {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.requestStateReducer.isAuthenticated,
-        films: state.filmsListReducer.films,
+        queryable: state.queryableListReducer.queryable,
     };
 };
 const mapDispatcToProps = dispatch => {
     return {
         search: (query, history) => dispatch(findFilm(query, history)),
-        getAll: (history) => dispatch(getFilmsList(history)),
+        getAll: (history) => dispatch(getqueryableList(history)),
     };
 };
 

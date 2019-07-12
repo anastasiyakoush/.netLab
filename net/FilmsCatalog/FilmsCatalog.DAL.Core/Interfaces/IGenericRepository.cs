@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 
 namespace FilmsCatalog.DAL.Core.Interfaces
@@ -10,5 +12,6 @@ namespace FilmsCatalog.DAL.Core.Interfaces
         IQueryable<T> GetAll();
         void Update(T entity);
         void Delete(T entity);
+        IQueryable<T> FilterByPredicate(Expression<Func<T, bool>> expression);
     }
 }

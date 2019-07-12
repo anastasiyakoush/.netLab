@@ -37,7 +37,7 @@ namespace FilmsCatalog.API.Controllers
             try
             {
                 var film = await _filmService.GetFilmAsync(id);
-                var filmModel = _mapper.Map<FilmInfoDTO, FilmInfoModel>(film);
+                var filmModel = _mapper.Map<FilmDTO, FilmModel>(film);
 
                 return Ok(filmModel);
             }
@@ -47,13 +47,15 @@ namespace FilmsCatalog.API.Controllers
             }
         }
 
-        [HttpGet("all")]
-        public async Task<IActionResult> GetAll()
+        [AllowAnonymous]
+        [HttpPost("all")]
+        public async Task<IActionResult> GetAll( PostFilmsListModel postFilmsListModel)
         {
             try
             {
-                var films = await _filmService.GetAllFilmsAsync();
-                var filmModels = _mapper.Map<IEnumerable<FilmInfoDTO>, IEnumerable<FilmInfoModel>>(films);
+                var filmListDTO = _mapper.Map<PostFilmsListModel, FilmsListDTO>(postFilmsListModel);
+                var films = await _filmService.GetAllFilmsAsync( filmListDTO);
+                var filmModels = _mapper.Map<IEnumerable<FilmDTO>, IEnumerable<FilmModel>>(films);
 
                 return Ok(filmModels);
             }
@@ -123,23 +125,6 @@ namespace FilmsCatalog.API.Controllers
             {
                 return BadRequest(ex.Message);
             }
-        }
-
-        [HttpGet("search/{name}")]
-        public async Task<IActionResult> Search(string name)
-     {
-            try
-            {
-                var resultsDTOs = await _filmService.FilterByName(name);
-                var results = _mapper.Map<IEnumerable<FilmDTO>, IEnumerable<FilmModel>>(resultsDTOs);
-
-
-                return Ok(results);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
+        }        
     }
 }

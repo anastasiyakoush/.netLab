@@ -5,7 +5,7 @@ export const LOADING = "LOADING";
 export const REQUEST_SUCCESS = "REQUEST_SUCCESS";
 export const REQUEST_FAILURE = "REQUEST_FAILURE";
 
-export const SET_FILMS_LIST = "SET_FILMS_LIST";
+export const SET_queryable_LIST = "SET_queryable_LIST";
 export const SET_POSTERS = "SET_POSTERS";
 
 export const GET_POSTER = "GET_POSTER";

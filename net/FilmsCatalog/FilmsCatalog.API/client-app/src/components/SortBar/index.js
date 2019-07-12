@@ -1,45 +1,38 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
 import { Typography, Fab } from "@material-ui/core";
 import { ArrowDownward, ArrowUpward, Clear, Sort } from "@material-ui/icons";
 import { sortParams } from "../../consts";
-import { setFilmsList } from "../../actions/actions/filmsList";
+import { setqueryableList } from "../../actions/actions/queryableList";
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
+import { getqueryableList } from "../../actions/thunks";
 
-const SortBar = ({ films, classes, updateFilmsList }) => {
+const SortBar = ({ queryable, classes,  history, sortqueryable }) => {
     const [showSortBar, setShowSortBar] = useState(false);
-    const [sortedList, setSortedList] = useState(films);
-    const [sortByName, setSortByName] = useState({ parameter: sortParams.name, sort: false, asc: true });
-    const [sortByYear, setSortByYear] = useState({ parameter: sortParams.name, sort: false, asc: true });
-    const [sortByRating, setSortByRating] = useState({ parameter: sortParams.name, sort: false, asc: true });
+    const [sortByName, setSortByName] = useState({ sort: false, asc: true });
+    const [sortByYear, setSortByYear] = useState({ sort: false, asc: true });
+    const [sortByRating, setSortByRating] = useState({ sort: false, asc: true });
 
     const sort = (param, asc = true) => {
+        const body = {};
 
-        if (param === sortParams.name) {
-            setSortByName({ ...sortByName, sort: true, asc: asc })
-            const sorted = [...films].sort((a, b) => lexicalSort(a.name, b.name));
-            setSortedList(asc ? sorted : sorted.reverse());
+        if (param === sortParams.name ) {
+            setSortByName({ sort: true, asc: asc })
+            body.sortByName = asc ? 0 : 1;
         }
-        if (param === sortParams.year) {
-            setSortByYear({ ...sortByYear, sort: true, asc: asc })
-            const sorted = [...films].sort((a, b) => numericSort(a.year, b.year));
-            setSortedList(asc ? sorted : sorted.reverse());
+        if (param === sortParams.year || sortByYear.sort) {
+            setSortByYear({ sort: true, asc: asc })
+            body.sortByYear = asc ? 0 : 1;
         }
-        if (param === sortParams.rating) {
-            setSortByRating({ ...sortByRating, sort: true, asc: asc })
-            const sorted = [...films].sort((a, b) => numericSort(a.rating.rate, b.rating.rate));
-            setSortedList(asc ? sorted : sorted.reverse());
+        if (param === sortParams.rating || sortByRating.sort) {
+            setSortByRating({ sort: true, asc: asc })
+            body.sortByRating = asc ? 0 : 1;
         }
+
+        sortqueryable(history, body);
     }
-
-    const lexicalSort = (a, b) => a.toLowerCase().localeCompare(b.toLowerCase());
-
-    const numericSort = (a, b) => a - b;
-
-    useEffect(() => {
-        updateFilmsList(sortedList)
-    }, [sortedList])
 
     return (
         <>
@@ -79,12 +72,13 @@ const SortBar = ({ films, classes, updateFilmsList }) => {
 
 const mapStateToProps = state => {
     return {
-        films: state.filmsListReducer.films
+        queryable: state.queryableListReducer.queryable
     }
 }
 const mapDispatchToProps = dispatch => {
     return {
-        updateFilmsList: sortedFilms => dispatch(setFilmsList(sortedFilms))
+        updatequeryableList: sortedqueryable => dispatch(setqueryableList(sortedqueryable)),
+        sortqueryable: (history, body) => dispatch(getqueryableList(history, body))
     }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(withStyles(styles)(SortBar));
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(withStyles(styles)(SortBar)));

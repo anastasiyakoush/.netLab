@@ -1,16 +1,16 @@
 import requestService from "../api/requestService";
 import { root, routes } from "../routing/routes";
 import { loading, requestFailure, requestSuccess } from "./actions/requestState"
-import { setFilmsList, setPosters } from "../actions/actions/filmsList"
+import { setqueryableList, setPosters } from "../actions/actions/queryableList"
 import { login, logout } from "../actions/actions/auth"
 import { getPoster, addFilmComments, addFilmRating, setFilm } from "../actions/actions/film"
 import { authHelper } from "../helpers/authHepler";
-import { accountBaseUrl, authServerUrls, filmsListBaseUrl, filmsListServerUrls, filmServerUrls, filmDetailsBaseUrl, httpMethod } from "../api/consts";
+import { accountBaseUrl, authServerUrls, queryableListBaseUrl, queryableListServerUrls, queryableerverUrls, filmDetailsBaseUrl, httpMethod, queryablePerRequest } from "../api/consts";
 
 const handleError = (error, dispatch, history) => {
     if (error.response) {
         if (error.response.status === 401) {
-            authHelper.getUserToken() !== null && dispatch(getFilmsList);
+            authHelper.getUserToken() !== null && dispatch(getqueryableList);
             dispatch(deauthenticate(history));
         }
         else {
@@ -58,11 +58,13 @@ export const deauthenticate = history => dispatch => {
     history.push(`${root()}${routes.login}`);
 };
 
-export const getFilmsList = history => dispatch => {
+export const getqueryableList = (history, body, isAppend) => dispatch => {
+    body.count = queryablePerRequest;
+
     dispatch(loading(true));
-    requestService(httpMethod.get, filmsListBaseUrl.concat(filmsListServerUrls.all), null, true)
-        .then(response => dispatch(setFilmsList(response.data)))
-        .then(() => requestService(httpMethod.get, filmsListBaseUrl.concat(filmsListServerUrls.posters), null, true))
+    requestService(httpMethod.post, queryableListBaseUrl.concat(queryableListServerUrls.all), body, true)
+        .then(response => dispatch(setqueryableList(response.data, isAppend)))
+        .then(() => requestService(httpMethod.get, queryableListBaseUrl.concat(queryableListServerUrls.posters), null, true))
         .then(response => dispatch(setPosters(response.data)))
         .then(() => dispatch(loading(false)))
         .then(() => dispatch(requestSuccess()))
@@ -74,7 +76,7 @@ export const getFilmsList = history => dispatch => {
 
 export const getFilmDetails = (filmId, history) => dispatch => {
     dispatch(loading(true));
-    requestService(httpMethod.get, filmsListBaseUrl.concat(filmServerUrls.film, `/${filmId}`), null, true)
+    requestService(httpMethod.get, queryableListBaseUrl.concat(queryableerverUrls.film, `/${filmId}`), null, true)
         .then(response => dispatch(setFilm(response.data)))
         .then(() => dispatch(getPoster()))
         .then(() => dispatch(loading(false)))
@@ -87,7 +89,7 @@ export const getFilmDetails = (filmId, history) => dispatch => {
 
 export const postComment = (text, history) => dispatch => {
     dispatch(loading(true));
-    requestService(httpMethod.post, filmDetailsBaseUrl.concat(filmServerUrls.comment), text, true)
+    requestService(httpMethod.post, filmDetailsBaseUrl.concat(queryableerverUrls.comment), text, true)
         .then(response => {
             response.status === 200
                 ? dispatch(requestSuccess())
@@ -104,7 +106,7 @@ export const postComment = (text, history) => dispatch => {
 
 export const loadComments = (filmId, history) => dispatch => {
     dispatch(loading(true));
-    requestService(httpMethod.get, filmDetailsBaseUrl.concat(filmServerUrls.comment, `/${filmId}`), null, true)
+    requestService(httpMethod.get, filmDetailsBaseUrl.concat(queryableerverUrls.comment, `/${filmId}`), null, true)
         .then(response => dispatch(addFilmComments(response.data)))
         .then(() => dispatch(loading(false)))
         .then(() => dispatch(requestSuccess()))
@@ -116,7 +118,7 @@ export const loadComments = (filmId, history) => dispatch => {
 
 export const rateFilm = (body, history) => dispatch => {
     dispatch(loading(true));
-    requestService(httpMethod.post, filmDetailsBaseUrl.concat(filmServerUrls.rate), body, true)
+    requestService(httpMethod.post, filmDetailsBaseUrl.concat(queryableerverUrls.rate), body, true)
         .then(() => dispatch(requestSuccess()))
         .then(() => dispatch(loadRating(body.filmId, history), null, true))
         .then(() => dispatch(loading(false)))
@@ -129,7 +131,7 @@ export const rateFilm = (body, history) => dispatch => {
 
 export const loadRating = (filmId, history) => dispatch => {
     dispatch(loading(true));
-    requestService(httpMethod.get, filmDetailsBaseUrl.concat(filmServerUrls.rate, `/${filmId}`), null, true)
+    requestService(httpMethod.get, filmDetailsBaseUrl.concat(queryableerverUrls.rate, `/${filmId}`), null, true)
         .then(response => dispatch(addFilmRating(response.data)))
         .then(() => dispatch(loading(false)))
         .then(() => dispatch(requestSuccess()))
@@ -141,9 +143,9 @@ export const loadRating = (filmId, history) => dispatch => {
 
 export const findFilm = (query, history) => dispatch => {
     dispatch(loading(true));
-    requestService(httpMethod.get, filmsListBaseUrl.concat(filmsListServerUrls.search, `/${query}`), null, true)
-        .then(response => dispatch(setFilmsList(response.data)))
-        .then(() => requestService(httpMethod.get, filmsListBaseUrl.concat(filmsListServerUrls.posters), null, true))
+    requestService(httpMethod.get, queryableListBaseUrl.concat(queryableListServerUrls.all, `/${query}`), null, true)
+        .then(response => dispatch(setqueryableList(response.data)))
+        .then(() => requestService(httpMethod.get, queryableListBaseUrl.concat(queryableListServerUrls.posters), null, true))
         .then(response => dispatch(setPosters(response.data)))
         .then(() => dispatch(loading(false)))
         .then(() => dispatch(requestSuccess()))
