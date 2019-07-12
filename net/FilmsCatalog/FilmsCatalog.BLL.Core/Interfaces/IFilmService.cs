@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Threading.Tasks;
 using FilmsCatalog.BLL.Core.DTO;
+using FilmsCatalog.DAL.Core.Entities;
 
 namespace FilmsCatalog.BLL.Interfaces
 {
@@ -9,8 +10,8 @@ namespace FilmsCatalog.BLL.Interfaces
     {
         Task AddFilmAsync(FilmDTO filmDTO);
         Task<FilmDTO> GetFilmAsync(int id);
-        Task<IEnumerable<FilmDTO>> GetAllFilmsAsync(FilmsListDTO FilmsListDTO);
+        IQueryable<FilmDTO> GetAllFilmsAsync();
         Task RemoveFilmAsync(int id);
-        Task UpdateFilmAsync(FilmDTO filmDTO);        
+        Task UpdateFilmAsync(FilmDTO filmDTO);
     }
 }

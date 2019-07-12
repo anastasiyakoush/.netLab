@@ -49,12 +49,11 @@ namespace FilmsCatalog.BLL.Services
             await _uow.SaveAsync();
         }
 
-        public async Task<IEnumerable<CommentDTO>> GetFilmCommentsAsync(int filmId)
+        public IQueryable<CommentDTO> GetFilmCommentsAsync(int filmId)
         {
-            var comments = await _uow.Comments.GetAll()
+            var comments =  _uow.Comments.GetAll()
                                  .Select(x => createCommentDTO(x.FilmId, x.User.UserName, x.Content, x.Time))
-                                 .Where(x => x.FilmId == filmId)
-                                 .ToListAsync();
+                                 .Where(x => x.FilmId == filmId);
 
             return comments;
         }

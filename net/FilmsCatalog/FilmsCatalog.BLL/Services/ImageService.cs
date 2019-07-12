@@ -17,22 +17,20 @@ namespace FilmsCatalog.BLL.Services
             _uow = uow;
         }
 
-        public async Task<IEnumerable<string>> GetUrlsAsync(int filmId)
+        public IQueryable<string> GetUrlsAsync(int filmId)
         {
-            var urls = await _uow.Images.GetAll()
+            var urls = _uow.Images.GetAll()
                                    .Where(x => x.FilmId == filmId)
-                                   .Select(x => x.Url)
-                                   .ToListAsync();
+                                   .Select(x => x.Url);
 
             return urls;
         }
 
-        public async Task<IEnumerable<PosterDTO>> GetPostersAsync()
+        public IQueryable<PosterDTO> GetPostersAsync()
         {
-            var urls = await _uow.Images.GetAll()
+            var urls = _uow.Images.GetAll()
                                    .Where(x => x.Url.Contains("p.jpg"))
-                                   .Select(x => createPosterDTO(x.FilmId, x.Url))
-                                   .ToListAsync();
+                                   .Select(x => createPosterDTO(x.FilmId, x.Url));
 
             return urls;
         }
