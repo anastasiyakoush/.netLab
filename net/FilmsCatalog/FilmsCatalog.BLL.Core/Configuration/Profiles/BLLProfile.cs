@@ -10,17 +10,14 @@ namespace FilmsCatalog.BLL.Core.Configuration.Profiles
         public BLLProfile()
         {
             CreateMap<Film, FilmDTO>()
-                    .ForMember(dest => dest.Images,
-                    opt => opt.MapFrom(src => src.Images.Select(z => z.Url)))
-                    //.ForMember(dest => dest.Rating,
-                    //opt => opt.MapFrom(src => new FilmRatingDTO
-                    //{
-                    //    VotedPeopleCount = src.Ratings.Count(),
-                    //    Rate = src.Ratings.Select(x => x.Rate).Average()
-                    //})
-                    //)
-                    .ReverseMap();
-
+                    .ForMember(dest=>dest.Images,
+                    opt=>opt.MapFrom(src=>src.Images.Select(x=>x.Url)))
+                    .ForMember(dest => dest.Poster,
+                    opt => opt.MapFrom(src => src.Images.Where(z => z.Url.Contains("p.jp"))
+                                                        .Select(w => w.Url)
+                                                        .FirstOrDefault()))
+                    .ForMember(dest => dest.Ratings,
+                    opt => opt.MapFrom(src => src.Ratings.Select(x => x.Rate)));
 
             CreateMap<UserDTO, User>()
                     .ForMember(user => user.Id,
@@ -30,6 +27,19 @@ namespace FilmsCatalog.BLL.Core.Configuration.Profiles
             CreateMap<User, AuthenticatedUserDTO>();
             CreateMap<Comment, CommentDTO>().ReverseMap();
             CreateMap<RatingDTO, Rating>().ReverseMap();
+        }
+    }
+
+    public class RatingResolver : IValueResolver<Film, FilmDTO, FilmRatingDTO>
+    {
+        public FilmRatingDTO Resolve(Film source, FilmDTO destination, FilmRatingDTO destMember, ResolutionContext context)
+        {
+            return new FilmRatingDTO
+            {
+                FilmId = source.Id,
+                VotedPeopleCount = source.Ratings.Count(),
+                Rate = source.Ratings.Select(x => x.Rate).Average()
+            };
         }
     }
 }

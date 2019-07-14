@@ -42,10 +42,5 @@ namespace FilmsCatalog.DAL.EF.Repositories
         {
             db.Update(entity);
         }
-
-        public IQueryable<T> FilterByPredicate(Expression<Func<T, bool>> expression)
-        {
-            return entities.Where(expression);
-        }
     }
 }

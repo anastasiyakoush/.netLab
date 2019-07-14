@@ -7,32 +7,29 @@ import {
 } from "../../actions/types";
 
 const initialState = {
-    id: "",
-    name: "",
-    year: "",
-    director: "",
-    overview: "",
-    rating: 0,
-    peopleVoted: 0,
-    poster: "",
-    images: [],
-    comments: []
+    Id: "",
+    Name: "",
+    Year: "",
+    Director: "",
+    Overview: "",
+    Rating: 0,
+    VotedPeopleCount: 0,
+    Poster: "",
+    Images: [],
+    Comments: []
 };
 
 export default function filmReducer(state = initialState, action) {
     switch (action.type) {
         case SET_FILM:
             return {
-                ...state,
-                ...action.payload,
-                rating: action.payload.rating.rate,
-                peopleVoted: action.payload.rating.votedPeopleCount,
+                ...action.payload
             };
 
         case ADD_FILM_COMMENTS:
             return {
                 ...state,
-                comments: action.payload
+                Comments: action.payload
             };
         case ADD_FILM_IMAGES:
             return {
@@ -42,8 +39,8 @@ export default function filmReducer(state = initialState, action) {
         case ADD_FILM_RATING:
             return {
                 ...state,
-                rating: action.payload.rate,
-                peopleVoted: action.payload.votedPeopleCount
+                Rating: action.payload.Rating,
+                VotedPeopleCount: action.payload.VotedPeopleCount
             };
         case GET_POSTER:
             return {

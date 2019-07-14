@@ -128,6 +128,7 @@ namespace FilmsCatalog.API
         {
             var builder = new ODataConventionModelBuilder();
             builder.EntitySet<FilmModel>("Films");
+            builder.EntitySet<FilmDetailsModel>("FilmDetails");
             return builder.GetEdmModel();
         }
     }

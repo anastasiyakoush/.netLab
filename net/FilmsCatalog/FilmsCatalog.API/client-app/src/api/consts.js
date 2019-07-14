@@ -1,24 +1,20 @@
-export const accountBaseUrl = "https://localhost:44374/api/account";
-export const filmDetailsBaseUrl = "https://localhost:44374/api/filmdetails";
-export const queryableListBaseUrl = "https://localhost:44374/api/filmcatalog";
+export const accountBaseUrl = "http://localhost:1839/api/account";
+export const filmDetailsBaseUrl = "http://localhost:1839/api/filmdetails";
+export const filmsBaseUrl = "http://localhost:1839/api/films";
 
 export const authServerUrls = {
     login: "/login",
     signUp: "/signup"
-}
-export const queryableerverUrls = {
-    film: "/getfilm",
+};
+export const filmsUrls = {
+    get: "/get",
     rate: "/rate",
     comment: "/comment",
-    image: "/image"
-}
-export const queryableListServerUrls = {
-    all: "/getall",
-    posters: "/posters",
-    search: "/search"
-}
+    image: "/image",
+    findByName: "?$filter=contains(Name,",
+    orderBy: "$orderBy="
+};
 export const httpMethod = {
     get: "get",
     post: "post"
-}
-export const queryablePerRequest = 8;
+};

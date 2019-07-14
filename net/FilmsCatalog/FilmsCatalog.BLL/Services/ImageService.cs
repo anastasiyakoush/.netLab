@@ -1,10 +1,7 @@
 ﻿using FilmsCatalog.BLL.Core.DTO;
 using FilmsCatalog.BLL.Core.Interfaces;
 using FilmsCatalog.DAL.Core.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace FilmsCatalog.BLL.Services
 {

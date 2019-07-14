@@ -28,14 +28,14 @@ const FilmDetails = props => {
         <div className={classes.container}>
             {loading && <ProgressBar />}
             {
-                film.images.length > 0 && film.poster && filmId == film.id &&
+                film.Images.length > 0 && film.Poster && filmId == film.Id &&
                 <>
                     <FilmInfo info={film} />
                     <Typography variant="h4" className={classes.title}>Images</Typography>
                     <ImagesContainer />
                     <Typography variant="h4" className={classes.title}>Comments</Typography>
-                    <CommentForm filmId={film.id} />
-                    <CommentsContainer comments={film.comments} />
+                    <CommentForm filmId={film.Id} />
+                    <CommentsContainer comments={film.Comments} />
                 </>
             }
         </div>

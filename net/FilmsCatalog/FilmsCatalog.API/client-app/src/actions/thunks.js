@@ -1,54 +1,73 @@
 import requestService from "../api/requestService";
 import { root, routes } from "../routing/routes";
-import { loading, requestFailure, requestSuccess } from "./actions/requestState"
-import { setqueryableList, setPosters } from "../actions/actions/queryableList"
-import { login, logout } from "../actions/actions/auth"
-import { getPoster, addFilmComments, addFilmRating, setFilm } from "../actions/actions/film"
+import {
+    loading,
+    requestFailure,
+    requestSuccess
+} from "./actions/requestState";
+import { setFilmsList, addFilms } from "../actions/actions/filmsList";
+import { login, logout } from "../actions/actions/auth";
+import {
+    addFilmComments,
+    addFilmRating,
+    setFilm
+} from "../actions/actions/film";
 import { authHelper } from "../helpers/authHepler";
-import { accountBaseUrl, authServerUrls, queryableListBaseUrl, queryableListServerUrls, queryableerverUrls, filmDetailsBaseUrl, httpMethod, queryablePerRequest } from "../api/consts";
+import {
+    accountBaseUrl,
+    authServerUrls,
+    filmsBaseUrl,
+    filmDetailsBaseUrl,
+    filmsUrls,
+    httpMethod
+} from "../api/consts";
 
 const handleError = (error, dispatch, history) => {
     if (error.response) {
         if (error.response.status === 401) {
-            authHelper.getUserToken() !== null && dispatch(getqueryableList);
+            authHelper.getUserToken() !== null && dispatch(getFilms);
             dispatch(deauthenticate(history));
-        }
-        else {
+        } else {
             dispatch(requestFailure(error.response.data));
         }
-    }
-    else if (error.request) {
+    } else if (error.request) {
         dispatch(requestFailure(error.request));
-    }
-    else {
-        console.log(error);
+    } else {
         dispatch(requestFailure(error));
     }
 };
 
 export const signup = (user, history) => dispatch => {
     dispatch(loading(true));
-    requestService(httpMethod.post, accountBaseUrl.concat(authServerUrls.signUp), user)
+    requestService(
+        httpMethod.post,
+        accountBaseUrl.concat(authServerUrls.signUp),
+        user
+    )
         .then(response => authHelper.setUser(response.data))
         .then(() => dispatch(login()))
         .then(() => dispatch(loading(false)))
         .then(() => history.push(`${root()}${routes.homePage}`))
         .catch(errors => {
             dispatch(loading(false));
-            handleError(errors, dispatch, history)
+            handleError(errors, dispatch, history);
         });
 };
 
 export const authenticate = (user, history) => dispatch => {
     dispatch(loading(true));
-    requestService(httpMethod.post, accountBaseUrl.concat(authServerUrls.login), user)
+    requestService(
+        httpMethod.post,
+        accountBaseUrl.concat(authServerUrls.login),
+        user
+    )
         .then(response => authHelper.setUser(response.data))
         .then(() => dispatch(login()))
         .then(() => dispatch(loading(false)))
         .then(() => history.push(`${root()}${routes.homePage}`))
         .catch(errors => {
             dispatch(loading(false));
-            handleError(errors, dispatch, history)
+            handleError(errors, dispatch, history);
         });
 };
 
@@ -58,38 +77,52 @@ export const deauthenticate = history => dispatch => {
     history.push(`${root()}${routes.login}`);
 };
 
-export const getqueryableList = (history, body, isAppend) => dispatch => {
-    body.count = queryablePerRequest;
-
+export const getFilms = (history, skip, isAppend) => dispatch => {
     dispatch(loading(true));
-    requestService(httpMethod.post, queryableListBaseUrl.concat(queryableListServerUrls.all), body, true)
-        .then(response => dispatch(setqueryableList(response.data, isAppend)))
-        .then(() => requestService(httpMethod.get, queryableListBaseUrl.concat(queryableListServerUrls.posters), null, true))
-        .then(response => dispatch(setPosters(response.data)))
+    requestService(
+        httpMethod.get,
+        filmsBaseUrl.concat(`?$skip=${skip}`),
+        null,
+        true
+    )
+        .then(response =>
+            isAppend
+                ? dispatch(addFilms(response.data.value))
+                : dispatch(setFilmsList(response.data.value))
+        )
         .then(() => dispatch(loading(false)))
         .then(() => dispatch(requestSuccess()))
         .catch(errors => {
             dispatch(loading(false));
-            handleError(errors, dispatch, history)
+            handleError(errors, dispatch, history);
         });
 };
 
 export const getFilmDetails = (filmId, history) => dispatch => {
     dispatch(loading(true));
-    requestService(httpMethod.get, queryableListBaseUrl.concat(queryableerverUrls.film, `/${filmId}`), null, true)
-        .then(response => dispatch(setFilm(response.data)))
-        .then(() => dispatch(getPoster()))
+    requestService(
+        httpMethod.get,
+        filmsBaseUrl.concat(`(${filmId})`),
+        null,
+        true
+    )
+        .then(response => dispatch(setFilm(response.data.value[0])))
         .then(() => dispatch(loading(false)))
         .then(() => dispatch(requestSuccess()))
         .catch(errors => {
             dispatch(loading(false));
-            handleError(errors, dispatch, history)
+            handleError(errors, dispatch, history);
         });
 };
 
 export const postComment = (text, history) => dispatch => {
     dispatch(loading(true));
-    requestService(httpMethod.post, filmDetailsBaseUrl.concat(queryableerverUrls.comment), text, true)
+    requestService(
+        httpMethod.post,
+        filmDetailsBaseUrl.concat(filmsUrls.comment),
+        text,
+        true
+    )
         .then(response => {
             response.status === 200
                 ? dispatch(requestSuccess())
@@ -100,57 +133,94 @@ export const postComment = (text, history) => dispatch => {
         .then(() => dispatch(requestSuccess()))
         .catch(errors => {
             dispatch(loading(false));
-            handleError(errors, dispatch, history)
+            handleError(errors, dispatch, history);
         });
 };
 
 export const loadComments = (filmId, history) => dispatch => {
     dispatch(loading(true));
-    requestService(httpMethod.get, filmDetailsBaseUrl.concat(queryableerverUrls.comment, `/${filmId}`), null, true)
-        .then(response => dispatch(addFilmComments(response.data)))
+    requestService(
+        httpMethod.get,
+        filmsBaseUrl.concat(`(${filmId})?$select=Comments`),
+        null,
+        true
+    )
+        .then(response =>
+            dispatch(addFilmComments(response.data.value[0].Comments))
+        )
         .then(() => dispatch(loading(false)))
         .then(() => dispatch(requestSuccess()))
         .catch(errors => {
             dispatch(loading(false));
-            handleError(errors, dispatch, history)
+            handleError(errors, dispatch, history);
         });
 };
 
 export const rateFilm = (body, history) => dispatch => {
     dispatch(loading(true));
-    requestService(httpMethod.post, filmDetailsBaseUrl.concat(queryableerverUrls.rate), body, true)
+    requestService(
+        httpMethod.post,
+        filmDetailsBaseUrl.concat(filmsUrls.rate),
+        body,
+        true
+    )
         .then(() => dispatch(requestSuccess()))
         .then(() => dispatch(loadRating(body.filmId, history), null, true))
         .then(() => dispatch(loading(false)))
         .then(() => dispatch(requestSuccess()))
         .catch(errors => {
             dispatch(loading(false));
-            handleError(errors, dispatch, history)
+            handleError(errors, dispatch, history);
         });
 };
 
 export const loadRating = (filmId, history) => dispatch => {
     dispatch(loading(true));
-    requestService(httpMethod.get, filmDetailsBaseUrl.concat(queryableerverUrls.rate, `/${filmId}`), null, true)
-        .then(response => dispatch(addFilmRating(response.data)))
+    requestService(
+        httpMethod.get,
+        filmsBaseUrl.concat(`(${filmId})?$select=Rating,VotedPeopleCount`),
+        null,
+        true
+    )
+        .then(response => dispatch(addFilmRating(response.data.value[0])))
         .then(() => dispatch(loading(false)))
         .then(() => dispatch(requestSuccess()))
         .catch(errors => {
             dispatch(loading(false));
-            handleError(errors, dispatch, history)
+            handleError(errors, dispatch, history);
         });
 };
 
 export const findFilm = (query, history) => dispatch => {
     dispatch(loading(true));
-    requestService(httpMethod.get, queryableListBaseUrl.concat(queryableListServerUrls.all, `/${query}`), null, true)
-        .then(response => dispatch(setqueryableList(response.data)))
-        .then(() => requestService(httpMethod.get, queryableListBaseUrl.concat(queryableListServerUrls.posters), null, true))
-        .then(response => dispatch(setPosters(response.data)))
+    requestService(
+        httpMethod.get,
+        filmsBaseUrl.concat(filmsUrls.findByName, `'${query}')`),
+        null,
+        true
+    )
+        .then(response => dispatch(setFilmsList(response.data.value)))
         .then(() => dispatch(loading(false)))
         .then(() => dispatch(requestSuccess()))
         .catch(errors => {
             dispatch(loading(false));
-            handleError(errors, dispatch, history)
+            handleError(errors, dispatch, history);
         });
-}
+};
+
+export const sortFilms = (params, history) => dispatch => {
+    dispatch(loading(true));
+    requestService(
+        httpMethod.get,
+        filmsBaseUrl.concat(`?${filmsUrls.orderBy}`, params.join(",")),
+        null,
+        true
+    )
+        .then(response => dispatch(setFilmsList(response.data.value)))
+        .then(() => dispatch(loading(false)))
+        .then(() => dispatch(requestSuccess()))
+        .catch(errors => {
+            dispatch(loading(false));
+            handleError(errors, dispatch, history);
+        });
+};

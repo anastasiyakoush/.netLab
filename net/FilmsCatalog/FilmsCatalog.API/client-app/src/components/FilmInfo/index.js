@@ -10,7 +10,7 @@ const FilmInfo = props => {
 
     return (
         <div className={classes.container}>
-            <Poster src={film.poster} />
+            <Poster src={film.Poster} />
             <Details info={film} />
         </div >
     )

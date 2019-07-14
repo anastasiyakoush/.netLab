@@ -1,10 +1,10 @@
-import { SET_queryable_LIST, SET_POSTERS, } from "../types"
+import { SET_FILM_LIST, ADD_FILMS } from "../types";
 
-export const setqueryableList = (queryable, isAppend) => ({
-    type: SET_queryable_LIST,
-    payload: { queryable, isAppend }
+export const setFilmsList = films => ({
+    type: SET_FILM_LIST,
+    payload: films
 });
-export const setPosters = data => ({
-    type: SET_POSTERS,
-    payload: data
+export const addFilms = films => ({
+    type: ADD_FILMS,
+    payload: films
 });

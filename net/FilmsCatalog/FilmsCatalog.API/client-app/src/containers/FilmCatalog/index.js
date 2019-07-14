@@ -3,70 +3,78 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import { Typography } from "@material-ui/core";
 import { root, routes } from "../../routing//routes";
-import { getqueryableList, getFilmDetails } from "../../actions/thunks";
+import { getFilms, getFilmDetails } from "../../actions/thunks";
 import FilmCard from "../../components/FilmCard";
 import ProgressBar from "../../components/ProgressBar";
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
 
-const queryableCatalog = props => {
-    const { queryable, loading, getqueryable, classes, history } = props;
+const FilmCatalog = props => {
+    const { films, loading, getFilms, classes, history } = props;
     const [isFetching, setIsFetching] = useState(false);
 
     const goToDetails = filmId => {
         history.push({ pathname: `${root()}${routes.film}/${filmId}` });
     };
 
-    useEffect(() => getqueryable(history, {}, false), []);
-
     useEffect(() => {
+        getFilms(history, 0, false);
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
-
-    useEffect(() => {
+      }, []);
+    
+      useEffect(() => {
         if (!isFetching) return;
-        getqueryable(history, { start: queryable.length }, true);
+        getFilms(history, films.length, true);
         setIsFetching(false)
-    }, [isFetching]);
-
-    function handleScroll() {
+      }, [isFetching]);
+    
+      function handleScroll() {
+          console.log(window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight)
         if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isFetching) return;
         setIsFetching(true);
-    }
-
+      }
 
     return (
         <div className={classes.container}>
             {loading && <ProgressBar />}
-            {!loading && (queryable.length > 0 ?
-                queryable.map(
-                    (x, i) =>
-                        queryable[i].poster && (
-                            <FilmCard
-                                key={i}
-                                title={x.name}
-                                year={x.year}
-                                src={x.poster}
-                                onClick={() => goToDetails(x.id)}
-                            />
-                        )
-                ) : <Typography variant="h6" className={classes.noResults}>No results found</Typography>)}
-            {isFetching && <Typography variant="h6" className={classes.noResults}>Loading</Typography>}
+            {!loading &&
+                (films.length > 0 ? (
+                    films.map(
+                        (x, i) =>
+                            films[i].Poster && (
+                                <FilmCard
+                                    key={i}
+                                    title={x.Name}
+                                    year={x.Year}
+                                    src={x.Poster}
+                                    onClick={() => goToDetails(x.Id)}
+                                />
+                            )
+                    )
+                ) : (
+                    <Typography variant="h6" className={classes.noResults}>
+                        No results found
+                    </Typography>
+                ))}
+            {isFetching && (
+                <Typography variant="h6" className={classes.noResults}>
+                    Loading
+                </Typography>
+            )}
         </div>
     );
 };
 
 const mapStateToProps = state => {
     return {
-        queryable: state.queryableListReducer.queryable,
-        loading: state.requestStateReducer.loading,
-        failure: state.error
+        films: state.filmsListReducer.films,
+        loading: state.requestStateReducer.loading
     };
 };
 const mapDispatcToProps = dispatch => {
     return {
-        getqueryable: (history, body, isAppend) => dispatch(getqueryableList(history, body, isAppend)),
+        getFilms: (history, skip, isAppend) => dispatch(getFilms(history, skip, isAppend)),
         getDetails: filmId => dispatch(getFilmDetails(filmId))
     };
 };
@@ -74,4 +82,4 @@ const mapDispatcToProps = dispatch => {
 export default connect(
     mapStateToProps,
     mapDispatcToProps
-)(withRouter(withStyles(styles)(queryableCatalog)));
+)(withRouter(withStyles(styles)(FilmCatalog)));

@@ -1,25 +1,20 @@
-import { SET_queryable_LIST, SET_POSTERS } from "../../actions/types";
+import { SET_FILM_LIST, ADD_FILMS } from "../../actions/types";
 
 const initialState = {
-    queryable: []
+    films: []
 };
 
-export default function queryableListReducer(state = initialState, action) {
+export default function filmsListReducer(state = initialState, action) {
     switch (action.type) {
-        case SET_queryable_LIST:
+        case SET_FILM_LIST:
             return {
                 ...state,
-                queryable: action.payload.isAppend ? [...state.queryable].push(action.payload.queryable) : action.payload.queryable
+                films: action.payload
             };
-        case SET_POSTERS:
+        case ADD_FILMS:
             return {
                 ...state,
-                queryable: state.queryable.map(film => {
-                    film.poster = action.payload.find(
-                        poster => film.id === poster.filmId
-                    ).url;
-                    return film;
-                })
+                films: state.films.concat(action.payload)
             };
 
         default:

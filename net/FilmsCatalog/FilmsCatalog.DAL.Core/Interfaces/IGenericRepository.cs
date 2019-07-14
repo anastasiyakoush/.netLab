@@ -12,6 +12,5 @@ namespace FilmsCatalog.DAL.Core.Interfaces
         IQueryable<T> GetAll();
         void Update(T entity);
         void Delete(T entity);
-        IQueryable<T> FilterByPredicate(Expression<Func<T, bool>> expression);
     }
 }
