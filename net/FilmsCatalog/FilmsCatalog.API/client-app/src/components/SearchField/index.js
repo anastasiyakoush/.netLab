@@ -6,6 +6,7 @@ import { Search } from "@material-ui/icons";
 import { findFilm, getFilms } from "../../actions/thunks";
 import { routes, root } from "../../routing/routes";
 import { minSearchRequestLength } from "../../consts";
+import { filmsBaseUrl } from "../../api/consts";
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
 
@@ -30,10 +31,11 @@ const SearchField = props => {
             entry.length !== 0 &&
                 (entry.length > minSearchRequestLength ||
                     entry.length < query.length) &&
-                search(query, history);
-            entry.length === 0 && getAll(history, 0, false);
-        } else if (location.pathname.includes(`${routes.film}`)) {
-            filmsList.length === 0 && getAll(history, 0, false);
+                search(entry, history);
+            entry.length === 0 && getAll(history, false, filmsBaseUrl);
+        }
+        else if (location.pathname.includes(`${routes.film}`)) {
+            filmsList.length === 0 && getAll(history, false, filmsBaseUrl);
 
             if (filmsList.length > 0 && entry.length > 0) {
                 setMovies(filmsList);
@@ -68,8 +70,8 @@ const SearchField = props => {
                             className={classes.link}
                             key={i}
                             onClick={() => onClickHandler(x.Id)}>{`${x.Name} (${
-                            x.Year
-                        })`}</Typography>
+                                x.Year
+                                })`}</Typography>
                     ))}
                 </div>
             )}
@@ -80,18 +82,18 @@ const SearchField = props => {
 const mapStateToProps = state => {
     return {
         isAuthenticated: state.requestStateReducer.isAuthenticated,
-        films: state.filmsListReducer.films
+        films: state.filmsListReducer.films,
     };
 };
-const mapDispatcToProps = dispatch => {
+const mapDispatchToProps = dispatch => {
     return {
         search: (query, history) => dispatch(findFilm(query, history)),
-        getAll: (history, skip, isAppend) =>
-            dispatch(getFilms(history, skip, isAppend))
+        getAll: (history, isAppend, link) =>
+            dispatch(getFilms(history, isAppend, link))
     };
 };
 
 export default connect(
     mapStateToProps,
-    mapDispatcToProps
+    mapDispatchToProps
 )(withRouter(withStyles(styles)(SearchField)));

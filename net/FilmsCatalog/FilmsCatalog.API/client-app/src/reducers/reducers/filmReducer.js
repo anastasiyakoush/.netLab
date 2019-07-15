@@ -1,35 +1,43 @@
 import {
     SET_FILM,
-    GET_POSTER,
     ADD_FILM_RATING,
     ADD_FILM_COMMENTS,
     ADD_FILM_IMAGES
 } from "../../actions/types";
 
 const initialState = {
-    Id: "",
-    Name: "",
-    Year: "",
-    Director: "",
-    Overview: "",
-    Rating: 0,
-    VotedPeopleCount: 0,
-    Poster: "",
-    Images: [],
-    Comments: []
+    id: "",
+    name: "",
+    year: "",
+    director: "",
+    overview: "",
+    rating: 0,
+    votedPeopleCount: 0,
+    poster: "",
+    images: [],
+    comments: []
 };
 
 export default function filmReducer(state = initialState, action) {
     switch (action.type) {
         case SET_FILM:
             return {
-                ...action.payload
+                ...state,
+                id: action.payload.Id,
+                name: action.payload.Name,
+                year: action.payload.Year,
+                director: action.payload.Director,
+                overview: action.payload.Overview,
+                rating: action.payload.Rating,
+                votedPeopleCount: action.payload.VotedPeopleCount,
+                poster: action.payload.Poster,
+                images: action.payload.Images,
+                comments: action.payload.Comments,
             };
-
         case ADD_FILM_COMMENTS:
             return {
                 ...state,
-                Comments: action.payload
+                comments: action.payload
             };
         case ADD_FILM_IMAGES:
             return {
@@ -39,13 +47,8 @@ export default function filmReducer(state = initialState, action) {
         case ADD_FILM_RATING:
             return {
                 ...state,
-                Rating: action.payload.Rating,
-                VotedPeopleCount: action.payload.VotedPeopleCount
-            };
-        case GET_POSTER:
-            return {
-                ...state,
-                poster: state.images.filter(x => x.includes("p.jpg") || x.includes("p.jpeg"))[0]
+                rating: action.payload.Rating,
+                votedPeopleCount: action.payload.VotedPeopleCount
             };
         default:
             return state;

@@ -14,7 +14,7 @@ const ImageContainer = ({ images }) => {
 
 const mapStateToProps = state => {
     return {
-        images: state.filmReducer.Images,
+        images: state.filmReducer.images,
     };
 };
 export default connect(mapStateToProps)(withStyles(styles)(ImageContainer));

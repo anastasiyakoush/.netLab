@@ -5,7 +5,7 @@ namespace FilmsCatalog.BLL.Core.Interfaces
 {
     public interface IImageService
     {
-        IQueryable<string> GetUrlsAsync(int filmId);
-        IQueryable<PosterDTO> GetPostersAsync();
+        IQueryable<string> GetUrls(int filmId);
+        IQueryable<PosterDTO> GetPosters();
     }
 }

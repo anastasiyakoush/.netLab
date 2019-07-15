@@ -8,7 +8,7 @@ namespace FilmsCatalog.BLL.Core.Interfaces
 {
     public interface IRatingService
     {
-        FilmRatingDTO GetFilmRatingAsync(int filmId);
+        FilmRatingDTO GetFilmRating(int filmId);
         Task AddFilmRatingAsync(RatingDTO ratingDTO);
         Task<IEnumerable<FilmRatingDTO>> GetAllRatingsAsync();
     }

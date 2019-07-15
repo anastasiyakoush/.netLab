@@ -1,6 +1,6 @@
-export const accountBaseUrl = "http://localhost:1839/api/account";
-export const filmDetailsBaseUrl = "http://localhost:1839/api/filmdetails";
-export const filmsBaseUrl = "http://localhost:1839/api/films";
+export const accountBaseUrl = "https://localhost:44374/api/account";
+export const filmDetailsBaseUrl = "https://localhost:44374/api/filmdetails";
+export const filmsBaseUrl = "https://localhost:44374/api/films";
 
 export const authServerUrls = {
     login: "/login",
@@ -11,8 +11,9 @@ export const filmsUrls = {
     rate: "/rate",
     comment: "/comment",
     image: "/image",
-    findByName: "?$filter=contains(Name,",
-    orderBy: "$orderBy="
+    findByName: "&$filter=contains(Name,",
+    orderBy: "&$orderBy=",
+    count: "?$count=true"
 };
 export const httpMethod = {
     get: "get",

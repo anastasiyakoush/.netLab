@@ -14,7 +14,7 @@ namespace FilmsCatalog.BLL.Services
             _uow = uow;
         }
 
-        public IQueryable<string> GetUrlsAsync(int filmId)
+        public IQueryable<string> GetUrls(int filmId)
         {
             var urls = _uow.Images.GetAll()
                                    .Where(x => x.FilmId == filmId)
@@ -23,7 +23,7 @@ namespace FilmsCatalog.BLL.Services
             return urls;
         }
 
-        public IQueryable<PosterDTO> GetPostersAsync()
+        public IQueryable<PosterDTO> GetPosters()
         {
             var urls = _uow.Images.GetAll()
                                    .Where(x => x.Url.Contains("p.jpg"))

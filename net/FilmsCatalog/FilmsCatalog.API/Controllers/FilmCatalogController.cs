@@ -11,11 +11,12 @@ using Microsoft.AspNet.OData;
 using Microsoft.AspNet.OData.Routing;
 using System.Linq;
 using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace FilmsCatalog.API.Controllers
 {
     [ServiceFilter(typeof(LoggingFilter))]
-    // [Authorize]
+    [Authorize]
     public class FilmsController : ODataController
     {
         private readonly IFilmService _filmService;

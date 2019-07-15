@@ -4,13 +4,13 @@ import { withRouter } from "react-router-dom";
 import { Typography } from "@material-ui/core";
 import { root, routes } from "../../routing//routes";
 import { getFilms, getFilmDetails } from "../../actions/thunks";
+import { filmsBaseUrl } from "../../api/consts";
 import FilmCard from "../../components/FilmCard";
-import ProgressBar from "../../components/ProgressBar";
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
 
 const FilmCatalog = props => {
-    const { films, loading, getFilms, classes, history } = props;
+    const { films, getFilms, loading, classes, history, nextLink } = props;
     const [isFetching, setIsFetching] = useState(false);
 
     const goToDetails = filmId => {
@@ -18,28 +18,26 @@ const FilmCatalog = props => {
     };
 
     useEffect(() => {
-        getFilms(history, 0, false);
+        getFilms(history, false, filmsBaseUrl);
         window.addEventListener('scroll', handleScroll);
         return () => window.removeEventListener('scroll', handleScroll);
-      }, []);
-    
-      useEffect(() => {
+    }, []);
+
+    useEffect(() => {
         if (!isFetching) return;
-        getFilms(history, films.length, true);
-        setIsFetching(false)
-      }, [isFetching]);
-    
-      function handleScroll() {
-          console.log(window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight)
-        if (window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isFetching) return;
+        nextLink && getFilms(history, true, nextLink);
+        setIsFetching(false);
+    }, [isFetching]);
+
+    function handleScroll() {
+        if ((window.innerHeight + document.documentElement.scrollTop !== document.documentElement.offsetHeight || isFetching)) return;
         setIsFetching(true);
-      }
+    }
 
     return (
         <div className={classes.container}>
-            {loading && <ProgressBar />}
-            {!loading &&
-                (films.length > 0 ? (
+            {!loading && (films.length > 0
+                ? (
                     films.map(
                         (x, i) =>
                             films[i].Poster && (
@@ -51,15 +49,20 @@ const FilmCatalog = props => {
                                     onClick={() => goToDetails(x.Id)}
                                 />
                             )
-                    )
-                ) : (
+                    ))
+                : (
                     <Typography variant="h6" className={classes.noResults}>
                         No results found
                     </Typography>
                 ))}
-            {isFetching && (
+            {isFetching && nextLink && (
                 <Typography variant="h6" className={classes.noResults}>
                     Loading
+                </Typography>
+            )}
+            {films.length > 0 && !nextLink && (
+                <Typography variant="h6" className={classes.noResults}>
+                    No more results
                 </Typography>
             )}
         </div>
@@ -69,17 +72,18 @@ const FilmCatalog = props => {
 const mapStateToProps = state => {
     return {
         films: state.filmsListReducer.films,
-        loading: state.requestStateReducer.loading
+        loading: state.requestStateReducer.loading,
+        nextLink: state.filmsListReducer.nextLink
     };
 };
-const mapDispatcToProps = dispatch => {
+const mapDispatchToProps = dispatch => {
     return {
-        getFilms: (history, skip, isAppend) => dispatch(getFilms(history, skip, isAppend)),
+        getFilms: (history, isAppend, link) => dispatch(getFilms(history, isAppend, link)),
         getDetails: filmId => dispatch(getFilmDetails(filmId))
     };
 };
 
 export default connect(
     mapStateToProps,
-    mapDispatcToProps
+    mapDispatchToProps
 )(withRouter(withStyles(styles)(FilmCatalog)));

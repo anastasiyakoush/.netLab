@@ -1,7 +1,8 @@
-import { SET_FILM_LIST, ADD_FILMS } from "../../actions/types";
+import { SET_FILM_LIST, ADD_FILMS, SET_NEXT_LINK } from "../../actions/types";
 
 const initialState = {
-    films: []
+    films: [],
+    nextLink: ''
 };
 
 export default function filmsListReducer(state = initialState, action) {
@@ -14,10 +15,13 @@ export default function filmsListReducer(state = initialState, action) {
         case ADD_FILMS:
             return {
                 ...state,
-                films: state.films.concat(action.payload)
+                films: [...state.films, ...action.payload]
             };
-
-        default:
+        case SET_NEXT_LINK:
+            return {
+                ...state,
+                nextLink: action.payload
+            };        default:
             return state;
     }
 }

@@ -4,18 +4,18 @@ import { withStyles } from "@material-ui/styles";
 import { Card, Typography } from "@material-ui/core";
 
 const Comment = props => {
-    const { Time, UserName, Content } = props.info;
+    const { time, userName, content } = props.info;
     const { classes } = props;
 
     return (
         <Card className={classes.container}>
-            {UserName && Time && (
+            {userName && time && (
                 <div className={classes.header}>
-                    <Typography variant="h6" className={classes.userName}>{UserName}</Typography>
-                    <Typography variant="subtitle1" className={classes.time}>{Time}</Typography>
+                    <Typography variant="h6" className={classes.userName}>{userName}</Typography>
+                    <Typography variant="subtitle1" className={classes.time}>{time}</Typography>
                 </div>
             )}
-            <Typography variant="body2" className={classes.content}>{Content}</Typography>
+            <Typography variant="body2" className={classes.content}>{content}</Typography>
         </Card>
     );
 };

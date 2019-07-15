@@ -5,7 +5,7 @@ import {
     requestFailure,
     requestSuccess
 } from "./actions/requestState";
-import { setFilmsList, addFilms } from "../actions/actions/filmsList";
+import { setFilmsList, addFilms, setNextLink } from "../actions/actions/filmsList";
 import { login, logout } from "../actions/actions/auth";
 import {
     addFilmComments,
@@ -77,18 +77,22 @@ export const deauthenticate = history => dispatch => {
     history.push(`${root()}${routes.login}`);
 };
 
-export const getFilms = (history, skip, isAppend) => dispatch => {
-    dispatch(loading(true));
+export const getFilms = (history, isAppend, link) => dispatch => {
+    !isAppend && dispatch(loading(true));
+
     requestService(
         httpMethod.get,
-        filmsBaseUrl.concat(`?$skip=${skip}`),
+        link,
         null,
         true
     )
-        .then(response =>
+        .then(response => {
             isAppend
                 ? dispatch(addFilms(response.data.value))
-                : dispatch(setFilmsList(response.data.value))
+                : dispatch(setFilmsList(response.data.value));
+                
+            dispatch(setNextLink(response.data['@odata.nextLink']))
+        }
         )
         .then(() => dispatch(loading(false)))
         .then(() => dispatch(requestSuccess()))
@@ -107,6 +111,7 @@ export const getFilmDetails = (filmId, history) => dispatch => {
         true
     )
         .then(response => dispatch(setFilm(response.data.value[0])))
+        .then(() => dispatch(loadComments(filmId, history)))
         .then(() => dispatch(loading(false)))
         .then(() => dispatch(requestSuccess()))
         .catch(errors => {
@@ -138,17 +143,15 @@ export const postComment = (text, history) => dispatch => {
 };
 
 export const loadComments = (filmId, history) => dispatch => {
-    dispatch(loading(true));
     requestService(
         httpMethod.get,
-        filmsBaseUrl.concat(`(${filmId})?$select=Comments`),
+        filmDetailsBaseUrl.concat(filmsUrls.comment, `/${filmId}`),
         null,
         true
     )
         .then(response =>
-            dispatch(addFilmComments(response.data.value[0].Comments))
+            dispatch(addFilmComments(response.data))
         )
-        .then(() => dispatch(loading(false)))
         .then(() => dispatch(requestSuccess()))
         .catch(errors => {
             dispatch(loading(false));
@@ -157,7 +160,6 @@ export const loadComments = (filmId, history) => dispatch => {
 };
 
 export const rateFilm = (body, history) => dispatch => {
-    dispatch(loading(true));
     requestService(
         httpMethod.post,
         filmDetailsBaseUrl.concat(filmsUrls.rate),
@@ -166,7 +168,6 @@ export const rateFilm = (body, history) => dispatch => {
     )
         .then(() => dispatch(requestSuccess()))
         .then(() => dispatch(loadRating(body.filmId, history), null, true))
-        .then(() => dispatch(loading(false)))
         .then(() => dispatch(requestSuccess()))
         .catch(errors => {
             dispatch(loading(false));
@@ -175,7 +176,6 @@ export const rateFilm = (body, history) => dispatch => {
 };
 
 export const loadRating = (filmId, history) => dispatch => {
-    dispatch(loading(true));
     requestService(
         httpMethod.get,
         filmsBaseUrl.concat(`(${filmId})?$select=Rating,VotedPeopleCount`),
@@ -183,7 +183,6 @@ export const loadRating = (filmId, history) => dispatch => {
         true
     )
         .then(response => dispatch(addFilmRating(response.data.value[0])))
-        .then(() => dispatch(loading(false)))
         .then(() => dispatch(requestSuccess()))
         .catch(errors => {
             dispatch(loading(false));
@@ -192,15 +191,16 @@ export const loadRating = (filmId, history) => dispatch => {
 };
 
 export const findFilm = (query, history) => dispatch => {
-    dispatch(loading(true));
     requestService(
         httpMethod.get,
-        filmsBaseUrl.concat(filmsUrls.findByName, `'${query}')`),
+        filmsBaseUrl.concat(filmsUrls.count, filmsUrls.findByName, `'${query}')`),
         null,
         true
     )
-        .then(response => dispatch(setFilmsList(response.data.value)))
-        .then(() => dispatch(loading(false)))
+        .then(response => {
+            dispatch(setFilmsList(response.data.value));
+            dispatch(setNextLink(response.data['@odata.nextLink']))
+        })
         .then(() => dispatch(requestSuccess()))
         .catch(errors => {
             dispatch(loading(false));
@@ -209,15 +209,16 @@ export const findFilm = (query, history) => dispatch => {
 };
 
 export const sortFilms = (params, history) => dispatch => {
-    dispatch(loading(true));
     requestService(
         httpMethod.get,
-        filmsBaseUrl.concat(`?${filmsUrls.orderBy}`, params.join(",")),
+        filmsBaseUrl.concat(filmsUrls.count, filmsUrls.orderBy, params.join(",")),
         null,
         true
     )
-        .then(response => dispatch(setFilmsList(response.data.value)))
-        .then(() => dispatch(loading(false)))
+        .then(response => {
+            dispatch(setFilmsList(response.data.value));
+            dispatch(setNextLink(response.data['@odata.nextLink']))
+        })
         .then(() => dispatch(requestSuccess()))
         .catch(errors => {
             dispatch(loading(false));
