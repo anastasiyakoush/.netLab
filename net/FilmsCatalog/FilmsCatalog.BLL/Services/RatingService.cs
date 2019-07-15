@@ -72,7 +72,7 @@ namespace FilmsCatalog.BLL.Services
             return ratings;
         }
 
-        public FilmRatingDTO GetFilmRatingAsync(int filmId)
+        public FilmRatingDTO GetFilmRating(int filmId)
         {
             var rating = _uow.Ratings.GetAll()
                               .GroupBy(x => x.FilmId)

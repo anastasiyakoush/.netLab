@@ -38,14 +38,17 @@ namespace FilmsCatalog.API
         }
 
         public IConfiguration Configuration { get; }
-        public static object ODataConventionalModelBuilder { get; private set; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             //for OData
-                        services.AddMvcCore(action => action.EnableEndpointRouting = false);
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddOData();
+
+            services.AddMvcCore(action => action.EnableEndpointRouting = false);
+            services.AddMvc()
+                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<FilmModelValidator>())
+                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
 
             services.AddTransient<IValidator<FilmModel>, FilmModelValidator>();
             services.AddTransient<IValidator<RegisterUserModel>, RegisterUserModelValidator>();

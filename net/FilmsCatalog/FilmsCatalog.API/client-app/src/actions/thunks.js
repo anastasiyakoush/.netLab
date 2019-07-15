@@ -79,7 +79,6 @@ export const deauthenticate = history => dispatch => {
 
 export const getFilms = (history, isAppend, link) => dispatch => {
     !isAppend && dispatch(loading(true));
-
     requestService(
         httpMethod.get,
         link,
@@ -90,7 +89,7 @@ export const getFilms = (history, isAppend, link) => dispatch => {
             isAppend
                 ? dispatch(addFilms(response.data.value))
                 : dispatch(setFilmsList(response.data.value));
-                
+
             dispatch(setNextLink(response.data['@odata.nextLink']))
         }
         )
@@ -153,10 +152,7 @@ export const loadComments = (filmId, history) => dispatch => {
             dispatch(addFilmComments(response.data))
         )
         .then(() => dispatch(requestSuccess()))
-        .catch(errors => {
-            dispatch(loading(false));
-            handleError(errors, dispatch, history);
-        });
+        .catch(errors => handleError(errors, dispatch, history));
 };
 
 export const rateFilm = (body, history) => dispatch => {
@@ -169,10 +165,7 @@ export const rateFilm = (body, history) => dispatch => {
         .then(() => dispatch(requestSuccess()))
         .then(() => dispatch(loadRating(body.filmId, history), null, true))
         .then(() => dispatch(requestSuccess()))
-        .catch(errors => {
-            dispatch(loading(false));
-            handleError(errors, dispatch, history);
-        });
+        .catch(errors => handleError(errors, dispatch, history));
 };
 
 export const loadRating = (filmId, history) => dispatch => {
@@ -184,10 +177,7 @@ export const loadRating = (filmId, history) => dispatch => {
     )
         .then(response => dispatch(addFilmRating(response.data.value[0])))
         .then(() => dispatch(requestSuccess()))
-        .catch(errors => {
-            dispatch(loading(false));
-            handleError(errors, dispatch, history);
-        });
+        .catch(errors => handleError(errors, dispatch, history));
 };
 
 export const findFilm = (query, history) => dispatch => {
@@ -202,10 +192,7 @@ export const findFilm = (query, history) => dispatch => {
             dispatch(setNextLink(response.data['@odata.nextLink']))
         })
         .then(() => dispatch(requestSuccess()))
-        .catch(errors => {
-            dispatch(loading(false));
-            handleError(errors, dispatch, history);
-        });
+        .catch(errors => handleError(errors, dispatch, history));
 };
 
 export const sortFilms = (params, history) => dispatch => {
@@ -220,8 +207,5 @@ export const sortFilms = (params, history) => dispatch => {
             dispatch(setNextLink(response.data['@odata.nextLink']))
         })
         .then(() => dispatch(requestSuccess()))
-        .catch(errors => {
-            dispatch(loading(false));
-            handleError(errors, dispatch, history);
-        });
+        .catch(errors => handleError(errors, dispatch, history));
 };

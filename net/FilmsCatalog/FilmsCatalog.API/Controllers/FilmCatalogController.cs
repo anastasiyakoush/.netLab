@@ -12,11 +12,12 @@ using Microsoft.AspNet.OData.Routing;
 using System.Linq;
 using AutoMapper.QueryableExtensions;
 using Microsoft.AspNetCore.Authorization;
+using FilmsCatalog.Core;
 
 namespace FilmsCatalog.API.Controllers
 {
     [ServiceFilter(typeof(LoggingFilter))]
-    [Authorize]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     public class FilmsController : ODataController
     {
         private readonly IFilmService _filmService;
@@ -31,12 +32,12 @@ namespace FilmsCatalog.API.Controllers
         }
 
         [HttpGet]
-        [EnableQuery(PageSize = 8)]
+        [EnableQuery(PageSize = Consts.FilmsReturnPerRequest)]
         public async Task<IActionResult> Get()
         {
             try
             {
-                var films = _filmService.GetAllFilmsAsync()
+                var films = _filmService.GetAllFilms()
                                .ProjectTo<FilmModel>(_mapper.ConfigurationProvider);
 
                 return Ok(films);
@@ -53,7 +54,7 @@ namespace FilmsCatalog.API.Controllers
         {
             try
             {
-                var filmModel = _filmService.GetAllFilmsAsync().Where(x => x.Id == key)
+                var filmModel = _filmService.GetAllFilms().Where(x => x.Id == key)
                                 .ProjectTo<FilmDetailsModel>(_mapper.ConfigurationProvider);
 
                 return Ok(filmModel);

@@ -7,8 +7,8 @@ namespace FilmsCatalog.BLL.Interfaces
     public interface IFilmService
     {
         Task AddFilmAsync(FilmDTO filmDTO);
-        IQueryable<FilmDTO> GetFilmAsync(int id);
-        IQueryable<FilmDTO> GetAllFilmsAsync();
+        IQueryable<FilmDTO> GetFilm(int id);
+        IQueryable<FilmDTO> GetAllFilms();
         Task RemoveFilmAsync(int id);
         Task UpdateFilmAsync(FilmDTO filmDTO);
     }

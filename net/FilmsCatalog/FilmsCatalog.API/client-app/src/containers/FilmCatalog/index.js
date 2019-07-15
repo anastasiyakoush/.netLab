@@ -37,24 +37,22 @@ const FilmCatalog = props => {
     return (
         <div className={classes.container}>
             {!loading && (films.length > 0
-                ? (
-                    films.map(
-                        (x, i) =>
-                            films[i].Poster && (
-                                <FilmCard
-                                    key={i}
-                                    title={x.Name}
-                                    year={x.Year}
-                                    src={x.Poster}
-                                    onClick={() => goToDetails(x.Id)}
-                                />
-                            )
-                    ))
-                : (
-                    <Typography variant="h6" className={classes.noResults}>
-                        No results found
+                ? films.map(
+                    (x, i) =>
+                        films[i].Poster && (
+                            <FilmCard
+                                key={i}
+                                title={x.Name}
+                                year={x.Year}
+                                src={x.Poster}
+                                onClick={() => goToDetails(x.Id)}
+                            />
+                        )
+                )
+                : <Typography variant="h6" className={classes.noResults}>
+                    No results found
                     </Typography>
-                ))}
+            )}
             {isFetching && nextLink && (
                 <Typography variant="h6" className={classes.noResults}>
                     Loading

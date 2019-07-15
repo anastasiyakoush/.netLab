@@ -30,14 +30,14 @@ namespace FilmsCatalog.BLL.Services
             await _uow.SaveAsync();
         }
 
-        public IQueryable<FilmDTO> GetAllFilmsAsync()
+        public IQueryable<FilmDTO> GetAllFilms()
         {
             var filmsList = CreateFilmsQueryable().ProjectTo<FilmDTO>(_mapper.ConfigurationProvider);
 
             return filmsList;
         }
 
-        public IQueryable<FilmDTO> GetFilmAsync(int id)
+        public IQueryable<FilmDTO> GetFilm(int id)
         {
             var filmDTO = CreateFilmsQueryable().Where(x => x.Id == id)
                          .ProjectTo<FilmDTO>(_mapper.ConfigurationProvider);

@@ -29,17 +29,4 @@ namespace FilmsCatalog.BLL.Core.Configuration.Profiles
             CreateMap<RatingDTO, Rating>().ReverseMap();
         }
     }
-
-    public class RatingResolver : IValueResolver<Film, FilmDTO, FilmRatingDTO>
-    {
-        public FilmRatingDTO Resolve(Film source, FilmDTO destination, FilmRatingDTO destMember, ResolutionContext context)
-        {
-            return new FilmRatingDTO
-            {
-                FilmId = source.Id,
-                VotedPeopleCount = source.Ratings.Count(),
-                Rate = source.Ratings.Select(x => x.Rate).Average()
-            };
-        }
-    }
 }

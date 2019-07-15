@@ -69,9 +69,7 @@ const SearchField = props => {
                             variant="body2"
                             className={classes.link}
                             key={i}
-                            onClick={() => onClickHandler(x.Id)}>{`${x.Name} (${
-                                x.Year
-                                })`}</Typography>
+                            onClick={() => onClickHandler(x.Id)}>{`${x.Name} (${x.Year})`}</Typography>
                     ))}
                 </div>
             )}
