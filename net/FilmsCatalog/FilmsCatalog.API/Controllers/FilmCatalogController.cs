@@ -105,7 +105,7 @@ namespace FilmsCatalog.API.Controllers
         {
             try
             {
-                var filmInDb = _filmService.GetFilmAsync(key);
+                var filmInDb = _filmService.GetFilm(key);
                 await _filmService.RemoveFilmAsync(key);
 
                 return Ok();
