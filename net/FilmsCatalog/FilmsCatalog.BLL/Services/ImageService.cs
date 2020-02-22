@@ -1,10 +1,7 @@
 ﻿using FilmsCatalog.BLL.Core.DTO;
 using FilmsCatalog.BLL.Core.Interfaces;
 using FilmsCatalog.DAL.Core.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace FilmsCatalog.BLL.Services
 {
@@ -17,22 +14,20 @@ namespace FilmsCatalog.BLL.Services
             _uow = uow;
         }
 
-        public async Task<IEnumerable<string>> GetUrlsAsync(int filmId)
+        public IQueryable<string> GetUrls(int filmId)
         {
-            var urls = await _uow.Images.GetAll()
+            var urls = _uow.Images.GetAll()
                                    .Where(x => x.FilmId == filmId)
-                                   .Select(x => x.Url)
-                                   .ToListAsync();
+                                   .Select(x => x.Url);
 
             return urls;
         }
 
-        public async Task<IEnumerable<PosterDTO>> GetPostersAsync()
+        public IQueryable<PosterDTO> GetPosters()
         {
-            var urls = await _uow.Images.GetAll()
+            var urls = _uow.Images.GetAll()
                                    .Where(x => x.Url.Contains("p.jpg"))
-                                   .Select(x => createPosterDTO(x.FilmId, x.Url))
-                                   .ToListAsync();
+                                   .Select(x => createPosterDTO(x.FilmId, x.Url));
 
             return urls;
         }

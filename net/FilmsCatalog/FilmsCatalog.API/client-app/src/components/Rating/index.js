@@ -55,7 +55,7 @@ const Rating = ({ rating, filmId, postRating, classes, people }) => {
 const mapStateToProps = state => {
     return {
         rating: state.filmReducer.rating,
-        people: state.filmReducer.peopleVoted,
+        people: state.filmReducer.votedPeopleCount,
     };
 };
 const mapDispatchToProps = dispatch => {

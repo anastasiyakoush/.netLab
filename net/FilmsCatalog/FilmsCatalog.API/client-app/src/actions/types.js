@@ -5,8 +5,9 @@ export const LOADING = "LOADING";
 export const REQUEST_SUCCESS = "REQUEST_SUCCESS";
 export const REQUEST_FAILURE = "REQUEST_FAILURE";
 
-export const SET_FILMS_LIST = "SET_FILMS_LIST";
-export const SET_POSTERS = "SET_POSTERS";
+export const SET_FILM_LIST = "SET_FILM_LIST";
+export const ADD_FILMS = "ADD_FILMS";
+export const SET_NEXT_LINK = "SET_NEXT_LINK";
 
 export const GET_POSTER = "GET_POSTER";
 export const SET_FILM = "SET_FILM";

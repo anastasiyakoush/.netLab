@@ -1,28 +1,27 @@
-import { SET_FILMS_LIST, SET_POSTERS } from "../../actions/types";
+import { SET_FILM_LIST, ADD_FILMS, SET_NEXT_LINK } from "../../actions/types";
 
 const initialState = {
-    films: []
+    films: [],
+    nextLink: ''
 };
 
 export default function filmsListReducer(state = initialState, action) {
     switch (action.type) {
-        case SET_FILMS_LIST:
+        case SET_FILM_LIST:
             return {
                 ...state,
                 films: action.payload
             };
-        case SET_POSTERS:
+        case ADD_FILMS:
             return {
                 ...state,
-                films: state.films.map(film => {
-                    film.poster = action.payload.find(
-                        poster => film.id === poster.filmId
-                    ).url;
-                    return film;
-                })
+                films: [...state.films, ...action.payload]
             };
-
-        default:
+        case SET_NEXT_LINK:
+            return {
+                ...state,
+                nextLink: action.payload
+            };        default:
             return state;
     }
 }

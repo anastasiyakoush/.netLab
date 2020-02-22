@@ -11,6 +11,8 @@ namespace FilmsCatalog.DAL.Core.Entities
         public int Year { get; set; }
         public string Director { get; set; }
         public string Overview { get; set; }
-        public virtual IEnumerable<Comment> Comments { get; set; }
+        public IEnumerable<FilmImage> Images { get; set; }
+        public IEnumerable<Comment> Comments { get; set; }
+        public IEnumerable<Rating> Ratings { get; set; }
     }
 }

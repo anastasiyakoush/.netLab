@@ -1,43 +1,61 @@
-﻿using System.Collections.Generic;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using AutoMapper;
 using FilmsCatalog.API.Models;
 using FilmsCatalog.BLL.Core.DTO;
 using FilmsCatalog.BLL.Interfaces;
 using FilmsCatalog.API.Configuration.Filters;
-using FilmsCatalog.API.Logging.Filters;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 using System;
 using FilmsCatalog.BLL.Core.Interfaces;
+using Microsoft.AspNet.OData;
+using Microsoft.AspNet.OData.Routing;
+using System.Linq;
+using AutoMapper.QueryableExtensions;
+using Microsoft.AspNetCore.Authorization;
+using FilmsCatalog.Core;
 
 namespace FilmsCatalog.API.Controllers
 {
-    [ServiceFilter(typeof(ExceptionFilter))]
     [ServiceFilter(typeof(LoggingFilter))]
     [Authorize(AuthenticationSchemes = "Bearer")]
-    [Route("api/[controller]")]
-    [ApiController]
-    public class FilmCatalogController : ControllerBase
+    public class FilmsController : ODataController
     {
         private readonly IFilmService _filmService;
         private readonly IImageService _imageService;
         private readonly IMapper _mapper;
 
-        public FilmCatalogController(IFilmService filmService, IImageService imageService, IMapper mapper)
+        public FilmsController(IFilmService filmService, IImageService imageService, IMapper mapper)
         {
             _filmService = filmService;
             _imageService = imageService;
             _mapper = mapper;
         }
 
-        [HttpGet("[action]/{id:int}")]
-        public async Task<IActionResult> GetFilm(int id)
+        [HttpGet]
+        [EnableQuery(PageSize = Consts.FilmsReturnPerRequest)]
+        public async Task<IActionResult> Get()
         {
             try
             {
-                var film = await _filmService.GetFilmAsync(id);
-                var filmModel = _mapper.Map<FilmInfoDTO, FilmInfoModel>(film);
+                var films = _filmService.GetAllFilms()
+                               .ProjectTo<FilmModel>(_mapper.ConfigurationProvider);
+
+                return Ok(films);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [EnableQuery]
+        public async Task<IActionResult> Get([FromODataUri] int key)
+        {
+            try
+            {
+                var filmModel = _filmService.GetAllFilms().Where(x => x.Id == key)
+                                .ProjectTo<FilmDetailsModel>(_mapper.ConfigurationProvider);
 
                 return Ok(filmModel);
             }
@@ -47,24 +65,9 @@ namespace FilmsCatalog.API.Controllers
             }
         }
 
-        [HttpGet("all")]
-        public async Task<IActionResult> GetAll()
-        {
-            try
-            {
-                var films = await _filmService.GetAllFilmsAsync();
-                var filmModels = _mapper.Map<IEnumerable<FilmDTO>, IEnumerable<FilmModel>>(films);
-
-                return Ok(filmModels);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpPost("[action]")]
-        public async Task<IActionResult> Create(FilmModel model)
+        [HttpPost]
+        [EnableQuery]
+        public async Task<IActionResult> Post([FromBody]FilmModel model)
         {
             try
             {
@@ -79,8 +82,9 @@ namespace FilmsCatalog.API.Controllers
             }
         }
 
-        [HttpPut("[action]")]
-        public async Task<IActionResult> Update(FilmModel model)
+        [HttpPut]
+        [EnableQuery]
+        public async Task<IActionResult> Update([FromBody]FilmModel model)
         {
             try
             {
@@ -95,46 +99,16 @@ namespace FilmsCatalog.API.Controllers
             }
         }
 
-        [HttpDelete("[action]/{id:int}")]
-        public async Task<IActionResult> Delete(int id)
+        [HttpDelete]
+        [EnableQuery]
+        public async Task<IActionResult> Delete([FromODataUri]int key)
         {
             try
             {
-                var filmInDb = await _filmService.GetFilmAsync(id);
-                await _filmService.RemoveFilmAsync(id);
+                var filmInDb = _filmService.GetFilm(key);
+                await _filmService.RemoveFilmAsync(key);
 
                 return Ok();
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet("posters")]
-        public async Task<IActionResult> GetPostersAsync()
-        {
-            try
-            {
-                var posters = await _imageService.GetPostersAsync();
-                return Ok(posters);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(ex.Message);
-            }
-        }
-
-        [HttpGet("search/{name}")]
-        public async Task<IActionResult> Search(string name)
-     {
-            try
-            {
-                var resultsDTOs = await _filmService.FilterByName(name);
-                var results = _mapper.Map<IEnumerable<FilmDTO>, IEnumerable<FilmModel>>(resultsDTOs);
-
-
-                return Ok(results);
             }
             catch (Exception ex)
             {

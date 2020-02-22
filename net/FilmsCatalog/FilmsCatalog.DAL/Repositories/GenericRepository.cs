@@ -2,6 +2,8 @@
 using System.Threading.Tasks;
 using FilmsCatalog.DAL.Core.Interfaces;
 using System.Linq;
+using System.Linq.Expressions;
+using System;
 
 namespace FilmsCatalog.DAL.EF.Repositories
 {

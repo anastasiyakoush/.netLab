@@ -7,7 +7,8 @@ const styles = {
     },
     noResults: {
         color: "#D81B60",
-        padding: "100px 200px 50%"
+        flexBasis:"100%",
+        textAlign: "center"
     }
 };
 export default styles;

@@ -22,6 +22,10 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using FilmsCatalog.Core.Configuration;
 using FilmsCatalog.BLL.Core.Interfaces;
+using Microsoft.AspNet.OData.Extensions;
+using Microsoft.OData.Edm;
+using Microsoft.AspNet.OData.Builder;
+using FilmsCatalog.BLL.Core.DTO;
 
 namespace FilmsCatalog.API
 {
@@ -37,9 +41,15 @@ namespace FilmsCatalog.API
 
         public void ConfigureServices(IServiceCollection services)
         {
-            //services for mvc and api model validation
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2)
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<FilmModelValidator>());
+            //for OData
+            services.AddOData();
+
+            services.AddMvcCore(action => action.EnableEndpointRouting = false);
+            services.AddMvc()
+                 .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<FilmModelValidator>())
+                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+
             services.AddTransient<IValidator<FilmModel>, FilmModelValidator>();
             services.AddTransient<IValidator<RegisterUserModel>, RegisterUserModelValidator>();
             services.AddTransient<IValidator<LoginModel>, LoginModelValidator>();
@@ -110,7 +120,20 @@ namespace FilmsCatalog.API
             app.UseDeveloperExceptionPage();
             app.UseAuthentication();
             app.UseHttpsRedirection();
-            app.UseMvc();
+            app.UseMvc(routeBuilder =>
+            {
+                routeBuilder.Select().Filter().OrderBy().Expand().Count().MaxTop(10);
+                routeBuilder.MapODataServiceRoute("api", "api", GetEdmModel());
+            });
+        }
+
+        private IEdmModel GetEdmModel()
+        {
+            var builder = new ODataConventionModelBuilder();
+            builder.EntitySet<FilmModel>("Films");
+            builder.EntitySet<FilmDetailsModel>("FilmDetails");
+            return builder.GetEdmModel();
         }
     }
 }
+

@@ -52,7 +52,7 @@ namespace FilmsCatalog.API.Controllers
         {
             try
             {
-                var commentDTOs = await _commentService.GetFilmCommentsAsync(filmId);
+                var commentDTOs = _commentService.GetFilmComments(filmId);
                 var comments = _mapper.Map<IEnumerable<CommentDTO>, IEnumerable<CommentModel>>(commentDTOs);
                 return Ok(comments);
             }
@@ -97,7 +97,7 @@ namespace FilmsCatalog.API.Controllers
         {
             try
             {
-                var ratingDTO = await _ratingService.GetFilmRatingAsync(filmId);
+                var ratingDTO = _ratingService.GetFilmRating(filmId);
                 var rating = _mapper.Map<FilmRatingDTO, RatingModel>(ratingDTO);
                 return Ok(rating);
             }
@@ -127,7 +127,7 @@ namespace FilmsCatalog.API.Controllers
         {
             try
             {
-                var urls = await _imageService.GetUrlsAsync(filmId);
+                var urls = _imageService.GetUrls(filmId);
                 return Ok(urls);
             }
             catch (Exception ex)

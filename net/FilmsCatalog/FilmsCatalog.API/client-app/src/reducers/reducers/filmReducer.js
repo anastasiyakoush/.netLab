@@ -1,6 +1,5 @@
 import {
     SET_FILM,
-    GET_POSTER,
     ADD_FILM_RATING,
     ADD_FILM_COMMENTS,
     ADD_FILM_IMAGES
@@ -13,7 +12,7 @@ const initialState = {
     director: "",
     overview: "",
     rating: 0,
-    peopleVoted: 0,
+    votedPeopleCount: 0,
     poster: "",
     images: [],
     comments: []
@@ -24,11 +23,17 @@ export default function filmReducer(state = initialState, action) {
         case SET_FILM:
             return {
                 ...state,
-                ...action.payload,
-                rating: action.payload.rating.rate,
-                peopleVoted: action.payload.rating.votedPeopleCount,
+                id: action.payload.Id,
+                name: action.payload.Name,
+                year: action.payload.Year,
+                director: action.payload.Director,
+                overview: action.payload.Overview,
+                rating: action.payload.Rating,
+                votedPeopleCount: action.payload.VotedPeopleCount,
+                poster: action.payload.Poster,
+                images: action.payload.Images,
+                comments: action.payload.Comments,
             };
-
         case ADD_FILM_COMMENTS:
             return {
                 ...state,
@@ -42,13 +47,8 @@ export default function filmReducer(state = initialState, action) {
         case ADD_FILM_RATING:
             return {
                 ...state,
-                rating: action.payload.rate,
-                peopleVoted: action.payload.votedPeopleCount
-            };
-        case GET_POSTER:
-            return {
-                ...state,
-                poster: state.images.filter(x => x.includes("p.jpg") || x.includes("p.jpeg"))[0]
+                rating: action.payload.Rating,
+                votedPeopleCount: action.payload.VotedPeopleCount
             };
         default:
             return state;

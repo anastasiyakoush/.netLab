@@ -8,12 +8,14 @@ import Title from "../../components/Title";
 import { authHelper } from "../../helpers/authHepler"
 import { withStyles } from "@material-ui/styles";
 import styles from "./styles";
+import SortBar from "../../components/SortBar";
 
 const NavBar = ({ classes }) => {
   return (
     <Toolbar className={classes.tabs} >
       <HomeLink disabled />}
               <Title />
+      {authHelper.isAuthenticated() && <SortBar />}
       {authHelper.isAuthenticated() && <SearchField />}
       {authHelper.isAuthenticated() && <Logout />}
     </Toolbar>)

@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using AutoMapper;
 using FilmsCatalog.BLL.Interfaces;
 using FilmsCatalog.BLL.Core.DTO;
@@ -9,25 +8,19 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using System;
 using FilmsCatalog.Core;
-using FilmsCatalog.BLL.Core.Interfaces;
+using AutoMapper.QueryableExtensions;
 
 namespace FilmsCatalog.BLL.Services
 {
     public class FilmService : IFilmService
     {
         private readonly IUnitOfWork _uow;
-        private readonly IImageService _imageService;
-        private readonly ICommentService _commentService;
-        private readonly IRatingService _ratingService;
         private readonly IMapper _mapper;
 
-        public FilmService(IMapper mapper, IImageService imageService, ICommentService commentService, IRatingService ratingService, IUnitOfWork uow)
+        public FilmService(IMapper mapper, IUnitOfWork uow)
         {
             _uow = uow;
             _mapper = mapper;
-            _imageService = imageService;
-            _commentService = commentService;
-            _ratingService = ratingService;
         }
 
         public async Task AddFilmAsync(FilmDTO filmDTO)
@@ -37,24 +30,19 @@ namespace FilmsCatalog.BLL.Services
             await _uow.SaveAsync();
         }
 
-        public async Task<IEnumerable<FilmDTO>> GetAllFilmsAsync()
+        public IQueryable<FilmDTO> GetAllFilms()
         {
-            var films = await _uow.Films.GetAll().ToListAsync();
-            return _mapper.Map<IEnumerable<Film>, IEnumerable<FilmDTO>>(films);
+            var filmsList = CreateFilmsQueryable().ProjectTo<FilmDTO>(_mapper.ConfigurationProvider);
+
+            return filmsList;
         }
 
-        public async Task<FilmInfoDTO> GetFilmAsync(int id)
+        public IQueryable<FilmDTO> GetFilm(int id)
         {
-            var film = await _uow.Films.GetAsync(id);
-            var filmDTO = _mapper.Map<Film, FilmDTO>(film);
+            var filmDTO = CreateFilmsQueryable().Where(x => x.Id == id)
+                         .ProjectTo<FilmDTO>(_mapper.ConfigurationProvider);
 
-            var filmImages = await _imageService.GetUrlsAsync(id);
-            var filmComments = await _commentService.GetFilmCommentsAsync(id);
-            var rating = await _ratingService.GetFilmRatingAsync(id);
-
-            var filmInfo = createFilmInfoDTO(filmDTO, filmComments, filmImages, rating);
-
-            return filmInfo;
+            return filmDTO;
         }
 
         public async Task RemoveFilmAsync(int id)
@@ -83,26 +71,14 @@ namespace FilmsCatalog.BLL.Services
             await _uow.SaveAsync();
         }
 
-        public async Task<IEnumerable<FilmDTO>> FilterByName(string name)
+        private IQueryable<Film> CreateFilmsQueryable()
         {
-            var results = await _uow.Films.GetAll().Where(x => x.Name.Contains(name)).Take(5).ToListAsync();
+            var films = _uow.Films.GetAll()
+                .Include(x => x.Comments)
+                .Include(x => x.Images)
+                .Include(x => x.Ratings);
 
-            return _mapper.Map<IEnumerable<Film>, IEnumerable<FilmDTO>>(results);
-        }
-
-        private FilmInfoDTO createFilmInfoDTO(FilmDTO filmDTO, IEnumerable<CommentDTO> filmComments, IEnumerable<string> filmImages, FilmRatingDTO ratingDTO)
-        {
-            return new FilmInfoDTO
-            {
-                Id = filmDTO.Id,
-                Name = filmDTO.Name,
-                Year = filmDTO.Year,
-                Overview = filmDTO.Overview,
-                Director = filmDTO.Director,
-                Rating = ratingDTO,
-                Images = filmImages,
-                Comments = filmComments
-            };
+            return films;
         }
     }
 }

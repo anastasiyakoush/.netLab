@@ -1,10 +1,14 @@
-import { SET_FILMS_LIST, SET_POSTERS, } from "../types"
+import { SET_FILM_LIST, ADD_FILMS, SET_NEXT_LINK } from "../types";
 
 export const setFilmsList = films => ({
-    type: SET_FILMS_LIST,
+    type: SET_FILM_LIST,
     payload: films
 });
-export const setPosters = data => ({
-    type: SET_POSTERS,
-    payload: data
+export const addFilms = films => ({
+    type: ADD_FILMS,
+    payload: films
+});
+export const setNextLink = link => ({
+    type: SET_NEXT_LINK,
+    payload: link
 });

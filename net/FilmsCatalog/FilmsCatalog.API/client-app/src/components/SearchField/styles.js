@@ -1,6 +1,6 @@
 const styles = {
     container: {
-        margin: "16px 20px auto auto",
+        margin: "16px 20px auto",
         borderRadius: "4px",
         padding: "0 10px",
         maxWidth: "247px"

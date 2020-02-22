@@ -72,14 +72,12 @@ namespace FilmsCatalog.BLL.Services
             return ratings;
         }
 
-        public async Task<FilmRatingDTO> GetFilmRatingAsync(int filmId)
+        public FilmRatingDTO GetFilmRating(int filmId)
         {
-            var rating = await _uow.Ratings.GetAll()
+            var rating = _uow.Ratings.GetAll()
                               .GroupBy(x => x.FilmId)
                               .Where(x => x.Key == filmId)
-                              .Select(x => createFilmRatingDTO(x.Key, x.Count(), x.Select(r => r.Rate).Average()))
-                              .ToListAsync();
-
+                              .Select(x => createFilmRatingDTO(x.Key, x.Count(), x.Select(r => r.Rate).Average()));
 
             return rating.FirstOrDefault() ?? createFilmRatingDTO(filmId, 0, 0);
         }
